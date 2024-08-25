@@ -1,4 +1,4 @@
-# ClickJogos
+# Click Jogos
 O sistema **Click Jogos** simula uma central de jogos na qual o usuário pode escolher um dentre os jogos disponíveis. **Todos os jogos são multijogador**, para serem jogados com dois jogadores, que irão competir entre si e no final haverá um vencedor ou, em caso de mesma pontuação, empate. **Os jogos disponíveis são:**
 ## Jogo da velha
 O jogo consiste em preencher as lacunas vazias de um tabuleiro com os símbolos “X” (pelo jogador 1) e “O” (pelo jogador 2). Os jogadores jogam alternadamente e vence quem conseguir formar primeiro uma linha com três símbolos iguais. Caso nenhum dos dois consiga esse feito, o jogo termina com empate (velha).
