@@ -1,5 +1,7 @@
+module Main where
 import System.Exit (exitSuccess)
 import Text.XHtml.Frameset (p)
+import Perguntados (perguntados)
 
 main :: IO()
 main = do
@@ -31,9 +33,22 @@ menu :: IO()
 menu = do
     putStrLn "                                                   "
     putStrLn "==================================================="
-    putStrLn "                ESCOLHA UM JOGO                    "
+    putStrLn "                 ESCOLHA UM JOGO                   "
     putStrLn "==================================================="
     putStrLn "                    FORCA (1)                      "
-    putStrLn "                 PERGUNTADOS (3)                   " 
-    putStrLn "                JOGO DA VELHA (2)                  "
+    putStrLn "                 PERGUNTADOS (2)                   " 
+    putStrLn "                JOGO DA VELHA (3)                  "
     putStrLn "==================================================="
+    putStrLn "                                                   "
+    putStrLn "Digite uma opção: "
+    opcao <- getLine
+    if opcao == "1" then do
+        putStrLn "Jogo da Forca"
+    else if opcao == "2" then do
+        putStrLn "Perguntados"
+        perguntados
+    else if opcao == "3" then do
+        putStrLn "Jogo da Velha"
+    else do
+        putStrLn "Opção inválida!"
+        menu
