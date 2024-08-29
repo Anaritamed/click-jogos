@@ -1,8 +1,12 @@
-import System.Exit (exitSuccess)
-import Text.XHtml.Frameset (p)
+module MenuInicial where
 
-main :: IO()
-main = do
+import Utils (limpaTerminal)
+import System.Exit (exitSuccess)
+import Forca (forca)
+
+renderizaTelaInicial :: IO()
+renderizaTelaInicial = do
+    limpaTerminal
     putStrLn "==================================================="
     putStrLn "   ___ _ _      _       __                         "
     putStrLn "  / __\\ (_) ___| | __   \\ \\  ___   __ _  ___  ___ "
@@ -23,9 +27,8 @@ main = do
         exitSuccess
     else do
         putStrLn "Opção inválida!"
-        main
-    return ()
-
+        limpaTerminal
+        renderizaTelaInicial
 
 menu :: IO()
 menu = do
@@ -37,3 +40,12 @@ menu = do
     putStrLn "                 PERGUNTADOS (3)                   " 
     putStrLn "                JOGO DA VELHA (2)                  "
     putStrLn "==================================================="
+    putStrLn "                                                   "
+    putStrLn "Digite uma opção: "
+    opcao <- getLine
+    if opcao == "1" then do
+        forca
+    else if opcao == "2" then do
+        return()
+    else do
+        print()
