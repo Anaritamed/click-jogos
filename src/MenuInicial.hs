@@ -20,12 +20,15 @@ renderizaTelaInicial = do
     putStrLn "                                                   "
     putStrLn "Digite uma opção: "
     opcao <- getLine
-    if opcao == "1" then do
-        menu
-    else if opcao == "2" then do
+    handleInteracaoTelaInicial opcao
+
+handleInteracaoTelaInicial :: String -> IO()
+handleInteracaoTelaInicial opcao
+    | opcao == "1" = menu
+    | opcao == "2" = do
         putStrLn "Saindo..."
         exitSuccess
-    else do
+    | otherwise = do
         putStrLn "Opção inválida!"
         limpaTerminal
         renderizaTelaInicial
@@ -43,9 +46,9 @@ menu = do
     putStrLn "                                                   "
     putStrLn "Digite uma opção: "
     opcao <- getLine
-    if opcao == "1" then do
-        forca
-    else if opcao == "2" then do
-        return()
-    else do
-        print()
+    handleInteracaoEscolhaJogos opcao
+
+handleInteracaoEscolhaJogos :: String -> IO()
+handleInteracaoEscolhaJogos "1" = forca
+handleInteracaoEscolhaJogos "2" = putStrLn "perguntados" --temporário
+handleInteracaoEscolhaJogos "3" = putStrLn "Jogo da Velha" --temporário
