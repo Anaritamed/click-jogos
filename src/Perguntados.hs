@@ -1,10 +1,12 @@
 module Perguntados where
 
 import System.Info (os)
+import System.IO (hClose, hGetContents, openFile)
 import Utils (limpaTerminal)
 import System.Process (callCommand)
 import Control.Monad.RWS (MonadState(put))
 import Data.Text.Internal.Read (IParser(P))
+import GHC.IO.IOMode
 
 perguntados :: IO()
 perguntados = do 
@@ -91,15 +93,15 @@ temaJogo jogador = do
     opcao <- getLine
 
     if opcao == "1" then do
-        jogo jogador "ENTRETENIMENTO"
+        jogo jogador "entreterimento.txt"
     else if opcao == "2" then do
-        jogo jogador "PROGRAMAÇÃO"
+        jogo jogador "programacao.txt"
     else if opcao == "3" then do
-        jogo jogador "GEOGRAFIA"
+        jogo jogador "geografia.txt"
     else if opcao == "4" then do
-        jogo jogador "HISTORIA"
+        jogo jogador "historia.txt"
     else if opcao == "5" then do
-        jogo jogador "CIÊNCIAS"
+        jogo jogador "ciencias.txt"
     else do
         putStrLn "Opção inválida!"
         temaJogo jogador
@@ -108,5 +110,10 @@ temaJogo jogador = do
     
 jogo :: String -> String -> IO()
 jogo jogador tema = do 
-    -- to do
+    let caminhoArquivo = "perguntas/" ++ tema
+    arquivo <- openFile caminhoArquivo ReadMode
+    conteudo <- hGetContents arquivo
+    putStrLn conteudo
+    hClose arquivo
+
     return()
