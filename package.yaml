@@ -1,0 +1,7 @@
+name: click-jogos
+version: 0.1.0.0
+packages:
+- .
+dependencies:
+- base >= 4.7 && < 5
+- process

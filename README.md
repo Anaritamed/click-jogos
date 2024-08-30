@@ -7,3 +7,16 @@ Quiz de perguntas e respostas sobre determinado tema escolhido pelos jogadores n
 ## Jogo da forca
 Nesse jogo, o jogador 1 escolhe uma palavra para o jogador 2 adivinhar, tendo como dica apenas o tema e a quantidade de letras da palavra. A cada rodada, o jogador 2 dá o palpite de uma letra da palavra. Se acertar, a letra é preenchida na palavra, já se o palpite estiver errado, é desenhada uma parte do corpo do boneco na forca. Caso o boneco seja desenhado por completo, o jogador 2 perde.
 
+
+# Tecnologias
+Tecnologias usadas no projeto.
+## Cabal
+1. Inicialização e Configuração
+cabal init: Use quando você está começando um novo projeto Haskell. Este comando cria um novo diretório com uma estrutura básica e um arquivo .cabal que descreve o projeto e suas dependências.
+
+cabal update: Use para atualizar o índice de pacotes do Hackage. É uma boa prática executar este comando regularmente para garantir que você tenha acesso às versões mais recentes dos pacotes disponíveis.
+
+2. Construção e Execução
+cabal build: Use para compilar o código-fonte do seu projeto. Isso inclui compilar todas as dependências e o próprio código do projeto. Execute este comando após fazer alterações no código ou nas dependências para garantir que tudo esteja construído corretamente.
+
+cabal run: Use para compilar e executar o executável definido no seu arquivo .cabal. É útil para testar o projeto na prática após a compilação.
