@@ -19,12 +19,12 @@ Nesse jogo, o jogador 1 escolhe uma palavra para o jogador 2 adivinhar, tendo co
 Tecnologias usadas no projeto.  
 
 ## Cabal
-1. Inicialização e Configuração
-`cabal init`: Foi usado para criar um novo diretório com uma estrutura básica e um arquivo .cabal que descreve o projeto e suas dependências.
+1. Inicialização e Configuração  
+`cabal init`: Foi usado para criar um novo diretório com uma estrutura básica e um arquivo .cabal que descreve o projeto e suas dependências.  
 
 `cabal update`: Use para atualizar o índice de pacotes do Hackage.
 
-2. Construção e Execução
-`cabal build`: Use para compilar o código-fonte do seu projeto. Isso inclui compilar todas as dependências e o próprio código do projeto. Execute este comando após fazer alterações no código ou nas dependências para garantir que tudo esteja construído corretamente.
+2. Construção e Execução  
+`cabal build`: Use para compilar o código-fonte do seu projeto. Isso inclui compilar todas as dependências e o próprio código do projeto. Execute este comando após fazer alterações no código ou nas dependências para garantir que tudo esteja construído corretamente.  
 
 `cabal run`: Use para compilar e executar o executável definido no seu arquivo .cabal.
