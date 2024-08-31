@@ -1,16 +1,18 @@
 module JogoDaVelha where
+import Control.Monad (replicateM_)
 
 import Data.Map (Map)
 import Data.Text (Text)
 import Data.Char (toLower)
-import Utils (limpaTerminal)
+-- import Utils (limpaTerminal)
 import qualified Data.Text as T
 import qualified Data.Map as Map
+import Data.List (intercalate)
+import Distribution.ModuleName (main)
 
 
 jogoDaVelha :: IO()
 jogoDaVelha = do
-    limpaTerminal
     putStrLn "============================================================================"
     putStrLn "      _                         _        __     __   _ _                    "
     putStrLn "     | | ___   __ _  ___     __| | __ _  \\ \\   / /__| | |__   __ _        "
@@ -24,50 +26,51 @@ jogoDaVelha = do
     putStrLn"                 (1) JOGAR                                                   "
     putStrLn"                 (2) RETORNAR AO MENU                                        "
     putStrLn"                                                                             "
-    colocaX
-    --opcao <- getLine
-    --if opcao == "1" then do
-        --montaTabuleiro
-    --else do
-      --  colocaBola
-        
+    opcao <- getLine
+    if opcao == "1" then do
+        main
+    else if opcao == "2" then do
+        putStrLn "tem que voltar ao menu"
+    else do
+        putStrLn "Opção inválida!"
+    
+bola :: [String]
+bola = [
+    "     OOOOOOO     ",
+    "   O         O   ",
+    "  O           O  ",
+    "  O           O  ",
+    "   O         O   ",
+    "     OOOOOOO     "
+    ]
 
-montaTabuleiro :: IO ()
-montaTabuleiro = do
-    putStrLn"                          |                  |                      "
-    putStrLn"                          |                  |                      "
-    putStrLn"                          |                  |                      "
-    putStrLn"                          |                  |                      "
-    putStrLn"                          |                  |                      "
-    putStrLn"        __________________|__________________|__________________    "
-    putStrLn"                          |                  |                      "
-    putStrLn"                          |                  |                      "
-    putStrLn"                          |                  |                      "
-    putStrLn"                          |                  |                      "
-    putStrLn"                          |                  |                      "
-    putStrLn"        __________________|__________________|__________________    "
-    putStrLn"                          |                  |                      "
-    putStrLn"                          |                  |                      "
-    putStrLn"                          |                  |                      "
-    putStrLn"                          |                  |                      "
-    putStrLn"                          |                  |                      "
-    putStrLn"                          |                  |                      "
+xis :: [String]
+xis = [
+    "     \\\\    //    ",
+    "      \\\\  //     ",
+    "       \\\\//      ",
+    "       //\\\\      ",
+    "      //  \\\\     ",
+    "     //    \\\\    "
+    ]
 
-colocaBola :: IO ()
-colocaBola = do
-    putStrLn "      OOOOOOO        "
-    putStrLn "    O         O      "
-    putStrLn "   O           O     "
-    putStrLn "   O           O     "
-    putStrLn "    O         O      "
-    putStrLn "      OOOOOOO        "
+vazio :: [String]
+vazio = [
+    "                 ",
+    "                 ",
+    "                 ",
+    "                 ",
+    "                 ",
+    "                 "
+    ]
 
-colocaX :: IO ()
-colocaX = do
-    putStrLn "    \\\\    //     "
-    putStrLn "     \\\\  //      "
-    putStrLn "      \\\\//       "
-    putStrLn "      //\\\\       "
-    putStrLn "     //  \\\\      "
-    putStrLn "    //    \\\\     "
 
+arrayFinal :: [[String]]
+arrayFinal = replicate 9 vazio
+
+chunksOf :: Int -> [a] -> [[a]]
+chunksOf _ [] = []
+chunksOf n xs = take n xs : chunksOf n (drop n xs)
+
+main:: IO()
+main = printLn"jogo"
