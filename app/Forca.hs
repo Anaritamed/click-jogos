@@ -2,7 +2,7 @@ module Forca where
 
 import Data.Map (Map)
 import Data.Text (Text)
-import Data.Char (toLower, isAlpha)
+import Data.Char (toLower, isAlpha, toUpper)
 import Utils (limpaTerminal, colore, bold)
 import qualified Data.Text as T
 import qualified Data.Map as Map
@@ -47,6 +47,7 @@ jogo = do
     tema <- getLine
 
     let loop stringSublinhada erros letrasDigitadas = do
+            limpaTerminal
             atualizaForca erros -- printa forca vazia já que erros inicia em zero
 
             putStrLn $ bold (colore 11 "\nTEMA: " ++ tema)
@@ -64,6 +65,8 @@ jogo = do
                     if letra `elem` letrasDigitadas
                         then do
                             putStrLn $ colore 11 "\nEssa letra já foi digitada!\n"
+                            threadDelay (800 * 1000) -- 0.7 segundos de delay
+                            limpaTerminal
                             loop stringSublinhada erros letrasDigitadas
                         else do
                             let letrasDigitadasAtualizadas = letra : (" " ++ letrasDigitadas)
@@ -71,8 +74,8 @@ jogo = do
                                 Nothing -> do
                                     if (erros + 1) >= 6
                                         then do
-                                            handleCenarioPerda
-                                            threadDelay (2 * 1000000) -- 2 segundos de delay
+                                            handleCenarioPerda palavra
+                                            threadDelay (3 * 1000000) -- 2 segundos de delay
                                             forca
                                         else
                                             loop stringSublinhada (erros + 1) letrasDigitadasAtualizadas
@@ -81,7 +84,7 @@ jogo = do
                                     if map toLower novoEstado == map toLower palavra
                                         then
                                             putStrLn $ bold (colore 2 "Parabéns!" ++ " Você acertou: " ++ novoEstado)
-                                        else
+                                        else do
                                             loop novoEstado erros letrasDigitadasAtualizadas -- se ainda não completou a palavra e não errou o limite.
     loop estadoAtual 0 []
 
@@ -201,11 +204,13 @@ atualizaForca 6 = do
 --             putStrLn "Por favor, digite uma palavra válida!"
 --             ehValidaPalavra -- chama recursivamente até a palavra ser válida
 
-handleCenarioPerda :: IO()
-handleCenarioPerda = do
+handleCenarioPerda :: String -> IO()
+handleCenarioPerda palavra = do
+    limpaTerminal
     putStrLn " ██████╗  █████╗ ███╗   ███╗███████╗     ██████╗ ██╗   ██╗███████╗██████╗ "
     putStrLn "██╔════╝ ██╔══██╗████╗ ████║██╔════╝    ██╔═══██╗██║   ██║██╔════╝██╔══██╗"
     putStrLn "██║  ███╗███████║██╔████╔██║█████╗      ██║   ██║██║   ██║█████╗  ██████╔╝"
     putStrLn "██║   ██║██╔══██║██║╚██╔╝██║██╔══╝      ██║   ██║╚██╗ ██╔╝██╔══╝  ██╔══██╗"
     putStrLn "╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗    ╚██████╔╝ ╚████╔╝ ███████╗██║  ██║"
     putStrLn " ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝     ╚═════╝   ╚═══╝  ╚══════╝╚═╝  ╚═╝"
+    putStrLn (colore 11 ("                           A PALAVRA ERA " ++ map toUpper palavra ++ "!"))
