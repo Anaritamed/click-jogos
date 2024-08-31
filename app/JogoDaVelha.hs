@@ -1,10 +1,8 @@
 module JogoDaVelha where
 import Control.Monad (replicateM_)
-
 import Data.Map (Map)
 import Data.Text (Text)
 import Data.Char (toLower)
--- import Utils (limpaTerminal)
 import qualified Data.Text as T
 import qualified Data.Map as Map
 import Data.List (intercalate)
@@ -33,7 +31,7 @@ jogoDaVelha = do
         putStrLn "tem que voltar ao menu"
     else do
         putStrLn "Opção inválida!"
-    
+
 bola :: [String]
 bola = [
     "     OOOOOOO     ",
@@ -68,9 +66,71 @@ vazio = [
 arrayFinal :: [[String]]
 arrayFinal = replicate 9 vazio
 
-chunksOf :: Int -> [a] -> [[a]]
-chunksOf _ [] = []
-chunksOf n xs = take n xs : chunksOf n (drop n xs)
+pegaPartesDoTabuleiro :: Int -> [a] -> [[a]]
+pegaPartesDoTabuleiro _ [] = []
+pegaPartesDoTabuleiro n xs = take n xs : pegaPartesDoTabuleiro n (drop n xs)
 
-main:: IO()
-main = printLn"jogo"
+printaPartes :: [[[String]]] -> IO ()
+printaPartes [] = return ()
+printaPartes (x:xs) = do
+    mapM_ (putStrLn . intercalate " | ") (formata x)
+    putStrLn (replicate (length (head (head x)) * 3 + 2) '-')
+    printaPartes xs
+
+formata :: [[a]] -> [[a]]
+formata ([]:_) = []
+formata x = map head x : formata (map tail x)
+
+atualizaTabuleiro :: [[String]] -> Char -> Int -> [[String]]
+atualizaTabuleiro tabuleiro jogador pos = take (pos - 1) tabuleiro ++ [bloco] ++ drop pos tabuleiro
+  where
+    bloco = case jogador of
+        'X' -> xis
+        'O' -> bola
+        _   -> vazio
+
+checaVitoria :: [[String]] -> Char -> Bool
+checaVitoria tabuleiro jogador = any (all (== bloco)) padroesVitoria
+  where
+    bloco = case jogador of
+        'X' -> xis
+        'O' -> bola
+        _   -> vazio
+    padroesVitoria = [
+        [head tabuleiro, tabuleiro !! 1, tabuleiro !! 2],
+        [tabuleiro !! 3, tabuleiro !! 4, tabuleiro !! 5],
+        [tabuleiro !! 6, tabuleiro !! 7, tabuleiro !! 8],
+        [head tabuleiro, tabuleiro !! 3, tabuleiro !! 6],
+        [tabuleiro !! 1, tabuleiro !! 4, tabuleiro !! 7],
+        [tabuleiro !! 2, tabuleiro !! 5, tabuleiro !! 8],
+        [head tabuleiro, tabuleiro !! 4, tabuleiro !! 8],
+        [tabuleiro !! 2, tabuleiro !! 4, tabuleiro !! 6]
+        ]
+
+checaEmpate :: [[String]] -> Bool
+checaEmpate = notElem vazio
+
+pegaInput :: [[String]] -> Char -> IO (Char, Int)
+pegaInput tabuleiro jogador = do
+    putStrLn $ "jogador " ++ [jogador] ++ ", enter your move (format: 1-9):"
+    input <- getLine
+    let pos = read input :: Int
+    return (jogador, pos)
+
+gameLoop :: [[String]] -> Char -> IO ()
+gameLoop tabuleiro jogador = do
+    let chunks = pegaPartesDoTabuleiro 3 tabuleiro
+    printaPartes chunks
+    (jogadorAtual, pos) <- pegaInput tabuleiro jogador
+    let updatedtabuleiro = atualizaTabuleiro tabuleiro jogadorAtual pos
+    if checaVitoria updatedtabuleiro jogadorAtual
+        then do
+            let updatedChunks = pegaPartesDoTabuleiro 3 updatedtabuleiro
+            printaPartes updatedChunks
+            putStrLn $ "jogador " ++ [jogadorAtual] ++ " wins!"
+        else if checaEmpate updatedtabuleiro
+            then do
+                let updatedChunks = pegaPartesDoTabuleiro 3 updatedtabuleiro
+                printaPartes updatedChunks
+                putStrLn "It's a draw!"
+            else gameLoop updatedtabuleiro (if jogador == 'X' then 'O' else 'X')
