@@ -14,8 +14,9 @@ executable click-jogos
     build-depends:    base >= 4.17.2.1,
                       process,
                       text,
-                      containers
+                      containers,
+                      xhtml
     hs-source-dirs:   app
     default-language: Haskell2010
-    exposed-modules:  Forca, MenuInicial, Utils
-    other-modules:    Forca, MenuInicial, Utils
+    exposed-modules:  MenuInicial, Forca, Perguntados, Utils
+    other-modules:    MenuInicial, Forca, Perguntados, Utils

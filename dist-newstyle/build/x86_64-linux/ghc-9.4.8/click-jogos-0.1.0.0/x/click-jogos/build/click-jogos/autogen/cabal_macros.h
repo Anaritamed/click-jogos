@@ -50,16 +50,26 @@
   (major1) == 2 && (major2) <  0 || \
   (major1) == 2 && (major2) == 0 && (minor) <= 2)
 #endif /* MIN_VERSION_text */
+/* package xhtml-3000.2.2.1 */
+#ifndef VERSION_xhtml
+#define VERSION_xhtml "3000.2.2.1"
+#endif /* VERSION_xhtml */
+#ifndef MIN_VERSION_xhtml
+#define MIN_VERSION_xhtml(major1,major2,minor) (\
+  (major1) <  3000 || \
+  (major1) == 3000 && (major2) <  2 || \
+  (major1) == 3000 && (major2) == 2 && (minor) <= 2)
+#endif /* MIN_VERSION_xhtml */
 
-/* tool gcc-11 */
+/* tool gcc-9 */
 #ifndef TOOL_VERSION_gcc
-#define TOOL_VERSION_gcc "11"
+#define TOOL_VERSION_gcc "9"
 #endif /* TOOL_VERSION_gcc */
 #ifndef MIN_TOOL_VERSION_gcc
 #define MIN_TOOL_VERSION_gcc(major1,major2,minor) (\
-  (major1) <  11 || \
-  (major1) == 11 && (major2) <  0 || \
-  (major1) == 11 && (major2) == 0 && (minor) <= 0)
+  (major1) <  9 || \
+  (major1) == 9 && (major2) <  0 || \
+  (major1) == 9 && (major2) == 0 && (minor) <= 0)
 #endif /* MIN_TOOL_VERSION_gcc */
 /* tool ghc-9.4.8 */
 #ifndef TOOL_VERSION_ghc
@@ -111,6 +121,16 @@
   (major1) == 0 && (major2) <  68 || \
   (major1) == 0 && (major2) == 68 && (minor) <= 8)
 #endif /* MIN_TOOL_VERSION_hsc2hs */
+/* tool pkg-config-0.29.1 */
+#ifndef TOOL_VERSION_pkg_config
+#define TOOL_VERSION_pkg_config "0.29.1"
+#endif /* TOOL_VERSION_pkg_config */
+#ifndef MIN_TOOL_VERSION_pkg_config
+#define MIN_TOOL_VERSION_pkg_config(major1,major2,minor) (\
+  (major1) <  0 || \
+  (major1) == 0 && (major2) <  29 || \
+  (major1) == 0 && (major2) == 29 && (minor) <= 1)
+#endif /* MIN_TOOL_VERSION_pkg_config */
 /* tool runghc-9.4.8 */
 #ifndef TOOL_VERSION_runghc
 #define TOOL_VERSION_runghc "9.4.8"
@@ -121,15 +141,15 @@
   (major1) == 9 && (major2) <  4 || \
   (major1) == 9 && (major2) == 4 && (minor) <= 8)
 #endif /* MIN_TOOL_VERSION_runghc */
-/* tool strip-2.38 */
+/* tool strip-2.34 */
 #ifndef TOOL_VERSION_strip
-#define TOOL_VERSION_strip "2.38"
+#define TOOL_VERSION_strip "2.34"
 #endif /* TOOL_VERSION_strip */
 #ifndef MIN_TOOL_VERSION_strip
 #define MIN_TOOL_VERSION_strip(major1,major2,minor) (\
   (major1) <  2 || \
-  (major1) == 2 && (major2) <  38 || \
-  (major1) == 2 && (major2) == 38 && (minor) <= 0)
+  (major1) == 2 && (major2) <  34 || \
+  (major1) == 2 && (major2) == 34 && (minor) <= 0)
 #endif /* MIN_TOOL_VERSION_strip */
 
 #ifndef CURRENT_COMPONENT_ID

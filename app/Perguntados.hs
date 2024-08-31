@@ -4,7 +4,6 @@ import System.Info (os)
 import System.IO (hClose, hGetContents, openFile)
 import Utils (limpaTerminal)
 import System.Process (callCommand)
-import Control.Monad.RWS (MonadState(put))
 import Data.Text.Internal.Read (IParser(P))
 import GHC.IO.IOMode
 
@@ -43,7 +42,7 @@ inicioJogo = do
     putStrLn "                                            REGRAS DO JOGO                                                 "
     putStrLn "1 - O jogo é uma competição entre dois jogadores.                                                          "
     putStrLn "2 - Cada jogador terá a oportunidade de responder perguntas de diferentes temas.                           "
-    putStrLn "3 - Cada pergunta respondida corretamente, o jogador ganha 1 ponto.                                        "
+    putStrLn "3 - A cada resposta correta, o jogador ganha 1 ponto.                                                      "
     putStrLn "4 - O jogador que iniciar continua respondendo perguntas até errar.                                        "
     putStrLn "5 - O segundo jogador terá a oportunidade de responder perguntas se o primeiro errar ou finalizar o quiz.  "      
     putStrLn "6 - Ganha o jogador que obter mais pontos no fim.                                                          "
@@ -58,8 +57,8 @@ inicioJogo = do
     putStrLn "-----------------------------------------------------------------------------------------------------------"
     putStrLn "                                             PLACAR INICIAL                                                "
     putStrLn "-----------------------------------------------------------------------------------------------------------"
-    putStrLn $ "1 - JOGADOR: " ++ jogador1 ++ " - Pontuação: 0                                                           " 
-    putStrLn $ "2 - JOGADOR: " ++ jogador2 ++ " - Pontuação: 0                                                           " 
+    putStrLn $ "JOGADOR 1: " ++ jogador1 ++ " - Pontuação: 0                                                             " 
+    putStrLn $ "JOGADOR 2: " ++ jogador2 ++ " - Pontuação: 0                                                             " 
     putStrLn "-----------------------------------------------------------------------------------------------------------"
     putStrLn "                                                                                                           "
     putStrLn "                                       QUAL JOGADOR VAI INICIAR?                                           "
@@ -81,19 +80,19 @@ temaJogo jogador = do
     putStrLn "-----------------------------------------------------------------------------------------------------------"
     putStrLn $ "                                         Vamos lá, sua vez " ++ jogador ++ "                             "
     putStrLn "-----------------------------------------------------------------------------------------------------------"
-    putStrLn "                                     ESCOLHA UM TEMA DE SUA PREFERENCIA                                    "
+    putStrLn "                                     ESCOLHA UM TEMA DE SUA PREFERÊNCIA                                    "
     putStrLn "-----------------------------------------------------------------------------------------------------------"
-    putStrLn "                                            ENTRETENIMENTO(1)                                              "
-    putStrLn "                                              PROGRAMAÇÃO(2)                                               "
-    putStrLn "                                               GEOGRAFIA(3)                                                "
-    putStrLn "                                                HISTORIA(4)                                                "
-    putStrLn "                                                CIÊNCIAS(5)                                                "
+    putStrLn "                                             (1) ENTRETENIMENTO                                            "
+    putStrLn "                                             (2) PROGRAMAÇÃO                                               "
+    putStrLn "                                             (3) GEOGRAFIA                                                 "
+    putStrLn "                                             (4) HISTÓRIA                                                  "
+    putStrLn "                                             (5) CIÊNCIAS                                                  "
     putStrLn "-----------------------------------------------------------------------------------------------------------"
     putStrLn "Digite uma opção: "
     opcao <- getLine
 
     if opcao == "1" then do
-        jogo jogador "entreterimento.txt"
+        jogo jogador "entretenimento.txt"
     else if opcao == "2" then do
         jogo jogador "programacao.txt"
     else if opcao == "3" then do
@@ -110,10 +109,13 @@ temaJogo jogador = do
     
 jogo :: String -> String -> IO()
 jogo jogador tema = do 
-    let caminhoArquivo = "perguntas/" ++ tema
+    let caminhoArquivo = "app/perguntas/" ++ tema
     arquivo <- openFile caminhoArquivo ReadMode
     conteudo <- hGetContents arquivo
+
+    -- Lógica
+
     putStrLn conteudo
     hClose arquivo
 
-    return()
+    return ()
