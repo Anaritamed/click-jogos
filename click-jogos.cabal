@@ -15,8 +15,9 @@ executable click-jogos
                       process,
                       text,
                       containers,
-                      xhtml
+                      xhtml,
+                      Cabal-syntax
     hs-source-dirs:   app
     default-language: Haskell2010
-    exposed-modules:  MenuInicial, Forca, Perguntados, Utils
-    other-modules:    MenuInicial, Forca, Perguntados, Utils
+    exposed-modules:  MenuInicial, Forca, Perguntados, JogoDaVelha, Utils
+    other-modules:    MenuInicial, Forca, Perguntados, JogoDaVelha, Utils

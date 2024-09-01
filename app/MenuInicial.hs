@@ -1,7 +1,11 @@
 module MenuInicial where
-import System.Exit (exitSuccess)
-import Text.XHtml.Frameset (p)
+
+import Forca (forca)
 import Perguntados (perguntados)
+import JogoDaVelha (jogoDaVelha)
+import Utils (limpaTerminal)
+import Control.Concurrent (threadDelay)
+import System.Exit (exitSuccess)
 
 renderizaTelaInicial :: IO()
 renderizaTelaInicial = do
@@ -25,6 +29,8 @@ renderizaTelaInicial = do
         exitSuccess
     else do
         putStrLn "Opção inválida!"
+        threadDelay (700 * 1000)
+        limpaTerminal
         renderizaTelaInicial
     return ()
 
@@ -42,12 +48,9 @@ menu = do
     putStrLn "                                                   "
     putStrLn "Digite uma opção: "
     opcao <- getLine
-    if opcao == "1" then do
-        putStrLn "Iniciando jogo da forca..."
-    else if opcao == "2" then do
-        perguntados
-    else if opcao == "3" then do
-        putStrLn "Iniciando jogo da velha..."
-    else do
-        putStrLn "Opção inválida!"
-        menu
+    handleInteracaoEscolhaJogos opcao
+
+handleInteracaoEscolhaJogos :: String -> IO()
+handleInteracaoEscolhaJogos "1" = forca
+handleInteracaoEscolhaJogos "2" = perguntados
+handleInteracaoEscolhaJogos "3" = jogoDaVelha

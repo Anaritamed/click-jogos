@@ -10,6 +10,16 @@
   (major1) == 0 && (major2) <  1 || \
   (major1) == 0 && (major2) == 1 && (minor) <= 0)
 #endif /* MIN_VERSION_click_jogos */
+/* package Cabal-syntax-3.8.1.0 */
+#ifndef VERSION_Cabal_syntax
+#define VERSION_Cabal_syntax "3.8.1.0"
+#endif /* VERSION_Cabal_syntax */
+#ifndef MIN_VERSION_Cabal_syntax
+#define MIN_VERSION_Cabal_syntax(major1,major2,minor) (\
+  (major1) <  3 || \
+  (major1) == 3 && (major2) <  8 || \
+  (major1) == 3 && (major2) == 8 && (minor) <= 1)
+#endif /* MIN_VERSION_Cabal_syntax */
 /* package base-4.17.2.1 */
 #ifndef VERSION_base
 #define VERSION_base "4.17.2.1"

@@ -15,7 +15,10 @@ Nesse jogo, o jogador 1 escolhe uma palavra para o jogador 2 adivinhar, tendo co
 # Tecnologias Utilizadas 🤖
 
 ### Haskell
-Linguagem de programação puramente funcional, ou seja, não possui variáveis e outras características imperativas. Nela, tudo é feito através de definições e chamadas de função. Além disso, Haskell também é uma linguagem estaticamente e fortemente tipada, e possui avaliação preguiçosa (lazy evaluation), na qual nada é feito até que seja necessário.
+Linguagem de programação puramente funcional, ou seja, não possui variáveis e outras características imperativas. Nela, tudo é feito através de definições e chamadas de função. Haskell também é uma linguagem estaticamente e fortemente tipada, e possui avaliação preguiçosa (lazy evaluation), na qual nada é feito até que seja necessário. Comando para instalar o Haskell a partir do GHCup:
+```
+curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
+```
 
 ### Cabal
 Sistema para construir e empacotar bibliotecas e programas Haskell. Ele define uma interface em comum para autores e distribuidores de pacotes construírem facilmente seus aplicativos de forma portátil. Para inicializá-lo, foi executado o seguinte comando, que cria um novo diretório com o arquivo .cabal que descreve o projeto e suas dependências.
@@ -38,4 +41,4 @@ Compila o código e depêndencias do projeto. Execute este comando quando realiz
 ```
 cabal run
 ```
-Compila e roda o sistema Click Jogos, executando o arquivo main.hs.
+Compila e roda o sistema Click Jogos, executando o arquivo Main.hs.
