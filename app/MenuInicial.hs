@@ -3,6 +3,8 @@ module MenuInicial where
 import Utils (limpaTerminal)
 import System.Exit (exitSuccess)
 import Forca (forca)
+import JogoDaVelha (jogoDaVelha)
+import Control.Concurrent (threadDelay)
 
 renderizaTelaInicial :: IO()
 renderizaTelaInicial = do
@@ -30,6 +32,7 @@ handleInteracaoTelaInicial opcao
         exitSuccess
     | otherwise = do
         putStrLn "Opção inválida!"
+        threadDelay (700 * 1000)
         limpaTerminal
         renderizaTelaInicial
 
@@ -40,8 +43,8 @@ menu = do
     putStrLn "                ESCOLHA UM JOGO                    "
     putStrLn "==================================================="
     putStrLn "                    FORCA (1)                      "
-    putStrLn "                 PERGUNTADOS (3)                   " 
-    putStrLn "                JOGO DA VELHA (2)                  "
+    putStrLn "                 PERGUNTADOS (2)                   " 
+    putStrLn "                JOGO DA VELHA (3)                  "
     putStrLn "==================================================="
     putStrLn "                                                   "
     putStrLn "Digite uma opção: "
@@ -51,4 +54,4 @@ menu = do
 handleInteracaoEscolhaJogos :: String -> IO()
 handleInteracaoEscolhaJogos "1" = forca
 handleInteracaoEscolhaJogos "2" = putStrLn "perguntados" --temporário
-handleInteracaoEscolhaJogos "3" = putStrLn "Jogo da Velha" --temporário
+handleInteracaoEscolhaJogos "3" = jogoDaVelha
