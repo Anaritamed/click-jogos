@@ -38,14 +38,14 @@ temaJogo jogadores = do
     processaTemaJogo opcao jogadores
 
 processaTemaJogo :: String -> [String] -> IO ()
-processaTemaJogo opcao jogadores = 
+processaTemaJogo opcao jogadores =
     case lookup opcao temasDisponiveis of
         Just tema -> jogo jogadores tema
         Nothing   -> do
             putStrLn "Opção inválida!"
             temaJogo jogadores
-  where
-    temasDisponiveis = [("1", "entretenimento.txt"), ("2", "programacao.txt"),
+    where
+        temasDisponiveis = [("1", "entretenimento.txt"), ("2", "programacao.txt"),
                         ("3", "geografia.txt"), ("4", "historia.txt"), ("5", "ciencias.txt")]
 
 jogo :: [String] -> String -> IO()
