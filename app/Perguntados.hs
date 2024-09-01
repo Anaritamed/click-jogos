@@ -74,7 +74,8 @@ processaOpcaoJogarNovamente _   = do
 mostraVencedor :: [String] -> [Int] -> String
 mostraVencedor jogadores [pontuacao1, pontuacao2]
     | pontuacao1 > pontuacao2 = bold $ coloreVerde ("\nParabéns! O vencedor é " ++ head jogadores ++ "!")
-    | otherwise               = bold $ coloreVerde ("\nParabéns! O vencedor é " ++ jogadores !! 1 ++ "!")
+    | pontuacao2 > pontuacao1 = bold $ coloreVerde ("\nParabéns! O vencedor é " ++ jogadores !! 1 ++ "!")
+    | otherwise               = bold $ coloreAmarelo "\nO jogo empatou!"
 
 extraiPerguntas :: [String] -> [(String, [String], Int, String)]
 extraiPerguntas [] = []
