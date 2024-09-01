@@ -12,19 +12,33 @@ Quiz de perguntas e respostas sobre determinado tema escolhido pelos jogadores n
 ### Jogo da forca
 Nesse jogo, o jogador 1 escolhe uma palavra para o jogador 2 adivinhar, tendo como dica apenas o tema e a quantidade de letras da palavra. A cada rodada, o jogador 2 dá o palpite de uma letra da palavra. Se acertar, a letra é preenchida na palavra, já se o palpite estiver errado, é desenhada uma parte do corpo do boneco na forca. Caso o boneco seja desenhado por completo, o jogador 2 perde.
 
-# Para executar o sistema ⏩ 
-`cabal run`
+# Tecnologias Utilizadas 🤖
 
-# Tecnologias
-Tecnologias usadas no projeto.  
+### Haskell
+Linguagem de programação puramente funcional, ou seja, não possui variáveis e outras características imperativas. Nela, tudo é feito através de definições e chamadas de função. Haskell também é uma linguagem estaticamente e fortemente tipada, e possui avaliação preguiçosa (lazy evaluation), na qual nada é feito até que seja necessário. Comando para instalar o Haskell a partir do GHCup:
+```
+curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
+```
 
-## Cabal
-1. Inicialização e Configuração  
-`cabal init`: Foi usado para criar um novo diretório com uma estrutura básica e um arquivo .cabal que descreve o projeto e suas dependências.  
+### Cabal
+Sistema para construir e empacotar bibliotecas e programas Haskell. Ele define uma interface em comum para autores e distribuidores de pacotes construírem facilmente seus aplicativos de forma portátil. Para inicializá-lo, foi executado o seguinte comando, que cria um novo diretório com o arquivo .cabal que descreve o projeto e suas dependências.
+```
+cabal init
+```
 
-`cabal update`: Use para atualizar o índice de pacotes do Hackage.
+# Configurações de Execução 👩🏿‍💻
 
-2. Construção e Execução  
-`cabal build`: Use para compilar o código-fonte do seu projeto. Isso inclui compilar todas as dependências e o próprio código do projeto. Execute este comando após fazer alterações no código ou nas dependências para garantir que tudo esteja construído corretamente.  
+```
+cabal update
+```
+Atualiza o índice de pacotes do Hackage. Caso necessário, baixe a biblioteca GMP com `sudo apt-get install libgmp-dev`.
 
-`cabal run`: Use para compilar e executar o executável definido no seu arquivo .cabal.
+```
+cabal build
+```
+Compila o código e depêndencias do projeto. Execute este comando quando realizar alguma alteração nas dependências.
+
+```
+cabal run
+```
+Compila e roda o sistema Click Jogos, executando o arquivo Main.hs.
