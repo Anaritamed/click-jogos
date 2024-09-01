@@ -2,13 +2,11 @@ module Forca where
 
 import Data.Map (Map)
 import Data.Text (Text)
-import Data.Char (toLower, isAlpha, toUpper)
-import Utils (limpaTerminal, coloreAmarelo, coloreVerde, bold)
-import qualified Data.Text as T
+import Data.Char (toLower, toUpper, isSpace, isDigit)
 import qualified Data.Map as Map
+import System.Exit (exitSuccess)
 import Control.Concurrent (threadDelay)
-import GHC.Exts (the)
-import ManagerMenus (menuInicialForca)
+import Utils (limpaTerminal, coloreAmarelo, coloreVerde, bold)
 
 
 forca :: IO()
@@ -24,28 +22,58 @@ forca = do
     putStrLn "               SEJA BEM VINDO!                 "
     putStrLn "                                               "
     putStrLn "                 (1) JOGAR                     "
-    putStrLn "             (2) RETORNAR AO MENU              "
+    putStrLn "              (2) SAIR DO JOGO                 "
     putStrLn "                                               "
     opcao <- getLine
-    if opcao == "1" then do
-        jogo
-    else if opcao == "2" then do
-        putStrLn "Voltando ao menu..."
-    else do
+    handleInteracaoInicial opcao
+
+handleInteracaoInicial :: String -> IO()
+handleInteracaoInicial opcao
+    | opcao == "1" = handleInteracaoInicialForca
+    | opcao == "2" = do
+        putStrLn "Saindo..."
+        exitSuccess
+    | otherwise = do
         putStrLn $ bold (coloreAmarelo "Opção inválida!")
         forca
 
-jogo :: IO ()
-jogo = do
-    handleInteracaoInicialForca
+palavraValida :: String -> Bool
+palavraValida palavra = not (null palavra) && not (all isSpace palavra) && not (any isDigit palavra)
+
+
+loopGetLine :: String -> IO String
+loopGetLine jogador1 = do
+    putStrLn ("\nCerto " ++ bold jogador1 ++ ", qual a palavra da rodada? ")
     palavra <- getLine
-    --ehValidaPalavra palavra
-
-    let mapaLetras = criaMapaLetras (map toLower palavra) -- Mapa de letras em minúsculas
-    let estadoAtual = criaStringSublinhados palavra -- cria string sublinhada com o tamanho da palavra. Ex: maçã ele criaria : _ _ _ _
-
+    if palavraValida palavra
+        then return palavra
+        else do
+            putStrLn $ bold (coloreAmarelo "Palavra inválida!")
+            threadDelay (900 * 1000) -- 0.9 segundos de delay
+            limpaTerminal
+            loopGetLine jogador1
+            
+handleInteracaoInicialForca :: IO()
+handleInteracaoInicialForca = do
+    let regras ="\n📜 Regras do jogo: \n" ++
+                "\n- O jogador 1 será o jogador que dirá a palavra para ser adivinhada, assim como qual tema ela se relaciona.\n" ++
+                "- O jogador 2 será o jogador que tentará adivinhar a palavra dada pelo jogador 1.\n" ++
+                "\n- Caso a palavra contenha uma letra acentuada ou ç, digite exatamente a letra com sua acentuação ou o ç.\n" ++
+                "- Por exemplo, caso a palavra fosse 'Maçã' a ≠ ã, assim como c ≠ ç\n"
+    putStrLn $ bold (coloreAmarelo regras)
+    putStrLn "Digite o seu nome Jogador 1: "
+    jogador1 <- getLine
+    putStrLn "Digite o seu nome Jogador 2: "
+    jogador2 <- getLine
+    palavra <- loopGetLine jogador1
     putStrLn "Qual o tema que está relacionado à palavra a ser adivinhada? "
     tema <- getLine
+    jogo palavra tema
+
+jogo :: String -> String -> IO ()
+jogo palavra tema = do
+    let mapaLetras = criaMapaLetras (map toLower palavra) -- Mapa de letras em minúsculas
+    let estadoAtual = criaStringSublinhados palavra -- cria string sublinhada com o tamanho da palavra. Ex: maçã ele criaria : _ _ _ _
 
     let loop stringSublinhada erros letrasDigitadas = do
             limpaTerminal
@@ -83,26 +111,13 @@ jogo = do
                                 Just indices -> do
                                     let novoEstadoStringSublinhados = atualizaStringSublinhados letra stringSublinhada indices
                                     if map toLower novoEstadoStringSublinhados == map toLower palavra
-                                        then
+                                        then do
                                             handleCenarioVitoria palavra
+                                            threadDelay (3 * 1000000) -- 2 segundos de delay
+                                            forca
                                         else do
                                             loop novoEstadoStringSublinhados erros letrasDigitadasAtualizadas -- se ainda não completou a palavra e não errou o limite.
     loop estadoAtual 0 []
-
--- interação inicial com os jogadores
-handleInteracaoInicialForca :: IO()
-handleInteracaoInicialForca = do
-    let regras ="\n📜 Regras do jogo: \n" ++
-                "\n- O jogador 1 será o jogador que dirá a palavra para ser adivinhada, assim como qual tema ela se relaciona.\n" ++
-                "- O jogador 2 será o jogador que tentará adivinhar a palavra dada pelo jogador 1.\n" ++
-                "\n- Caso a palavra contenha uma letra acentuada ou ç, digite exatamente a letra com sua acentuação ou o ç.\n" ++
-                "- Por exemplo, caso a palavra fosse 'Maçã' a ≠ ã, assim como c ≠ ç\n"
-    putStrLn $ bold (coloreAmarelo regras)
-    putStrLn "Digite o seu nome Jogador 1: "
-    jogador1 <- getLine
-    putStrLn "Digite o seu nome Jogador 2: "
-    jogador2 <- getLine
-    putStrLn ("\nCerto " ++ bold jogador1 ++ ", qual a palavra da rodada? ")
 
 -- Função que cria a string com sublinhados
 criaStringSublinhados :: String -> String
@@ -191,20 +206,6 @@ atualizaForca 6 = do
     putStrLn "  |  |       / \\  \n"
     putStrLn "  ====             \n"
 
--- -- Função para verificar se a string contém apenas letras
--- apenasLetras :: String -> Bool
--- apenasLetras str = not (null str) && all isAlpha str -- all isAlpha verifica se um caractere é uma letra
-
--- ehValidaPalavra :: IO String
--- ehValidaPalavra = do
---     putStrLn ("Por favor, digite uma " ++ bold "palavra" ++ " válida:")
---     p <- getLine
---     if apenasLetras p
---         then return ""
---         else do
---             putStrLn "Por favor, digite uma palavra válida!"
---             ehValidaPalavra -- chama recursivamente até a palavra ser válida
-
 handleCenarioPerda :: String -> IO()
 handleCenarioPerda palavra = do
     limpaTerminal
@@ -224,4 +225,4 @@ handleCenarioVitoria palavra = do
     putStrLn" ██║     ██╔══╝  ██╔══██╗   ██║   ██╔══██║    ██╔══██╗██╔══╝  ╚════██║██╔═══╝ ██║   ██║╚════██║   ██║   ██╔══██║╚═╝"
     putStrLn" ╚██████╗███████╗██║  ██║   ██║   ██║  ██║    ██║  ██║███████╗███████║██║     ╚██████╔╝███████║   ██║   ██║  ██║██╗"
     putStrLn " ╚═════╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝    ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝      ╚═════╝ ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝"
-    putStrLn "                           PARABÉNS, VOCÊ VENCEU! A PALAVRA ERA: " ++ map toUpper palavra ++ "!"
+    putStrLn (coloreVerde("                               PARABÉNS, VOCÊ VENCEU! A PALAVRA ERA: " ++ map toUpper palavra ++ "!"))
