@@ -2,9 +2,12 @@ module Perguntados where
 
 import Utils (limpaTerminal, coloreVerde, coloreVermelho, coloreAmarelo, bold)
 import Data.List (intercalate)
-import System.IO (hClose, hGetContents, openFile)
+import System.IO (hClose, hGetContents, openFile, hSetEncoding, utf8)
 import GHC.IO.IOMode
 import Data.Char (toLower)
+import Distribution.Compat.Binary (Binary(put))
+import qualified Data.Text.IO as T
+import qualified Data.Text as T
 
 perguntados :: IO()
 perguntados = do
@@ -59,13 +62,36 @@ jogo :: [String] -> String -> IO()
 jogo jogadores tema = do
     let caminhoArquivo = "app/perguntas/" ++ tema
     arquivo <- openFile caminhoArquivo ReadMode
-    conteudo <- hGetContents arquivo
-    let perguntas = extraiPerguntas $ lines conteudo
+    hSetEncoding arquivo utf8  -- Configura a codificação para UTF-8
+    conteudo <- T.hGetContents arquivo
+    let perguntas = extraiPerguntas $ lines (T.unpack conteudo)
     resultado <- quiz perguntas jogadores [0, 0] 1
     putStrLn $ placar jogadores resultado
     hClose arquivo
-    -- mostrar o vencedor
-    -- jogar novamente?
+    putStrLn $ mostraVencedor jogadores resultado
+    putStrLn menuJogarNovamente
+    putStrLn "Digite uma opção: "
+    opcao <- getLine
+    processaOpcaoJogarNovamente opcao
+
+processaOpcaoJogarNovamente :: String -> IO ()
+processaOpcaoJogarNovamente opcao
+    | opcao == "1" = inicioJogo
+    | opcao == "2" = do
+        putStrLn "Saindo..."
+        return ()
+    | otherwise    = do
+        putStrLn "Opção inválida!"
+        putStrLn menuJogarNovamente
+        putStrLn "Digite uma opção: "
+        opcao <- getLine
+        processaOpcaoJogarNovamente opcao
+
+mostraVencedor :: [String] -> [Int] -> String
+mostraVencedor jogadores pontuacoes = do
+    if head pontuacoes > pontuacoes !! 1
+        then bold $ coloreVerde "\n Parabéns! O vencedor é " ++ head jogadores ++ "!"
+        else bold $ coloreVerde "\n Parabéns! O vencedor é " ++ jogadores !! 1 ++ "!"
 
 extraiPerguntas :: [String] -> [(String, [String], Int, String)]
 extraiPerguntas [] = []
@@ -92,7 +118,8 @@ quiz ((pergunta, alternativas, pontos, respostaCorreta):linhas) jogadores pontua
     putStrLn $ "\nValendo " ++ show pontos ++ " pontos!"
     putStrLn "-----------------------------------------------------------------------------------------------------------"
     putStrLn $ jogadorDaVez jogadores rodada ++ ", sua resposta: "
-    resposta <- getLine
+    respostaInicial <- getLine
+    resposta <- validaRespostaJogador respostaInicial
     if map toLower resposta == respostaCorreta
         then do
             putStrLn $ bold $ coloreVerde $ "\nResposta correta! Você ganhou " ++ show pontos ++ " pontos!"
@@ -100,6 +127,15 @@ quiz ((pergunta, alternativas, pontos, respostaCorreta):linhas) jogadores pontua
         else do
             putStrLn $ bold $ coloreVermelho "\nResposta incorreta!"
             quiz linhas jogadores pontuacoes (rodada + 1)
+
+validaRespostaJogador :: String -> IO String
+validaRespostaJogador resposta = do
+    if null resposta || notElem resposta ["a", "b", "c", "d"]
+        then do
+            putStrLn $ bold $ coloreVermelho "Entrada incorreta! Escolha uma alternativa válida."
+            novaResposta <- getLine
+            validaRespostaJogador novaResposta
+        else return resposta
 
 jogadorDaVez :: [String] -> Int -> String
 jogadorDaVez (jogador1:jogador2) rodada =
@@ -169,5 +205,14 @@ escolhaTema = intercalate "\n"
     , "                                           (3) GEOGRAFIA                                                   "
     , "                                           (4) HISTÓRIA                                                    "
     , "                                           (5) CIÊNCIAS                                                    "
+    , "-----------------------------------------------------------------------------------------------------------"
+    ]
+
+menuJogarNovamente :: String
+menuJogarNovamente = intercalate "\n"
+    [ "-----------------------------------------------------------------------------------------------------------"
+    , "                                           JOGAR NOVAMENTE?                                                 "
+    , "-----------------------------------------------------------------------------------------------------------"
+    , "                                           SIM (1) | NÃO (2)                                               "
     , "-----------------------------------------------------------------------------------------------------------"
     ]
