@@ -1,10 +1,7 @@
 module Perguntados where
 
-import System.Info (os)
-import Utils (limpaTerminal)
+import Utils (limpaTerminal, coloreVerde, coloreVermelho, coloreAmarelo, bold)
 import Data.List (intercalate)
-import System.Process (callCommand)
-import Data.Text.Internal.Read (IParser(P))
 import System.IO (hClose, hGetContents, openFile)
 import GHC.IO.IOMode
 import Data.Char (toLower)
@@ -67,7 +64,6 @@ jogo jogadores tema = do
     resultado <- quiz perguntas jogadores [0, 0] 1
     putStrLn $ placar jogadores resultado
     hClose arquivo
-    -- colorir texto da resposta correta/incorreta
     -- mostrar o vencedor
     -- jogar novamente?
 
@@ -91,7 +87,7 @@ quiz :: [(String, [String], Int, String)] -> [String] -> [Int] -> Int -> IO [Int
 quiz [] _ pontuacoes rodada = return pontuacoes
 quiz ((pergunta, alternativas, pontos, respostaCorreta):linhas) jogadores pontuacoes rodada = do
     putStrLn "-----------------------------------------------------------------------------------------------------------"
-    putStrLn pergunta
+    putStrLn $ bold $ coloreAmarelo pergunta ++ "\n"
     mapM_ putStrLn alternativas
     putStrLn $ "\nValendo " ++ show pontos ++ " pontos!"
     putStrLn "-----------------------------------------------------------------------------------------------------------"
@@ -99,23 +95,27 @@ quiz ((pergunta, alternativas, pontos, respostaCorreta):linhas) jogadores pontua
     resposta <- getLine
     if map toLower resposta == respostaCorreta
         then do
-            putStrLn $ "\nResposta correta! Você ganhou " ++ show pontos ++ " pontos!"
-            quiz linhas jogadores (aumentaPontuacao pontuacoes pontos rodada) (rodada + 1)
+            putStrLn $ bold $ coloreVerde $ "\nResposta correta! Você ganhou " ++ show pontos ++ " pontos!"
+            quiz linhas jogadores (atualizaPontuacoes pontuacoes pontos rodada) (rodada + 1)
         else do
-            putStrLn "\nResposta incorreta!"
+            putStrLn $ bold $ coloreVermelho "\nResposta incorreta!"
             quiz linhas jogadores pontuacoes (rodada + 1)
 
 jogadorDaVez :: [String] -> Int -> String
 jogadorDaVez (jogador1:jogador2) rodada =
-    if rodada `mod` 2 == 1
+    if vezJogador1 rodada
         then jogador1
         else head jogador2
 
-aumentaPontuacao :: [Int] -> Int -> Int -> [Int]
-aumentaPontuacao (pontuacao1:pontuacao2) pontos rodada =
-    if rodada `mod` 2 == 1
+atualizaPontuacoes :: [Int] -> Int -> Int -> [Int]
+atualizaPontuacoes (pontuacao1:pontuacao2) pontos rodada =
+    if vezJogador1 rodada
         then pontuacao1 + pontos:pontuacao2
         else pontuacao1:[head pontuacao2 + pontos]
+
+vezJogador1 :: Int -> Bool
+vezJogador1 rodada =
+    rodada `mod` 2 == 1
 
 -- Variáveis de texto
 menuPerguntados :: String
