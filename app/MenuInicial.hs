@@ -4,6 +4,7 @@ import Utils (limpaTerminal)
 import System.Exit (exitSuccess)
 import Forca (forca)
 import JogoDaVelha (jogoDaVelha)
+import Control.Concurrent (threadDelay)
 
 renderizaTelaInicial :: IO()
 renderizaTelaInicial = do
@@ -31,6 +32,7 @@ handleInteracaoTelaInicial opcao
         exitSuccess
     | otherwise = do
         putStrLn "Opção inválida!"
+        threadDelay (700 * 1000)
         limpaTerminal
         renderizaTelaInicial
 

@@ -3,9 +3,9 @@ import Control.Monad (replicateM_)
 
 import Data.Map (Map)
 import Data.Text (Text)
-import Data.Char (toLower, isDigit)
+import Data.Char (isDigit)
 import Utils (limpaTerminal)
-import qualified Data.Text as T
+import System.Exit (exitSuccess)
 import qualified Data.Map as Map
 import Data.List (intercalate)
 import Control.Concurrent (threadDelay)
@@ -21,18 +21,22 @@ jogoDaVelha = do
     putStrLn "  \\___/ \\___/ \\__, |\\___/   \\__,_|\\__,_|    \\_/ \\___|_|_| |_|\\__,_|"
     putStrLn "              |___/                                                         "
     putStrLn "============================================================================"
-    putStrLn "                 SEJA BEM VINDO!                                            "
-    putStrLn "                                                                             "
-    putStrLn "                 (1) JOGAR                                                   "
-    putStrLn "                 (2) RETORNAR AO MENU                                        "
-    putStrLn "                                                                             "
+    putStrLn "                               SEJA BEM VINDO!                              "
+    putStrLn "                                                                            "
+    putStrLn "                                 (1) JOGAR                                  "
+    putStrLn "                              (2) SAIR DO JOGO                              "
+    putStrLn "                                                                            "
     opcao <- getLine
     if opcao == "1" then do
         iniciarJogo
     else if opcao == "2" then do
-        putStrLn "tem que voltar ao menu"
+        putStrLn "Saindo do jogo..."
+        threadDelay (500 * 1000)
+        exitSuccess
     else do
         putStrLn "Opção inválida!"
+        threadDelay (500 * 1000)
+        jogoDaVelha
 
 bola :: [String]
 bola = [
@@ -119,11 +123,11 @@ reiniciaJogo :: IO()
 reiniciaJogo = do
     putStrLn"Reiniciando o jogo em"
     putStrLn"3"
-    threadDelay (1 * 1000000)
+    threadDelay (2 * 1000000)
     putStrLn "2"
     threadDelay (1 * 1000000)
     putStrLn "1"
-    threadDelay (1 * 1000000)
+    threadDelay (1 * 1000)
     jogoDaVelha
 
 checaEmpate :: [[String]] -> Bool
@@ -134,15 +138,15 @@ pegaInput tabuleiro jogador = do
     putStrLn $ "Vez do jogador " ++ [jogador] ++ ". Insira seu movimento (posições 1-9):"
     input <- getLine
     if length input /= 1 || not (isDigit (head input)) then do
-        putStrLn "Entrada inválida. Por favor, insira um número entre 1 e 9."
+        putStrLn "\nEntrada inválida. Por favor, insira um número entre 1 e 9.\n"
         pegaInput tabuleiro jogador
     else
         let pos = read input :: Int
         in if pos < 1 || pos > 9 then do
-            putStrLn "Entrada inválida. Por favor, insira um número entre 1 e 9."
+            putStrLn "\nEntrada inválida. Por favor, insira um número entre 1 e 9.\n"
             pegaInput tabuleiro jogador
         else if posicaoOcupada tabuleiro pos then do
-            putStrLn "Posição já ocupada. Por favor, escolha outra posição."
+            putStrLn "\nPosição já ocupada. Por favor, escolha outra posição."
             pegaInput tabuleiro jogador
         else
             return (jogador, pos)
@@ -163,7 +167,7 @@ gameLoop tabuleiro jogador = do
         then do
             let partesAtualizadas = pegaPartesDoTabuleiro 3 tabuleiroAtualizado
             printaPartes partesAtualizadas
-            putStrLn $ "Jogador " ++ [jogadorAtual] ++ " vence!"
+            putStrLn $ "Jogador " ++ [jogadorAtual] ++ " vence!\n"
             reiniciaJogo
         else if checaEmpate tabuleiroAtualizado
             then do
