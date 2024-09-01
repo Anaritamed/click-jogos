@@ -7,25 +7,14 @@ import qualified Data.Map as Map
 import System.Exit (exitSuccess)
 import Control.Concurrent (threadDelay)
 import Utils (limpaTerminal, coloreAmarelo, coloreVerde, bold)
+import System.IO (hSetEcho, stdin, stdout, hFlush, getChar)
 
 
 forca :: IO()
 forca = do
     limpaTerminal
-    putStrLn "                                               "
-    putStrLn "   ███████╗ ██████╗ ██████╗  ██████╗ █████╗    "
-    putStrLn "   ██╔════╝██╔═══██╗██╔══██╗██╔════╝██╔══██╗   "
-    putStrLn "   █████╗  ██║   ██║██████╔╝██║     ███████║   "
-    putStrLn "   ██╔══╝  ██║   ██║██╔══██╗██║     ██╔══██║   "
-    putStrLn "   ██║     ╚██████╔╝██║  ██║╚██████╗██║  ██║   "
-    putStrLn "   ╚═╝      ╚═════╝ ╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝   "
-    putStrLn "               SEJA BEM VINDO!                 "
-    putStrLn "                                               "
-    putStrLn "                 (1) JOGAR                     "
-    putStrLn "              (2) SAIR DO JOGO                 "
-    putStrLn "                                               "
-    opcao <- getLine
-    handleInteracaoInicial opcao
+    putStrLn (unlines handleHomeForca)
+    handleInteracaoInicial =<< getLine
 
 handleInteracaoInicial :: String -> IO()
 handleInteracaoInicial opcao
@@ -36,22 +25,6 @@ handleInteracaoInicial opcao
     | otherwise = do
         putStrLn $ bold (coloreAmarelo "Opção inválida!")
         forca
-
-palavraValida :: String -> Bool
-palavraValida palavra = not (null palavra) && not (all isSpace palavra) && not (any isDigit palavra)
-
-
-loopGetLine :: String -> IO String
-loopGetLine jogador1 = do
-    putStrLn ("\nCerto " ++ bold jogador1 ++ ", qual a palavra da rodada? ")
-    palavra <- getLine
-    if palavraValida palavra
-        then return palavra
-        else do
-            putStrLn $ bold (coloreAmarelo "Palavra inválida!")
-            threadDelay (900 * 1000) -- 0.9 segundos de delay
-            limpaTerminal
-            loopGetLine jogador1
             
 handleInteracaoInicialForca :: IO()
 handleInteracaoInicialForca = do
@@ -59,7 +32,7 @@ handleInteracaoInicialForca = do
                 "\n- O jogador 1 será o jogador que dirá a palavra para ser adivinhada, assim como qual tema ela se relaciona.\n" ++
                 "- O jogador 2 será o jogador que tentará adivinhar a palavra dada pelo jogador 1.\n" ++
                 "\n- Caso a palavra contenha uma letra acentuada ou ç, digite exatamente a letra com sua acentuação ou o ç.\n" ++
-                "- Por exemplo, caso a palavra fosse 'Maçã' a ≠ ã, assim como c ≠ ç\n"
+                "- Por exemplo, caso a palavra fosse 'Maçã' a != ã, assim como c != ç\n"
     putStrLn $ bold (coloreAmarelo regras)
     putStrLn "Digite o seu nome Jogador 1: "
     jogador1 <- getLine
@@ -103,7 +76,7 @@ jogo palavra tema = do
                                 Nothing -> do
                                     if (erros + 1) >= 6
                                         then do
-                                            handleCenarioPerda palavra
+                                            putStrLn (unlines $ handleCenarioPerda palavra)
                                             threadDelay (3 * 1000000) -- 2 segundos de delay
                                             forca
                                         else
@@ -112,7 +85,7 @@ jogo palavra tema = do
                                     let novoEstadoStringSublinhados = atualizaStringSublinhados letra stringSublinhada indices
                                     if map toLower novoEstadoStringSublinhados == map toLower palavra
                                         then do
-                                            handleCenarioVitoria palavra
+                                            putStrLn (unlines $ handleCenarioVitoria palavra)
                                             threadDelay (3 * 1000000) -- 2 segundos de delay
                                             forca
                                         else do
@@ -132,6 +105,39 @@ criaMapaLetras palavra =
 atualizaStringSublinhados :: Char -> String -> [Int] -> String
 atualizaStringSublinhados letra sublinhados indices =
     [if i `elem` indices then letra else sublinhados !! i | i <- [0..length sublinhados - 1]]
+
+palavraValida :: String -> Bool
+palavraValida palavra = not (null palavra) && not (all isSpace palavra) && not (any isDigit palavra)
+
+loopGetLine :: String -> IO String
+loopGetLine jogador1 = do
+    putStrLn ("\nCerto " ++ bold jogador1 ++ ", qual a palavra da rodada? ")
+    palavra <- hideInput
+    if palavraValida palavra
+        then return palavra
+        else do
+            putStrLn $ bold (coloreAmarelo "Palavra inválida!")
+            threadDelay (900 * 1000) -- 0.9 segundos de delay
+            limpaTerminal
+            loopGetLine jogador1
+
+-- Função para ocultar a entrada do usuário e avançar o prompt a cada letra digitada
+hideInput :: IO String
+hideInput = do
+    hSetEcho stdin False  -- Desativa a exibição da entrada
+    input <- loop ""
+    hSetEcho stdin True   -- Reativa a exibição da entrada
+    putStrLn ""           -- Move para a próxima linha após a entrada
+    return input
+  where
+    loop acc = do
+        char <- getChar
+        if char == '\n'
+            then return (reverse acc)
+            else do
+                putChar '*'
+                hFlush stdout
+                loop (char : acc)
 
 -- desenha a forca atualizada a cada erro (contado) passado
 atualizaForca :: Int -> IO()
@@ -206,23 +212,38 @@ atualizaForca 6 = do
     putStrLn "  |  |       / \\  \n"
     putStrLn "  ====             \n"
 
-handleCenarioPerda :: String -> IO()
-handleCenarioPerda palavra = do
-    limpaTerminal
-    putStrLn " ██████╗  █████╗ ███╗   ███╗███████╗     ██████╗ ██╗   ██╗███████╗██████╗ "
-    putStrLn "██╔════╝ ██╔══██╗████╗ ████║██╔════╝    ██╔═══██╗██║   ██║██╔════╝██╔══██╗"
-    putStrLn "██║  ███╗███████║██╔████╔██║█████╗      ██║   ██║██║   ██║█████╗  ██████╔╝"
-    putStrLn "██║   ██║██╔══██║██║╚██╔╝██║██╔══╝      ██║   ██║╚██╗ ██╔╝██╔══╝  ██╔══██╗"
-    putStrLn "╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗    ╚██████╔╝ ╚████╔╝ ███████╗██║  ██║"
-    putStrLn " ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝     ╚═════╝   ╚═══╝  ╚══════╝╚═╝  ╚═╝"
-    putStrLn (coloreAmarelo ("                           A PALAVRA ERA: " ++ map toUpper palavra ++ "!"))
 
-handleCenarioVitoria :: String -> IO()
-handleCenarioVitoria palavra = do
-    putStrLn"  ██████╗███████╗██████╗ ████████╗ █████╗     ██████╗ ███████╗███████╗██████╗  ██████╗ ███████╗████████╗ █████╗ ██╗"
-    putStrLn" ██╔════╝██╔════╝██╔══██╗╚══██╔══╝██╔══██╗    ██╔══██╗██╔════╝██╔════╝██╔══██╗██╔═══██╗██╔════╝╚══██╔══╝██╔══██╗██║"
-    putStrLn" ██║     █████╗  ██████╔╝   ██║   ███████║    ██████╔╝█████╗  ███████╗██████╔╝██║   ██║███████╗   ██║   ███████║██║"
-    putStrLn" ██║     ██╔══╝  ██╔══██╗   ██║   ██╔══██║    ██╔══██╗██╔══╝  ╚════██║██╔═══╝ ██║   ██║╚════██║   ██║   ██╔══██║╚═╝"
-    putStrLn" ╚██████╗███████╗██║  ██║   ██║   ██║  ██║    ██║  ██║███████╗███████║██║     ╚██████╔╝███████║   ██║   ██║  ██║██╗"
-    putStrLn " ╚═════╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝    ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝      ╚═════╝ ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝"
-    putStrLn (coloreVerde("                               PARABÉNS, VOCÊ VENCEU! A PALAVRA ERA: " ++ map toUpper palavra ++ "!"))
+handleHomeForca :: [String]
+handleHomeForca =
+           [ "                                               "
+            ,"   ███████╗ ██████╗ ██████╗  ██████╗ █████╗    "
+            ,"   ██╔════╝██╔═══██╗██╔══██╗██╔════╝██╔══██╗   "
+            ,"   █████╗  ██║   ██║██████╔╝██║     ███████║   "
+            ,"   ██╔══╝  ██║   ██║██╔══██╗██║     ██╔══██║   "
+            ,"   ██║     ╚██████╔╝██║  ██║╚██████╗██║  ██║   "
+            ,"   ╚═╝      ╚═════╝ ╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝   "
+            ,"               SEJA BEM VINDO!                 "
+            ,"                                               "
+            ,"                 (1) JOGAR                     "
+            ,"              (2) SAIR DO JOGO                 "
+            ,"                                               "]
+
+handleCenarioPerda :: String -> [String]
+handleCenarioPerda palavra =
+                       [" ██████╗  █████╗ ███╗   ███╗███████╗     ██████╗ ██╗   ██╗███████╗██████╗ "
+                       ,"██╔════╝ ██╔══██╗████╗ ████║██╔════╝    ██╔═══██╗██║   ██║██╔════╝██╔══██╗"
+                       ,"██║  ███╗███████║██╔████╔██║█████╗      ██║   ██║██║   ██║█████╗  ██████╔╝"
+                       ,"██║   ██║██╔══██║██║╚██╔╝██║██╔══╝      ██║   ██║╚██╗ ██╔╝██╔══╝  ██╔══██╗"
+                       ,"╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗    ╚██████╔╝ ╚████╔╝ ███████╗██║  ██║"
+                       ," ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝     ╚═════╝   ╚═══╝  ╚══════╝╚═╝  ╚═╝"
+                       ,"                           A PALAVRA ERA: " ++ map toUpper palavra ++ "!"]
+
+handleCenarioVitoria :: String -> [String]
+handleCenarioVitoria palavra =
+    ["  ██████╗███████╗██████╗ ████████╗ █████╗     ██████╗ ███████╗███████╗██████╗  ██████╗ ███████╗████████╗ █████╗ ██╗"
+    ," ██╔════╝██╔════╝██╔══██╗╚══██╔══╝██╔══██╗    ██╔══██╗██╔════╝██╔════╝██╔══██╗██╔═══██╗██╔════╝╚══██╔══╝██╔══██╗██║"
+    ," ██║     █████╗  ██████╔╝   ██║   ███████║    ██████╔╝█████╗  ███████╗██████╔╝██║   ██║███████╗   ██║   ███████║██║"
+    ," ██║     ██╔══╝  ██╔══██╗   ██║   ██╔══██║    ██╔══██╗██╔══╝  ╚════██║██╔═══╝ ██║   ██║╚════██║   ██║   ██╔══██║╚═╝"
+    ," ╚██████╗███████╗██║  ██║   ██║   ██║  ██║    ██║  ██║███████╗███████║██║     ╚██████╔╝███████║   ██║   ██║  ██║██╗"
+    ,"  ╚═════╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝    ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝      ╚═════╝ ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝"
+    ,"                               PARABÉNS, VOCÊ VENCEU! A PALAVRA ERA: " ++ map toUpper palavra ++ "!"]
