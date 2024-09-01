@@ -3,6 +3,7 @@ a) Magic Kingdom
 b) Universal Studios
 c) Six Flags
 d) SeaWorld
+Nível fácil: 10 pontos
 Resposta: a) Magic Kingdom
 
 Quem interpretou o personagem Harry Potter nos filmes?
@@ -10,6 +11,7 @@ a) Elijah Wood
 b) Daniel Radcliffe
 c) Tom Felton
 d) Rupert Grint
+Nível fácil: 10 pontos
 Resposta: b) Daniel Radcliffe
 
 Qual é o nome da série de televisão onde um grupo de amigos vive em Nova York?
@@ -17,6 +19,7 @@ a) Seinfeld
 b) How I Met Your Mother
 c) Friends
 d) The Big Bang Theory
+Nível fácil: 10 pontos
 Resposta: c) Friends
 
 Em qual filme os brinquedos ganham vida quando os humanos não estão por perto?
@@ -24,6 +27,7 @@ a) Toy Story
 b) Shrek
 c) Monsters Inc.
 d) Madagascar
+Nível fácil: 10 pontos
 Resposta: a) Toy Story
 
 Qual é o super-herói que vem de Krypton?
@@ -31,6 +35,7 @@ a) Batman
 b) Superman
 c) Homem-Aranha
 d) Mulher-Maravilha
+Nível fácil: 10 pontos
 Resposta: b) Superman
 
 Qual cantora é conhecida pelo hit "Rolling in the Deep"?
@@ -38,6 +43,7 @@ a) Beyoncé
 b) Adele
 c) Taylor Swift
 d) Rihanna
+Nível fácil: 10 pontos
 Resposta: b) Adele
 
 Qual é o nome do vilarejo onde a série "Stranger Things" se passa?
@@ -45,6 +51,7 @@ a) Riverdale
 b) Hawkins
 c) Smallville
 d) Stars Hollow
+Nível fácil: 10 pontos
 Resposta: b) Hawkins
 
 Qual é o nome do primeiro filme da franquia "Velozes e Furiosos"?
@@ -52,6 +59,7 @@ a) Velozes e Furiosos
 b) Mais Velozes Mais Furiosos
 c) Desafio em Tóquio
 d) Operação Rio
+Nível médio: 20 pontos
 Resposta: a) Velozes e Furiosos
 
 Qual é o nome do personagem amarelo em "Os Simpsons"?
@@ -59,6 +67,7 @@ a) Bart
 b) Lisa
 c) Homer
 d) Marge
+Nível médio: 20 pontos
 Resposta: c) Homer
 
 Quem é o diretor do filme "Titanic"?
@@ -66,4 +75,5 @@ a) Steven Spielberg
 b) Quentin Tarantino
 c) James Cameron
 d) Martin Scorsese
+Nível médio: 20 pontos
 Resposta: c) James Cameron

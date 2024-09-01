@@ -3,6 +3,7 @@ a) Python
 b) Java
 c) C++
 d) Ruby
+Nível fácil: 10 pontos
 Resposta: b) Java
 
 O que significa HTML?
@@ -10,6 +11,7 @@ a) Hyper Text Markup Language
 b) High-level Text Markup Language
 c) Hyper Tool Markup Language
 d) Hyperlink Text Mode Language
+Nível fácil: 10 pontos
 Resposta: a) Hyper Text Markup Language
 
 Qual comando é utilizado para exibir uma mensagem no console em Python?
@@ -17,6 +19,7 @@ a) echo
 b) print
 c) display
 d) show
+Nível fácil: 10 pontos
 Resposta: b) print
 
 Qual é o símbolo usado para criar um comentário em uma linha no código C++?
@@ -24,6 +27,7 @@ a) //
 b) #
 c) /*
 d) <!--
+Nível fácil: 10 pontos
 Resposta: a) //
 
 Qual linguagem de programação é amplamente usada para desenvolvimento de páginas web dinâmicas?
@@ -31,6 +35,7 @@ a) JavaScript
 b) C
 c) Swift
 d) SQL
+Nível fácil: 10 pontos
 Resposta: a) JavaScript
 
 O que significa a sigla IDE em programação?
@@ -38,6 +43,7 @@ a) Integrated Development Environment
 b) Internal Debugging Environment
 c) Integrated Debugging Editor
 d) Interactive Design Editor
+Nível fácil: 10 pontos
 Resposta: a) Integrated Development Environment
 
 Qual é o resultado da expressão 10 % 3 em Python?
@@ -45,6 +51,7 @@ a) 3
 b) 1
 c) 10
 d) 0
+Nível fácil: 10 pontos
 Resposta: b) 1
 
 Qual linguagem é famosa por ser utilizada em inteligência artificial e ciência de dados?
@@ -52,6 +59,7 @@ a) PHP
 b) Python
 c) Ruby
 d) JavaScript
+Nível médio: 20 pontos
 Resposta: b) Python
 
 Qual estrutura de dados funciona como uma "fila" onde o primeiro elemento adicionado é o primeiro a ser removido?
@@ -59,6 +67,7 @@ a) Pilha (Stack)
 b) Vetor (Array)
 c) Fila (Queue)
 d) Lista Ligada (Linked List)
+Nível médio: 20 pontos
 Resposta: c) Fila (Queue)
 
 Qual comando Git é usado para enviar as alterações locais para o repositório remoto?
@@ -66,4 +75,85 @@ a) git commit
 b) git push
 c) git pull
 d) git clone
+Nível médio: 20 pontos
 Resposta: b) git push
+
+Qual é o propósito do método __init__ em uma classe Python?
+a) Definir variáveis globais
+b) Inicializar um objeto da classe
+c) Executar funções de teste
+d) Configurar métodos estáticos
+Nível médio: 20 pontos
+Resposta: b) Inicializar um objeto da classe
+
+Qual comando é usado para criar um novo branch no Git?
+a) git branch
+b) git create
+c) git checkout -b
+d) git new
+Nível médio: 20 pontos
+Resposta: a) git branch
+
+O que é um lambda em Python?
+a) Uma função anônima
+b) Uma estrutura de dados
+c) Um tipo de loop
+d) Um operador matemático
+Nível médio: 20 pontos
+Resposta: a) Uma função anônima
+
+Qual é a saída do código JavaScript console.log([2] == [2]);?
+a) true
+b) false
+c) undefined
+d) null
+Nível difícil: 30 pontos
+Resposta: b) false
+
+Qual é o comando SQL para excluir uma tabela de um banco de dados?
+a) DROP TABLE
+b) DELETE TABLE
+c) REMOVE TABLE
+d) ERASE TABLE
+Nível difícil: 30 pontos
+Resposta: a) DROP TABLE
+
+Em C++, qual cabeçalho é necessário para usar as funções de entrada e saída padrão?
+a) <stdlib.h>
+b) <io.h>
+c) <iostream>
+d) <stdio.h>
+Nível difícil: 30 pontos
+Resposta: c) <iostream>
+
+Qual operador em Java é utilizado para comparar se dois valores são iguais?
+a) ==
+b) !=
+c) ===
+d) <>
+Nível difícil: 30 pontos
+Resposta: a) ==
+
+Qual é o propósito da função malloc em C?
+a) Liberar memória alocada
+b) Alocar memória dinamicamente
+c) Inicializar uma variável
+d) Calcular o tamanho da memória
+Nível difícil: 30 pontos
+Resposta: b) Alocar memória dinamicamente
+
+Qual é o método usado para adicionar um elemento ao final de uma lista em JavaScript?
+a) append()
+b) push()
+c) add()
+d) insert()
+Nível difícil: 30 pontos
+Resposta: b) push()
+
+Qual estrutura de controle é usada para iterar sobre um bloco de código um número específico de vezes em Python?
+a) if
+b) while
+c) for
+d) switch
+Nível difícil: 30 pontos
+Resposta: c) for

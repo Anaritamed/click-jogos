@@ -1,108 +1,46 @@
 module Perguntados where
 
 import System.Info (os)
-import System.IO (hClose, hGetContents, openFile)
 import Utils (limpaTerminal)
+import Data.List (intercalate)
 import System.Process (callCommand)
 import Data.Text.Internal.Read (IParser(P))
+import System.IO (hClose, hGetContents, openFile)
 import GHC.IO.IOMode
 
 perguntados :: IO()
 perguntados = do 
     limpaTerminal
-    putStrLn "  ____   U _____ u   ____      ____     _   _   _   _     _____      _      ____      U  ___ u  ____     "
-    putStrLn "U|  _\"\\ u\\| ___\"|/U |  _\"\\ uU /\"___|uU |\"|u| | | \\ |\"|   |_ \" _| U  /\"\\  u |  _\"\\      \\\"/_ \\/ / __\"| u  "
-    putStrLn "\\| |_) |/ |  _|\"   \\| |_) |/\\| |  _ / \\| |\\| |<|  \\| |>    | |    \\/ _ \\/ /| | | |     | | | |<\\___ \\/   "
-    putStrLn " |  __/   | |___    |  _ <   | |_| |   | |_| |U| |\\  |u   /| |\\   / ___ \\ U| |_| |\\.-,_| |_| | u___) |   "
-    putStrLn " |_|      |_____|   |_| \\_\\   \\____|  <<\\___/  |_| \\_|   u |_|U  /_/   \\_\\ |____/ u \\_)-\\___/  |____/>>  "
-    putStrLn " ||>>_    <<   >>   //   \\\\_  _)(|_  (__) )(   ||   \\\\,_._// \\\\_  \\\\    >>  |||_         \\\\     )(  (__) "
-    putStrLn "(__)__)  (__) (__) (__)  (__)(__)__)     (__)  (_\")  (_/(__) (__)(__)  (__)(__)_)       (__)   (__)      "
-    putStrLn "                                                                                                           "
-    putStrLn "                                     BEM-VINDOS AO PERGUNTADOS!                                            "
-    putStrLn "-----------------------------------------------------------------------------------------------------------"
-    putStrLn "                                        INICIAR(1) | SAIR(2)                                               "
-    putStrLn "-----------------------------------------------------------------------------------------------------------"
+    putStrLn menuPerguntados
     putStrLn "Digite uma opção: "
     opcao <- getLine
 
-    if opcao == "1" then do
-        inicioJogo
-    else if opcao == "2" then do
-        putStrLn "Saindo..."
-        return ()
-    else do
-        putStrLn "Opção inválida!"
-        perguntados
+    processarOpcaoInicio opcao
 
 inicioJogo :: IO()
 inicioJogo = do
-    putStrLn "-----------------------------------------------------------------------------------------------------------"
-    putStrLn "                                        VAMOS INICIAR O JOGO!                                              "
-    putStrLn "-----------------------------------------------------------------------------------------------------------"
-    putStrLn "                                            REGRAS DO JOGO                                                 "
-    putStrLn "                                                                                                           "
-    putStrLn "1 - O jogo é uma competição entre dois jogadores.                                                          "
-    putStrLn "2 - No início do jogo, os jogadores escolhem um tema para o quiz.                                          "
-    putStrLn "3 - A cada rodada, os jogadores irão responder perguntas sobre o tema escolhido.                           "
-    putStrLn "4 - A pontuação da pergunta é dada pelo seu nível de dificuldade.                                          "
-    putStrLn "5 - No fim, ganha o jogador que obter mais pontos! :D                                                      "
-    putStrLn "-----------------------------------------------------------------------------------------------------------"
-    putStrLn "                                                                                                           "
-    putStrLn "                            ANTES DE INICIAR, DIGITE OS NOMES DOS JOGADORES                                "
+    putStrLn regrasDoJogo
+
     putStrLn "Nome do jogador 1: "
     jogador1 <- getLine
     putStrLn "Nome do jogador 2: "
     jogador2 <- getLine
-    putStrLn "-----------------------------------------------------------------------------------------------------------"
-    putStrLn "                                             PLACAR INICIAL                                                "
-    putStrLn "-----------------------------------------------------------------------------------------------------------"
-    putStrLn $ "JOGADOR 1: " ++ jogador1 ++ " - Pontuação: 0                                                             " 
-    putStrLn $ "JOGADOR 2: " ++ jogador2 ++ " - Pontuação: 0                                                             " 
-    putStrLn "-----------------------------------------------------------------------------------------------------------"
-    putStrLn "                                                                                                           "
-    putStrLn "                                       QUAL JOGADOR VAI INICIAR?                                           "
-    putStrLn "                                     (1) JOGADOR 1 | (2) JOGADOR 2                                         "
-    putStrLn "                                                                                                           "
+
+    putStrLn $ placar jogador1 jogador2 0 0
+
+    putStrLn escolhaJogador                                                                                                          
     putStrLn "Digite uma opção: "
     opcao <- getLine
 
-    if opcao == "1" then do
-        temaJogo jogador1
-    else if opcao == "2" then do
-        temaJogo jogador2
-    else do
-        putStrLn "Opção inválida!"
-        inicioJogo
+    processarOpcaoJogo opcao jogador1 jogador2
 
 temaJogo :: String -> IO()
 temaJogo jogador = do
-    putStrLn "-----------------------------------------------------------------------------------------------------------"
-    putStrLn $ "                                         Vamos lá, sua vez " ++ jogador ++ "!                            "
-    putStrLn "-----------------------------------------------------------------------------------------------------------"
-    putStrLn "                                     ESCOLHA UM TEMA DE SUA PREFERÊNCIA                                    "
-    putStrLn "-----------------------------------------------------------------------------------------------------------"
-    putStrLn "                                             (1) ENTRETENIMENTO                                            "
-    putStrLn "                                             (2) PROGRAMAÇÃO                                               "
-    putStrLn "                                             (3) GEOGRAFIA                                                 "
-    putStrLn "                                             (4) HISTÓRIA                                                  "
-    putStrLn "                                             (5) CIÊNCIAS                                                  "
-    putStrLn "-----------------------------------------------------------------------------------------------------------"
+    putStrLn $ escolhaTema jogador
     putStrLn "Digite uma opção: "
     opcao <- getLine
 
-    if opcao == "1" then do
-        jogo jogador "entretenimento.txt"
-    else if opcao == "2" then do
-        jogo jogador "programacao.txt"
-    else if opcao == "3" then do
-        jogo jogador "geografia.txt"
-    else if opcao == "4" then do
-        jogo jogador "historia.txt"
-    else if opcao == "5" then do
-        jogo jogador "ciencias.txt"
-    else do
-        putStrLn "Opção inválida!"
-        temaJogo jogador
+    escolherTemaJogo opcao jogador
     
 jogo :: String -> String -> IO()
 jogo jogador tema = do 
@@ -114,3 +52,102 @@ jogo jogador tema = do
 
     putStrLn conteudo
     hClose arquivo
+
+-- Variáveis de texto
+
+menuPerguntados :: String
+menuPerguntados = intercalate "\n" 
+    [ "  ____   U _____ u   ____      ____     _   _   _   _     _____      _      ____      U  ___ u  ____     "
+    , "U|  _\"\\ u\\| ___\"|/U |  _\"\\ uU /\"___|uU |\"|u| | | \\ |\"|   |_ \" _| U  /\"\\  u |  _\"\\      \\\"/_ \\/ / __\"| u  "
+    , "\\| |_) |/ |  _|\"   \\| |_) |/\\| |  _ / \\| |\\| |<|  \\| |>    | |    \\/ _ \\/ /| | | |     | | | |<\\___ \\/   "
+    , " |  __/   | |___    |  _ <   | |_| |   | |_| |U| |\\  |u   /| |\\   / ___ \\ U| |_| |\\.-,_| |_| | u___) |   "
+    , " |_|      |_____|   |_| \\_\\   \\____|  <<\\___/  |_| \\_|   u |_|U  /_/   \\_\\ |____/ u \\_)-\\___/  |____/>>  "
+    , " ||>>_    <<   >>   //   \\\\_  _)(|_  (__) )(   ||   \\\\,_._// \\\\_  \\\\    >>  |||_         \\\\     )(  (__) "
+    , "(__)__)  (__) (__) (__)  (__)(__)__)     (__)  (_\")  (_/(__) (__)(__)  (__)(__)_)       (__)   (__)      "
+    , "                                                                                                           "
+    , "                                     BEM-VINDOS AO PERGUNTADOS!                                            "
+    , "-----------------------------------------------------------------------------------------------------------"
+    , "                                        INICIAR(1) | SAIR(2)                                               "
+    , "-----------------------------------------------------------------------------------------------------------"
+    ]
+
+placar :: String -> String -> Int -> Int -> String
+placar jogador1 jogador2 pontuacao1 pontuacao2 = intercalate "\n"
+    [ "-----------------------------------------------------------------------------------------------------------"
+    , "                                                 PLACAR                                                    "
+    , "-----------------------------------------------------------------------------------------------------------"
+    , "JOGADOR 1: " ++ jogador1 ++ " - Pontuação: " ++ show pontuacao1
+    , "JOGADOR 2: " ++ jogador2 ++ " - Pontuação: " ++ show pontuacao2
+    , "-----------------------------------------------------------------------------------------------------------"
+    ]
+
+regrasDoJogo :: String
+regrasDoJogo = intercalate "\n"
+    [ "-----------------------------------------------------------------------------------------------------------"
+    , "                                        VAMOS INICIAR O JOGO!                                              "
+    , "-----------------------------------------------------------------------------------------------------------"
+    , "                                            REGRAS DO JOGO                                                 "
+    , "                                                                                                           "
+    , "1 - O jogo é uma competição entre dois jogadores.                                                          "
+    , "2 - No início do jogo, os jogadores escolhem um tema para o quiz.                                          "
+    , "3 - A cada rodada, os jogadores irão responder perguntas sobre o tema escolhido.                           "
+    , "4 - A pontuação da pergunta é dada pelo seu nível de dificuldade.                                          "
+    , "5 - No fim, ganha o jogador que obter mais pontos! :D                                                      "
+    , "-----------------------------------------------------------------------------------------------------------"
+    , "                                                                                                           "
+    , "                            ANTES DE INICIAR, DIGITE OS NOMES DOS JOGADORES                                "
+    ]
+
+escolhaJogador :: String
+escolhaJogador = intercalate "\n"
+    [ "                                                                                                           "
+    , "                                       QUAL JOGADOR VAI INICIAR?                                           "
+    , "                                     (1) JOGADOR 1 | (2) JOGADOR 2                                         "
+    , "                                                                                                           "
+    ]
+
+escolhaTema :: String -> String
+escolhaTema jogador = intercalate "\n"
+    [ "-----------------------------------------------------------------------------------------------------------"
+    , "                                         Vamos lá, sua vez " ++ jogador ++ "!                            "
+    , "-----------------------------------------------------------------------------------------------------------"
+    , "                                     ESCOLHA UM TEMA DE SUA PREFERÊNCIA                                    "
+    , "-----------------------------------------------------------------------------------------------------------"
+    , "                                             (1) ENTRETENIMENTO                                            "
+    , "                                             (2) PROGRAMAÇÃO                                               "
+    , "                                             (3) GEOGRAFIA                                                 "
+    , "                                             (4) HISTÓRIA                                                  "
+    , "                                             (5) CIÊNCIAS                                                  "
+    , "-----------------------------------------------------------------------------------------------------------"
+    ]
+
+-- Funções para processar opções
+
+processarOpcaoInicio :: String -> IO ()
+processarOpcaoInicio opcao
+    | opcao == "1" = inicioJogo
+    | opcao == "2" = do
+        putStrLn "Saindo..."
+        return ()
+    | otherwise    = do
+        putStrLn "Opção inválida!"
+        perguntados
+
+processarOpcaoJogo :: String -> String -> String -> IO ()
+processarOpcaoJogo opcao jogador1 jogador2
+    | opcao == "1" = temaJogo jogador1
+    | opcao == "2" = temaJogo jogador2
+    | otherwise    = do
+        putStrLn "Opção inválida!"
+        inicioJogo
+
+escolherTemaJogo :: String -> String -> IO ()
+escolherTemaJogo opcao jogador
+    | opcao == "1" = jogo jogador "entretenimento.txt"
+    | opcao == "2" = jogo jogador "programacao.txt"
+    | opcao == "3" = jogo jogador "geografia.txt"
+    | opcao == "4" = jogo jogador "historia.txt"
+    | opcao == "5" = jogo jogador "ciencias.txt"
+    | otherwise    = do
+        putStrLn "Opção inválida!"
+        temaJogo jogador
