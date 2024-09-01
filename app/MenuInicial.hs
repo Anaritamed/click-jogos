@@ -13,7 +13,7 @@ renderizaTelaInicial = do
     putStrLn "\\____/|_|_|\\___|_|\\_\\ \\___/ \\___/ \\__, |\\___/|___/"
     putStrLn "                                  |___/            "
     putStrLn "==================================================="
-    putStrLn "          MENU(1)        |         SAIR(2)         "
+    putStrLn "          MENU (1)        |        SAIR (2)        "
     putStrLn "==================================================="
     putStrLn "                                                   "
     putStrLn "Digite uma opção: "
