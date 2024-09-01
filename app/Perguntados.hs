@@ -3,9 +3,8 @@ module Perguntados where
 import Utils (limpaTerminal, coloreVerde, coloreVermelho, coloreAmarelo, bold)
 import Data.List (intercalate)
 import System.IO (hClose, hGetContents, openFile, hSetEncoding, utf8)
-import GHC.IO.IOMode
 import Data.Char (toLower)
-import Distribution.Compat.Binary (Binary(put))
+import GHC.IO.IOMode
 import qualified Data.Text.IO as T
 import qualified Data.Text as T
 
@@ -18,25 +17,16 @@ perguntados = do
     processaOpcaoMenu opcao
 
 processaOpcaoMenu :: String -> IO ()
-processaOpcaoMenu opcao
-    | opcao == "1" = inicioJogo
-    | opcao == "2" = do
-        putStrLn "Saindo..."
-        return ()
-    | otherwise    = do
-        putStrLn "Opção inválida!"
-        perguntados
+processaOpcaoMenu "1" = inicioJogo
+processaOpcaoMenu "2" = putStrLn "Saindo..."
+processaOpcaoMenu _   = do
+    putStrLn "Opção inválida!"
+    perguntados
 
 inicioJogo :: IO()
 inicioJogo = do
     putStrLn regrasDoJogo
-
-    putStrLn "Nome do jogador 1: "
-    jogador1 <- getLine
-    putStrLn "Nome do jogador 2: "
-    jogador2 <- getLine
-
-    let jogadores = [jogador1, jogador2]
+    jogadores <- mapM (\i -> putStrLn ("Nome do jogador " ++ show i ++ ": ") >> getLine) [1, 2]
     putStrLn $ placar jogadores [0, 0]
     temaJogo jogadores
 
@@ -48,21 +38,21 @@ temaJogo jogadores = do
     processaTemaJogo opcao jogadores
 
 processaTemaJogo :: String -> [String] -> IO ()
-processaTemaJogo opcao jogadores
-    | opcao == "1" = jogo jogadores "entretenimento.txt"
-    | opcao == "2" = jogo jogadores "programacao.txt"
-    | opcao == "3" = jogo jogadores "geografia.txt"
-    | opcao == "4" = jogo jogadores "historia.txt"
-    | opcao == "5" = jogo jogadores "ciencias.txt"
-    | otherwise    = do
-        putStrLn "Opção inválida!"
-        temaJogo jogadores
+processaTemaJogo opcao jogadores = 
+    case lookup opcao temasDisponiveis of
+        Just tema -> jogo jogadores tema
+        Nothing   -> do
+            putStrLn "Opção inválida!"
+            temaJogo jogadores
+  where
+    temasDisponiveis = [("1", "entretenimento.txt"), ("2", "programacao.txt"),
+                        ("3", "geografia.txt"), ("4", "historia.txt"), ("5", "ciencias.txt")]
 
 jogo :: [String] -> String -> IO()
 jogo jogadores tema = do
     let caminhoArquivo = "app/perguntas/" ++ tema
     arquivo <- openFile caminhoArquivo ReadMode
-    hSetEncoding arquivo utf8  -- Configura a codificação para UTF-8
+    hSetEncoding arquivo utf8
     conteudo <- T.hGetContents arquivo
     let perguntas = extraiPerguntas $ lines (T.unpack conteudo)
     resultado <- quiz perguntas jogadores [0, 0] 1
@@ -75,23 +65,16 @@ jogo jogadores tema = do
     processaOpcaoJogarNovamente opcao
 
 processaOpcaoJogarNovamente :: String -> IO ()
-processaOpcaoJogarNovamente opcao
-    | opcao == "1" = inicioJogo
-    | opcao == "2" = do
-        putStrLn "Saindo..."
-        return ()
-    | otherwise    = do
-        putStrLn "Opção inválida!"
-        putStrLn menuJogarNovamente
-        putStrLn "Digite uma opção: "
-        opcao <- getLine
-        processaOpcaoJogarNovamente opcao
+processaOpcaoJogarNovamente "1" = inicioJogo
+processaOpcaoJogarNovamente "2" = putStrLn "Saindo..."
+processaOpcaoJogarNovamente _   = do
+    putStrLn "Opção inválida!"
+    processaOpcaoJogarNovamente =<< getLine
 
 mostraVencedor :: [String] -> [Int] -> String
-mostraVencedor jogadores pontuacoes = do
-    if head pontuacoes > pontuacoes !! 1
-        then bold $ coloreVerde "\n Parabéns! O vencedor é " ++ head jogadores ++ "!"
-        else bold $ coloreVerde "\n Parabéns! O vencedor é " ++ jogadores !! 1 ++ "!"
+mostraVencedor jogadores [pontuacao1, pontuacao2]
+    | pontuacao1 > pontuacao2 = bold $ coloreVerde ("\nParabéns! O vencedor é " ++ head jogadores ++ "!")
+    | otherwise               = bold $ coloreVerde ("\nParabéns! O vencedor é " ++ jogadores !! 1 ++ "!")
 
 extraiPerguntas :: [String] -> [(String, [String], Int, String)]
 extraiPerguntas [] = []
@@ -102,15 +85,13 @@ extraiPerguntas (pergunta:linhas) =
     in (pergunta, alternativas, pontos, resposta) : extraiPerguntas (drop 7 linhas)
 
 extraiPontos :: String -> Int
-extraiPontos linha =
-    read (words linha !! 2) :: Int
+extraiPontos linha = read (words linha !! 2) :: Int
 
 extraiResposta :: String -> String
-extraiResposta linha =
-    [linha !! 10]
+extraiResposta linha = [linha !! 10]
 
 quiz :: [(String, [String], Int, String)] -> [String] -> [Int] -> Int -> IO [Int]
-quiz [] _ pontuacoes rodada = return pontuacoes
+quiz [] _ pontuacoes _ = return pontuacoes
 quiz ((pergunta, alternativas, pontos, respostaCorreta):linhas) jogadores pontuacoes rodada = do
     putStrLn "-----------------------------------------------------------------------------------------------------------"
     putStrLn $ bold $ coloreAmarelo pergunta ++ "\n"
@@ -129,29 +110,22 @@ quiz ((pergunta, alternativas, pontos, respostaCorreta):linhas) jogadores pontua
             quiz linhas jogadores pontuacoes (rodada + 1)
 
 validaRespostaJogador :: String -> IO String
-validaRespostaJogador resposta = do
-    if null resposta || notElem resposta ["a", "b", "c", "d"]
-        then do
-            putStrLn $ bold $ coloreVermelho "Entrada incorreta! Escolha uma alternativa válida."
-            novaResposta <- getLine
-            validaRespostaJogador novaResposta
-        else return resposta
+validaRespostaJogador resposta
+    | resposta `elem` ["a", "b", "c", "d"] = return resposta
+    | otherwise = do
+        putStrLn $ bold $ coloreVermelho "Entrada incorreta! Escolha uma alternativa válida."
+        validaRespostaJogador =<< getLine
 
 jogadorDaVez :: [String] -> Int -> String
-jogadorDaVez (jogador1:jogador2) rodada =
-    if vezJogador1 rodada
-        then jogador1
-        else head jogador2
+jogadorDaVez jogadores rodada = jogadores !! (rodada `mod` 2)
 
 atualizaPontuacoes :: [Int] -> Int -> Int -> [Int]
-atualizaPontuacoes (pontuacao1:pontuacao2) pontos rodada =
-    if vezJogador1 rodada
-        then pontuacao1 + pontos:pontuacao2
-        else pontuacao1:[head pontuacao2 + pontos]
+atualizaPontuacoes pontuacoes pontos rodada = zipWith (+) pontuacoes
+    [if vezJogador1 rodada then pontos else 0,
+     if vezJogador1 rodada then 0 else pontos]
 
 vezJogador1 :: Int -> Bool
-vezJogador1 rodada =
-    rodada `mod` 2 == 1
+vezJogador1 rodada = rodada `mod` 2 == 1
 
 -- Variáveis de texto
 menuPerguntados :: String
@@ -211,7 +185,7 @@ escolhaTema = intercalate "\n"
 menuJogarNovamente :: String
 menuJogarNovamente = intercalate "\n"
     [ "-----------------------------------------------------------------------------------------------------------"
-    , "                                           JOGAR NOVAMENTE?                                                 "
+    , "                                           JOGAR NOVAMENTE?                                                "
     , "-----------------------------------------------------------------------------------------------------------"
     , "                                           SIM (1) | NÃO (2)                                               "
     , "-----------------------------------------------------------------------------------------------------------"
