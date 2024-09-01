@@ -8,6 +8,7 @@ import qualified Data.Text as T
 import qualified Data.Map as Map
 import Control.Concurrent (threadDelay)
 import GHC.Exts (the)
+import ManagerMenus (menuInicialForca)
 
 
 forca :: IO()
@@ -29,7 +30,7 @@ forca = do
     if opcao == "1" then do
         jogo
     else if opcao == "2" then do
-        putStrLn "tem que voltar ao menu"
+        putStrLn "Voltando ao menu..."
     else do
         putStrLn $ bold (coloreAmarelo "Opção inválida!")
         forca
@@ -42,7 +43,7 @@ jogo = do
 
     let mapaLetras = criaMapaLetras (map toLower palavra) -- Mapa de letras em minúsculas
     let estadoAtual = criaStringSublinhados palavra -- cria string sublinhada com o tamanho da palavra. Ex: maçã ele criaria : _ _ _ _
-    
+
     putStrLn "Qual o tema que está relacionado à palavra a ser adivinhada? "
     tema <- getLine
 
@@ -80,12 +81,12 @@ jogo = do
                                         else
                                             loop stringSublinhada (erros + 1) letrasDigitadasAtualizadas
                                 Just indices -> do
-                                    let novoEstado = atualizaStringSublinhados letra stringSublinhada indices
-                                    if map toLower novoEstado == map toLower palavra
+                                    let novoEstadoStringSublinhados = atualizaStringSublinhados letra stringSublinhada indices
+                                    if map toLower novoEstadoStringSublinhados == map toLower palavra
                                         then
-                                            putStrLn $ bold (coloreVerde "Parabéns!" ++ " Você acertou: " ++ novoEstado)
+                                            handleCenarioVitoria palavra
                                         else do
-                                            loop novoEstado erros letrasDigitadasAtualizadas -- se ainda não completou a palavra e não errou o limite.
+                                            loop novoEstadoStringSublinhados erros letrasDigitadasAtualizadas -- se ainda não completou a palavra e não errou o limite.
     loop estadoAtual 0 []
 
 -- interação inicial com os jogadores
@@ -213,4 +214,14 @@ handleCenarioPerda palavra = do
     putStrLn "██║   ██║██╔══██║██║╚██╔╝██║██╔══╝      ██║   ██║╚██╗ ██╔╝██╔══╝  ██╔══██╗"
     putStrLn "╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗    ╚██████╔╝ ╚████╔╝ ███████╗██║  ██║"
     putStrLn " ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝     ╚═════╝   ╚═══╝  ╚══════╝╚═╝  ╚═╝"
-    putStrLn (coloreAmarelo ("                           A PALAVRA ERA " ++ map toUpper palavra ++ "!"))
+    putStrLn (coloreAmarelo ("                           A PALAVRA ERA: " ++ map toUpper palavra ++ "!"))
+
+handleCenarioVitoria :: String -> IO()
+handleCenarioVitoria palavra = do
+    putStrLn"  ██████╗███████╗██████╗ ████████╗ █████╗     ██████╗ ███████╗███████╗██████╗  ██████╗ ███████╗████████╗ █████╗ ██╗"
+    putStrLn" ██╔════╝██╔════╝██╔══██╗╚══██╔══╝██╔══██╗    ██╔══██╗██╔════╝██╔════╝██╔══██╗██╔═══██╗██╔════╝╚══██╔══╝██╔══██╗██║"
+    putStrLn" ██║     █████╗  ██████╔╝   ██║   ███████║    ██████╔╝█████╗  ███████╗██████╔╝██║   ██║███████╗   ██║   ███████║██║"
+    putStrLn" ██║     ██╔══╝  ██╔══██╗   ██║   ██╔══██║    ██╔══██╗██╔══╝  ╚════██║██╔═══╝ ██║   ██║╚════██║   ██║   ██╔══██║╚═╝"
+    putStrLn" ╚██████╗███████╗██║  ██║   ██║   ██║  ██║    ██║  ██║███████╗███████║██║     ╚██████╔╝███████║   ██║   ██║  ██║██╗"
+    putStrLn " ╚═════╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝    ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝      ╚═════╝ ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝"
+    putStrLn "                           PARABÉNS, VOCÊ VENCEU! A PALAVRA ERA: " ++ map toUpper palavra ++ "!"
