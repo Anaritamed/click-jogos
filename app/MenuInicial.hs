@@ -4,55 +4,77 @@ import Forca (forca)
 import Perguntados (perguntados)
 import JogoDaVelha (jogoDaVelha)
 import Utils (limpaTerminal)
+import Data.List (intercalate)
 import System.Exit (exitSuccess)
 import Control.Concurrent (threadDelay)
 
-renderizaTelaInicial :: IO()
-renderizaTelaInicial = do
+inicio :: IO()
+inicio = do
     limpaTerminal
-    putStrLn "==================================================="
-    putStrLn "   ___ _ _      _       __                         "
-    putStrLn "  / __\\ (_) ___| | __   \\ \\  ___   __ _  ___  ___ "
-    putStrLn " / /  | | |/ __| |/ /    \\ \\/ _ \\ / _` |/ _ \\/ __|"
-    putStrLn "/ /___| | | (__|   <  /\\_/ / (_) | (_| | (_) \\__ \\"
-    putStrLn "\\____/|_|_|\\___|_|\\_\\ \\___/ \\___/ \\__, |\\___/|___/"
-    putStrLn "                                  |___/            "
-    putStrLn "==================================================="
-    putStrLn "          MENU (1)        |        SAIR (2)        "
-    putStrLn "==================================================="
-    putStrLn "                                                   "
-    putStrLn "Digite uma opção: "
+    putStrLn telaInicial
     opcao <- getLine
-    handleInteracaoTelaInicial opcao
+    processaOpcaoInicio opcao
 
-handleInteracaoTelaInicial :: String -> IO()
-handleInteracaoTelaInicial opcao
-    | opcao == "1" = menu
-    | opcao == "2" = do
-        putStrLn "Saindo..."
-        exitSuccess
-    | otherwise = do
+processaOpcaoInicio :: String -> IO ()
+processaOpcaoInicio opcao = case opcao of
+    "1" -> menu
+    "2" -> sair
+    _   -> do
         putStrLn "Opção inválida!"
-        threadDelay (700 * 1000)
-        limpaTerminal
-        renderizaTelaInicial
+        voltaInicio
 
 menu :: IO()
 menu = do
-    putStrLn "                                                   "
-    putStrLn "==================================================="
-    putStrLn "                ESCOLHA UM JOGO                    "
-    putStrLn "==================================================="
-    putStrLn "                    FORCA (1)                      "
-    putStrLn "                 PERGUNTADOS (2)                   " 
-    putStrLn "                JOGO DA VELHA (3)                  "
-    putStrLn "==================================================="
-    putStrLn "                                                   "
-    putStrLn "Digite uma opção: "
+    putStrLn jogos
     opcao <- getLine
-    handleInteracaoEscolhaJogos opcao
+    processaEscolhaJogo opcao
 
-handleInteracaoEscolhaJogos :: String -> IO()
-handleInteracaoEscolhaJogos "1" = forca
-handleInteracaoEscolhaJogos "2" = perguntados
-handleInteracaoEscolhaJogos "3" = jogoDaVelha
+sair :: IO()
+sair = do
+    putStrLn "Saindo..."
+    exitSuccess
+
+voltaInicio :: IO()
+voltaInicio = do
+    threadDelay (700 * 1000)
+    limpaTerminal
+    inicio
+
+processaEscolhaJogo :: String -> IO ()
+processaEscolhaJogo opcao = case opcao of
+    "1" -> forca
+    "2" -> perguntados
+    "3" -> jogoDaVelha
+    _   -> do
+        putStrLn "Opção inválida!"
+        processaEscolhaJogo =<< getLine
+
+telaInicial :: String
+telaInicial = intercalate "\n"
+    [ "==================================================="
+    , "   ___ _ _      _       __                         "
+    , "  / __\\ (_) ___| | __   \\ \\  ___   __ _  ___  ___ "
+    , " / /  | | |/ __| |/ /    \\ \\/ _ \\ / _` |/ _ \\/ __|"
+    , "/ /___| | | (__|   <  /\\_/ / (_) | (_| | (_) \\__ \\"
+    , "\\____/|_|_|\\___|_|\\_\\ \\___/ \\___/ \\__, |\\___/|___/"
+    , "                                  |___/            "
+    , "==================================================="
+    , "          MENU (1)        |        SAIR (2)        "
+    , "==================================================="
+    , "                                                   "
+    , "Digite uma opção: "
+    ]
+
+jogos :: String
+jogos = intercalate "\n"
+    [ "                                                   "
+    , "==================================================="
+    , "                ESCOLHA UM JOGO                    "
+    , "==================================================="
+    , "                    FORCA (1)                      "
+    , "                 PERGUNTADOS (2)                   " 
+    , "                JOGO DA VELHA (3)                  "
+    , "==================================================="
+    , "                                                   "
+    , "Digite uma opção: "
+    ]
