@@ -4,7 +4,7 @@ import Control.Monad (replicateM_)
 import Data.Map (Map)
 import Data.Text (Text)
 import Data.Char (isDigit)
-import Utils (limpaTerminal)
+import Utils (limpaTerminal, coloreAmarelo, bold, coloreVerde, coloreVermelho)
 import System.Exit (exitSuccess)
 import qualified Data.Map as Map
 import Data.List (intercalate)
@@ -21,10 +21,10 @@ jogoDaVelha = do
     putStrLn "  \\___/ \\___/ \\__, |\\___/   \\__,_|\\__,_|    \\_/ \\___|_|_| |_|\\__,_|"
     putStrLn "              |___/                                                         "
     putStrLn "============================================================================"
-    putStrLn "                               SEJA BEM VINDO!                              "
+    putStrLn "                            SEJA BEM VINDO!                                 "
     putStrLn "                                                                            "
-    putStrLn "                                 (1) JOGAR                                  "
-    putStrLn "                              (2) SAIR DO JOGO                              "
+    putStrLn "                              (1) JOGAR                                     "
+    putStrLn "                           (2) SAIR DO JOGO                                 "
     putStrLn "                                                                            "
     opcao <- getLine
     if opcao == "1" then do
@@ -135,18 +135,18 @@ checaEmpate = notElem vazio
 
 pegaInput :: [[String]] -> Char -> IO (Char, Int)
 pegaInput tabuleiro jogador = do
-    putStrLn $ "Vez do jogador " ++ [jogador] ++ ". Insira seu movimento (posições 1-9):"
+    putStrLn $ bold $ coloreAmarelo $ "\nVez do jogador " ++ [jogador] ++ ". Insira seu movimento (posições 1-9):"
     input <- getLine
     if length input /= 1 || not (isDigit (head input)) then do
-        putStrLn "\nEntrada inválida. Por favor, insira um número entre 1 e 9.\n"
+        putStrLn $ bold $ coloreVermelho "\nEntrada inválida. Por favor, insira um número entre 1 e 9."
         pegaInput tabuleiro jogador
     else
         let pos = read input :: Int
         in if pos < 1 || pos > 9 then do
-            putStrLn "\nEntrada inválida. Por favor, insira um número entre 1 e 9.\n"
+            putStrLn $ bold $ coloreVermelho "\nEntrada inválida. Por favor, insira um número entre 1 e 9."
             pegaInput tabuleiro jogador
         else if posicaoOcupada tabuleiro pos then do
-            putStrLn "Posição já ocupada. Por favor, escolha outra posição.\n"
+            putStrLn $ bold $ coloreVermelho "\nPosição já ocupada. Por favor, escolha outra posição."
             pegaInput tabuleiro jogador
         else
             return (jogador, pos)
@@ -167,13 +167,13 @@ gameLoop tabuleiro jogador = do
         then do
             let partesAtualizadas = pegaPartesDoTabuleiro 3 tabuleiroAtualizado
             printaPartes partesAtualizadas
-            putStrLn $ "Jogador " ++ [jogadorAtual] ++ " vence!\n"
+            putStrLn $ bold $ coloreVerde $ "Jogador " ++ [jogadorAtual] ++ " vence!\n"
             reiniciaJogo
         else if checaEmpate tabuleiroAtualizado
             then do
                 let partesAtualizadas = pegaPartesDoTabuleiro 3 tabuleiroAtualizado
                 printaPartes partesAtualizadas
-                putStrLn "Temos um empate!"
+                putStrLn $ bold $ coloreVerde "Temos um empate!"
                 reiniciaJogo
             else gameLoop tabuleiroAtualizado (if jogador == 'X' then 'O' else 'X')
 
