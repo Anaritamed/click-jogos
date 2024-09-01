@@ -3,7 +3,7 @@ module Forca where
 import Data.Map (Map)
 import Data.Text (Text)
 import Data.Char (toLower, isAlpha, toUpper)
-import Utils (limpaTerminal, colore, bold)
+import Utils (limpaTerminal, coloreAmarelo, coloreVerde, bold)
 import qualified Data.Text as T
 import qualified Data.Map as Map
 import Control.Concurrent (threadDelay)
@@ -31,7 +31,7 @@ forca = do
     else if opcao == "2" then do
         putStrLn "tem que voltar ao menu"
     else do
-        putStrLn $ bold (colore 11 "Opção inválida!")
+        putStrLn $ bold (coloreAmarelo "Opção inválida!")
         forca
 
 jogo :: IO ()
@@ -50,7 +50,7 @@ jogo = do
             limpaTerminal
             atualizaForca erros -- printa forca vazia já que erros inicia em zero
 
-            putStrLn $ bold (colore 11 "\nTEMA: " ++ tema)
+            putStrLn $ bold (coloreAmarelo "\nTEMA: " ++ tema)
             putStrLn stringSublinhada
             putStrLn $ "\nLetras digitadas: " ++ letrasDigitadas
             putStrLn "\nDigite uma letra:"
@@ -58,14 +58,14 @@ jogo = do
             
             if length letraDigitada > 1
                 then do
-                    putStrLn $ colore 11 "\nAdivinhe com letra e não palavras!"
+                    putStrLn $ coloreAmarelo "\nAdivinhe com letra e não palavras!"
                     loop stringSublinhada erros letrasDigitadas
                 else do
                     let letra = toLower (head letraDigitada) -- Converte a letra digitada para minúscula
                     if letra `elem` letrasDigitadas
                         then do
-                            putStrLn $ colore 11 "\nEssa letra já foi digitada!\n"
-                            threadDelay (800 * 1000) -- 0.7 segundos de delay
+                            putStrLn $ coloreAmarelo "\nEssa letra já foi digitada!\n"
+                            threadDelay (900 * 1000) -- 0.9 segundos de delay
                             limpaTerminal
                             loop stringSublinhada erros letrasDigitadas
                         else do
@@ -83,7 +83,7 @@ jogo = do
                                     let novoEstado = atualizaStringSublinhados letra stringSublinhada indices
                                     if map toLower novoEstado == map toLower palavra
                                         then
-                                            putStrLn $ bold (colore 2 "Parabéns!" ++ " Você acertou: " ++ novoEstado)
+                                            putStrLn $ bold (coloreVerde "Parabéns!" ++ " Você acertou: " ++ novoEstado)
                                         else do
                                             loop novoEstado erros letrasDigitadasAtualizadas -- se ainda não completou a palavra e não errou o limite.
     loop estadoAtual 0 []
@@ -96,7 +96,7 @@ handleInteracaoInicialForca = do
                 "- O jogador 2 será o jogador que tentará adivinhar a palavra dada pelo jogador 1.\n" ++
                 "\n- Caso a palavra contenha uma letra acentuada ou ç, digite exatamente a letra com sua acentuação ou o ç.\n" ++
                 "- Por exemplo, caso a palavra fosse 'Maçã' a ≠ ã, assim como c ≠ ç\n"
-    putStrLn $ bold (colore 11 regras)
+    putStrLn $ bold (coloreAmarelo regras)
     putStrLn "Digite o seu nome Jogador 1: "
     jogador1 <- getLine
     putStrLn "Digite o seu nome Jogador 2: "
@@ -213,4 +213,4 @@ handleCenarioPerda palavra = do
     putStrLn "██║   ██║██╔══██║██║╚██╔╝██║██╔══╝      ██║   ██║╚██╗ ██╔╝██╔══╝  ██╔══██╗"
     putStrLn "╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗    ╚██████╔╝ ╚████╔╝ ███████╗██║  ██║"
     putStrLn " ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝     ╚═════╝   ╚═══╝  ╚══════╝╚═╝  ╚═╝"
-    putStrLn (colore 11 ("                           A PALAVRA ERA " ++ map toUpper palavra ++ "!"))
+    putStrLn (coloreAmarelo ("                           A PALAVRA ERA " ++ map toUpper palavra ++ "!"))
