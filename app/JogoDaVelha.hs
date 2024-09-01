@@ -123,11 +123,11 @@ reiniciaJogo :: IO()
 reiniciaJogo = do
     putStrLn"Reiniciando o jogo em"
     putStrLn"3"
-    threadDelay (2 * 1000000)
+    threadDelay (1 * 1000000)
     putStrLn "2"
     threadDelay (1 * 1000000)
     putStrLn "1"
-    threadDelay (1 * 1000)
+    threadDelay (1 * 1000000)
     jogoDaVelha
 
 checaEmpate :: [[String]] -> Bool
@@ -146,7 +146,7 @@ pegaInput tabuleiro jogador = do
             putStrLn "\nEntrada inválida. Por favor, insira um número entre 1 e 9.\n"
             pegaInput tabuleiro jogador
         else if posicaoOcupada tabuleiro pos then do
-            putStrLn "\nPosição já ocupada. Por favor, escolha outra posição."
+            putStrLn "Posição já ocupada. Por favor, escolha outra posição.\n"
             pegaInput tabuleiro jogador
         else
             return (jogador, pos)
