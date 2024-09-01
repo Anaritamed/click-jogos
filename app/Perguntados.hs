@@ -67,7 +67,8 @@ jogo jogadores tema = do
     resultado <- quiz perguntas jogadores [0, 0] 1
     putStrLn $ placar jogadores resultado
     hClose arquivo
-    -- vencedor
+    -- colorir texto da resposta correta/incorreta
+    -- mostrar o vencedor
     -- jogar novamente?
 
 extraiPerguntas :: [String] -> [(String, [String], Int, String)]

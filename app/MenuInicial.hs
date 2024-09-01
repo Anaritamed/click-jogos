@@ -4,11 +4,12 @@ import Forca (forca)
 import Perguntados (perguntados)
 import JogoDaVelha (jogoDaVelha)
 import Utils (limpaTerminal)
-import Control.Concurrent (threadDelay)
 import System.Exit (exitSuccess)
+import Control.Concurrent (threadDelay)
 
 renderizaTelaInicial :: IO()
 renderizaTelaInicial = do
+    limpaTerminal
     putStrLn "==================================================="
     putStrLn "   ___ _ _      _       __                         "
     putStrLn "  / __\\ (_) ___| | __   \\ \\  ___   __ _  ___  ___ "
@@ -22,18 +23,19 @@ renderizaTelaInicial = do
     putStrLn "                                                   "
     putStrLn "Digite uma opção: "
     opcao <- getLine
-    if opcao == "1" then do
-        menu
-    else if opcao == "2" then do
+    handleInteracaoTelaInicial opcao
+
+handleInteracaoTelaInicial :: String -> IO()
+handleInteracaoTelaInicial opcao
+    | opcao == "1" = menu
+    | opcao == "2" = do
         putStrLn "Saindo..."
         exitSuccess
-    else do
+    | otherwise = do
         putStrLn "Opção inválida!"
         threadDelay (700 * 1000)
         limpaTerminal
         renderizaTelaInicial
-    return ()
-
 
 menu :: IO()
 menu = do
