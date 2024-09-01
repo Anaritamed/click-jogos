@@ -40,13 +40,12 @@ inicioJogo = do
     putStrLn "                                        VAMOS INICIAR O JOGO!                                              "
     putStrLn "-----------------------------------------------------------------------------------------------------------"
     putStrLn "                                            REGRAS DO JOGO                                                 "
+    putStrLn "                                                                                                           "
     putStrLn "1 - O jogo é uma competição entre dois jogadores.                                                          "
-    putStrLn "2 - Cada jogador terá a oportunidade de responder perguntas de diferentes temas.                           "
-    putStrLn "3 - A cada resposta correta, o jogador ganha 1 ponto.                                                      "
-    putStrLn "4 - O jogador que iniciar continua respondendo perguntas até errar.                                        "
-    putStrLn "5 - O segundo jogador terá a oportunidade de responder perguntas se o primeiro errar ou finalizar o quiz.  "      
-    putStrLn "6 - Ganha o jogador que obter mais pontos no fim.                                                          "
-    putStrLn "7 - Caso os jogadores empatem, os dois são considerados vencedores.                                        "
+    putStrLn "2 - No início do jogo, os jogadores escolhem um tema para o quiz.                                          "
+    putStrLn "3 - A cada rodada, os jogadores irão responder perguntas sobre o tema escolhido.                           "
+    putStrLn "4 - A pontuação da pergunta é dada pelo seu nível de dificuldade.                                          "
+    putStrLn "5 - No fim, ganha o jogador que obter mais pontos! :D                                                      "
     putStrLn "-----------------------------------------------------------------------------------------------------------"
     putStrLn "                                                                                                           "
     putStrLn "                            ANTES DE INICIAR, DIGITE OS NOMES DOS JOGADORES                                "
@@ -75,10 +74,10 @@ inicioJogo = do
         putStrLn "Opção inválida!"
         inicioJogo
 
-temaJogo :: String ->  IO()
+temaJogo :: String -> IO()
 temaJogo jogador = do
     putStrLn "-----------------------------------------------------------------------------------------------------------"
-    putStrLn $ "                                         Vamos lá, sua vez " ++ jogador ++ "                             "
+    putStrLn $ "                                         Vamos lá, sua vez " ++ jogador ++ "!                            "
     putStrLn "-----------------------------------------------------------------------------------------------------------"
     putStrLn "                                     ESCOLHA UM TEMA DE SUA PREFERÊNCIA                                    "
     putStrLn "-----------------------------------------------------------------------------------------------------------"
@@ -104,8 +103,6 @@ temaJogo jogador = do
     else do
         putStrLn "Opção inválida!"
         temaJogo jogador
-
-    return ()
     
 jogo :: String -> String -> IO()
 jogo jogador tema = do 
@@ -117,5 +114,3 @@ jogo jogador tema = do
 
     putStrLn conteudo
     hClose arquivo
-
-    return ()

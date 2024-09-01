@@ -46,12 +46,12 @@ getBinDir, getLibDir, getDynLibDir, getDataDir, getLibexecDir, getSysconfDir :: 
 
 
 bindir, libdir, dynlibdir, datadir, libexecdir, sysconfdir :: FilePath
-bindir     = "/home/luisa/.cabal/bin"
-libdir     = "/home/luisa/.cabal/lib/x86_64-linux-ghc-9.4.8/click-jogos-0.1.0.0-inplace-click-jogos"
-dynlibdir  = "/home/luisa/.cabal/lib/x86_64-linux-ghc-9.4.8"
-datadir    = "/home/luisa/.cabal/share/x86_64-linux-ghc-9.4.8/click-jogos-0.1.0.0"
-libexecdir = "/home/luisa/.cabal/libexec/x86_64-linux-ghc-9.4.8/click-jogos-0.1.0.0"
-sysconfdir = "/home/luisa/.cabal/etc"
+bindir     = "/home/luis/.cabal/bin"
+libdir     = "/home/luis/.cabal/lib/x86_64-linux-ghc-9.4.8/click-jogos-0.1.0.0-inplace-click-jogos"
+dynlibdir  = "/home/luis/.cabal/lib/x86_64-linux-ghc-9.4.8"
+datadir    = "/home/luis/.cabal/share/x86_64-linux-ghc-9.4.8/click-jogos-0.1.0.0"
+libexecdir = "/home/luis/.cabal/libexec/x86_64-linux-ghc-9.4.8/click-jogos-0.1.0.0"
+sysconfdir = "/home/luis/.cabal/etc"
 
 getBinDir     = catchIO (getEnv "click_jogos_bindir")     (\_ -> return bindir)
 getLibDir     = catchIO (getEnv "click_jogos_libdir")     (\_ -> return libdir)
