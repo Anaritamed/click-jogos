@@ -12,6 +12,7 @@ inicio :: IO()
 inicio = do
     limpaTerminal
     putStrLn telaInicial
+    putStrLn "Digite uma opção: "
     opcao <- getLine
     processaOpcaoInicio opcao
 
@@ -26,6 +27,7 @@ processaOpcaoInicio opcao = case opcao of
 menu :: IO()
 menu = do
     putStrLn jogos
+    putStrLn "Digite uma opção: "
     opcao <- getLine
     processaEscolhaJogo opcao
 
@@ -62,7 +64,6 @@ telaInicial = intercalate "\n"
     , "          MENU (1)        |        SAIR (2)        "
     , "==================================================="
     , "                                                   "
-    , "Digite uma opção: "
     ]
 
 jogos :: String
@@ -76,5 +77,4 @@ jogos = intercalate "\n"
     , "                JOGO DA VELHA (3)                  "
     , "==================================================="
     , "                                                   "
-    , "Digite uma opção: "
     ]
