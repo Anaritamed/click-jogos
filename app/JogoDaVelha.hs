@@ -1,6 +1,5 @@
 module JogoDaVelha where
 import Control.Monad (replicateM_)
-
 import Data.Map (Map)
 import Data.Text (Text)
 import Data.Char (isDigit)
@@ -82,7 +81,7 @@ printaPartes [x] = mapM_ (putStrLn . intercalate " | ") (formata x)
 printaPartes (x:xs) = do
     mapM_ (putStrLn . intercalate " | ") (formata x)
     let tileWidth = length (head (head x))
-    let lineLength = tileWidth * 3 + 2 * 2 -- 3 tiles and 2 separators between them
+    let lineLength = tileWidth * 3 + 2 * 2
     putStrLn (replicate lineLength '-')
     printaPartes xs
 
