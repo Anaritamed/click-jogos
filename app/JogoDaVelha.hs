@@ -1,4 +1,5 @@
 module JogoDaVelha where
+
 import Control.Monad (replicateM_)
 import Data.Map (Map)
 import Data.Text (Text)
