@@ -31,12 +31,12 @@ cabal init
 ```
 cabal update
 ```
-Atualiza o índice de pacotes do Hackage. Caso necessário, baixe a biblioteca GMP com `sudo apt-get install libgmp-dev`.
+Atualiza o índice de pacotes do Hackage.
 
 ```
 cabal build
 ```
-Compila o código e depêndencias do projeto. Execute este comando quando realizar alguma alteração nas dependências.
+Compila o código e depêndencias do projeto.
 
 ```
 cabal run
