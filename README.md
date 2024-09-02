@@ -15,7 +15,7 @@ Nesse jogo, o jogador 1 escolhe uma palavra para o jogador 2 adivinhar, tendo co
 # Tecnologias Utilizadas 🤖
 
 ### Haskell
-Linguagem de programação puramente funcional, ou seja, não possui variáveis e outras características imperativas. Nela, tudo é feito através de definições e chamadas de função. Haskell também é uma linguagem estaticamente e fortemente tipada, e possui avaliação preguiçosa (lazy evaluation), na qual nada é feito até que seja necessário. Comando para instalar o Haskell a partir do GHCup:
+Linguagem de programação puramente funcional, em que tudo é feito através de definições e chamadas de função. Haskell é uma linguagem estaticamente e fortemente tipada, que possui avaliação preguiçosa (lazy evaluation), na qual nada é feito até que seja necessário. Comando para instalar o Haskell e Cabal na máquina a partir do GHCup:
 ```
 curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
 ```
