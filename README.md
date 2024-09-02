@@ -3,19 +3,19 @@ O sistema **Click Jogos** simula uma central de jogos na qual o usuário pode es
 
 # Jogos Disponíveis 🎮
 
-### Jogo da velha
-O jogo consiste em preencher as lacunas vazias de um tabuleiro com os símbolos “X” (pelo jogador 1) e “O” (pelo jogador 2). Os jogadores jogam alternadamente e vence quem conseguir formar primeiro uma linha com três símbolos iguais. Caso nenhum dos dois consiga esse feito, o jogo termina com empate (velha).
+### Jogo da forca
+Nesse jogo, o jogador 1 escolhe uma palavra para o jogador 2 adivinhar, tendo como dica apenas o tema e a quantidade de letras da palavra. A cada rodada, o jogador 2 dá o palpite de uma letra da palavra. Se acertar, a letra é preenchida na palavra, já se o palpite estiver errado, é desenhada uma parte do corpo do boneco na forca. Caso o boneco seja desenhado por completo, o jogador 2 perde.
 
 ### Perguntados
 Quiz de perguntas e respostas sobre determinado tema escolhido pelos jogadores no início do jogo. Ganha o jogador que responder mais perguntas corretamente e acumular mais pontos!
 
-### Jogo da forca
-Nesse jogo, o jogador 1 escolhe uma palavra para o jogador 2 adivinhar, tendo como dica apenas o tema e a quantidade de letras da palavra. A cada rodada, o jogador 2 dá o palpite de uma letra da palavra. Se acertar, a letra é preenchida na palavra, já se o palpite estiver errado, é desenhada uma parte do corpo do boneco na forca. Caso o boneco seja desenhado por completo, o jogador 2 perde.
+### Jogo da velha
+O jogo consiste em preencher as lacunas vazias de um tabuleiro com os símbolos “X” (pelo jogador 1) e “O” (pelo jogador 2). Os jogadores jogam alternadamente e vence quem conseguir formar primeiro uma linha com três símbolos iguais. Caso nenhum dos dois consiga esse feito, o jogo termina com empate (velha).
 
 # Tecnologias Utilizadas 🤖
 
 ### Haskell
-Linguagem de programação puramente funcional, ou seja, não possui variáveis e outras características imperativas. Nela, tudo é feito através de definições e chamadas de função. Haskell também é uma linguagem estaticamente e fortemente tipada, e possui avaliação preguiçosa (lazy evaluation), na qual nada é feito até que seja necessário. Comando para instalar o Haskell a partir do GHCup:
+Linguagem de programação puramente funcional, em que tudo é feito através de definições e chamadas de função. Haskell é uma linguagem estaticamente e fortemente tipada, que possui avaliação preguiçosa (lazy evaluation), na qual nada é feito até que seja necessário. Comando para instalar o Haskell e Cabal na máquina a partir do GHCup:
 ```
 curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
 ```
@@ -31,12 +31,12 @@ cabal init
 ```
 cabal update
 ```
-Atualiza o índice de pacotes do Hackage. Caso necessário, baixe a biblioteca GMP com `sudo apt-get install libgmp-dev`.
+Atualiza o índice de pacotes do Hackage.
 
 ```
 cabal build
 ```
-Compila o código e depêndencias do projeto. Execute este comando quando realizar alguma alteração nas dependências.
+Compila o código e depêndencias do projeto.
 
 ```
 cabal run
