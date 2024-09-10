@@ -55,7 +55,7 @@ jogo jogadores tema = do
     hSetEncoding arquivo utf8
     conteudo <- T.hGetContents arquivo
     let perguntas = extraiPerguntas $ lines (T.unpack conteudo)
-    resultado <- quiz perguntas jogadores [0, 0] 1
+    resultado <- quiz perguntas jogadores [0, 0] 0
     putStrLn $ placar jogadores resultado
     hClose arquivo
     putStrLn $ mostraVencedor jogadores resultado
@@ -70,12 +70,6 @@ processaOpcaoJogarNovamente "2" = putStrLn "Saindo..."
 processaOpcaoJogarNovamente _   = do
     putStrLn "Opção inválida!"
     processaOpcaoJogarNovamente =<< getLine
-
-mostraVencedor :: [String] -> [Int] -> String
-mostraVencedor jogadores [pontuacao1, pontuacao2]
-    | pontuacao1 > pontuacao2 = bold $ coloreVerde ("\nParabéns! O vencedor é " ++ head jogadores ++ "!")
-    | pontuacao2 > pontuacao1 = bold $ coloreVerde ("\nParabéns! O vencedor é " ++ jogadores !! 1 ++ "!")
-    | otherwise               = bold $ coloreAmarelo "\nO jogo empatou!"
 
 extraiPerguntas :: [String] -> [(String, [String], Int, String)]
 extraiPerguntas [] = []
@@ -122,11 +116,14 @@ jogadorDaVez jogadores rodada = jogadores !! (rodada `mod` 2)
 
 atualizaPontuacoes :: [Int] -> Int -> Int -> [Int]
 atualizaPontuacoes pontuacoes pontos rodada = zipWith (+) pontuacoes
-    [if vezJogador1 rodada then pontos else 0,
-     if vezJogador1 rodada then 0 else pontos]
+    [if even rodada then pontos else 0,
+     if even rodada then 0 else pontos]
 
-vezJogador1 :: Int -> Bool
-vezJogador1 rodada = rodada `mod` 2 == 1
+mostraVencedor :: [String] -> [Int] -> String
+mostraVencedor [jogador1, jogador2] [pontuacao1, pontuacao2]
+    | pontuacao1 > pontuacao2 = bold $ coloreVerde ("\nParabéns! O vencedor é " ++ jogador1 ++ "!")
+    | pontuacao2 > pontuacao1 = bold $ coloreVerde ("\nParabéns! O vencedor é " ++ jogador2 ++ "!")
+    | otherwise               = bold $ coloreAmarelo "\nO jogo empatou!"
 
 -- Variáveis de texto
 menuPerguntados :: String
@@ -162,12 +159,12 @@ regrasDoJogo = intercalate "\n"
     ]
 
 placar :: [String] -> [Int] -> String
-placar jogadores pontuacoes = intercalate "\n"
+placar [jogador1, jogador2] [pontuacao1, pontuacao2] = intercalate "\n"
     [ "-----------------------------------------------------------------------------------------------------------"
     , "                                               PLACAR                                                      "
     , "-----------------------------------------------------------------------------------------------------------"
-    , "JOGADOR 1: " ++ head jogadores ++ " - Pontuação: " ++ show (head pontuacoes)
-    , "JOGADOR 2: " ++ jogadores !! 1 ++ " - Pontuação: " ++ show (pontuacoes !! 1)
+    , "JOGADOR 1: " ++ jogador1 ++ " - Pontuação: " ++ show pontuacao1
+    , "JOGADOR 2: " ++ jogador2 ++ " - Pontuação: " ++ show pontuacao2
     , "-----------------------------------------------------------------------------------------------------------"
     ]
 
