@@ -121,9 +121,10 @@ atualizaPontuacoes pontuacoes pontos rodada = zipWith (+) pontuacoes
 
 mostraVencedor :: [String] -> [Int] -> String
 mostraVencedor [jogador1, jogador2] [pontuacao1, pontuacao2]
-    | pontuacao1 > pontuacao2 = bold $ coloreVerde ("\nParabéns! O vencedor é " ++ jogador1 ++ "!")
-    | pontuacao2 > pontuacao1 = bold $ coloreVerde ("\nParabéns! O vencedor é " ++ jogador2 ++ "!")
+    | pontuacao1 > pontuacao2 = mensagemVencedor jogador1
+    | pontuacao2 > pontuacao1 = mensagemVencedor jogador2
     | otherwise               = bold $ coloreAmarelo "\nO jogo empatou!"
+    where mensagemVencedor jogador = bold $ coloreVerde ("\nParabéns! O vencedor é " ++ jogador ++ "!")
 
 -- Variáveis de texto
 menuPerguntados :: String
