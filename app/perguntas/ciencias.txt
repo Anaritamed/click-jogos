@@ -51,7 +51,7 @@ a) 8
 b) 9
 c) 7
 d) 10
-Nível fácil: 10 pontos
+Nível médio: 20 pontos
 Resposta: a) 8
 
 Qual é o nome do músculo responsável pelos batimentos cardíacos?
@@ -102,14 +102,6 @@ d) Hidrogênio
 Nível médio: 20 pontos
 Resposta: c) Oxigênio
 
-Qual é o número atômico do carbono na tabela periódica? 
-a) 6
-b) 8
-c) 12
-d) 14
-Nível médio: 20 pontos
-Resposta: a) 6
-
 Em qual continente está localizado o Deserto do Saara? 
 a) Ásia
 b) América do Norte
@@ -117,6 +109,14 @@ c) África
 d) Austrália
 Nível médio: 20 pontos
 Resposta: c) África
+
+Qual é o número atômico do carbono na tabela periódica? 
+a) 6
+b) 8
+c) 12
+d) 14
+Nível difícil: 30 pontos
+Resposta: a) 6
 
 Qual é o nome do cientista que desenvolveu a teoria da evolução por seleção natural? 
 a) Charles Darwin

@@ -14,14 +14,6 @@ d) Guerra da Independência do Brasil
 Nível fácil: 10 pontos
 Resposta: a) A Revolução Francesa
 
-Qual a data da chegada da família real portuguesa ao Brasil?
-a) 22 de janeiro de 1808
-b) 22 de fevereiro de 1808
-c) 12 de janeiro de 1809
-d) 15 de fevereiro de 1809
-Nível fácil: 10 pontos
-Resposta: a) 22 de janeiro de 1808
-
 Qual o objetivo de Martinho Lutero ao iniciar a Reforma Protestante?
 a) Assegurar a unidade e a disciplina dos fiéis.
 b) Contestar a venda de indulgências, o culto a relíquias e santos.
@@ -53,6 +45,14 @@ c) Queda do Muro de Berlim
 d) Ataque a Hiroshima
 Nível fácil: 10 pontos
 Resposta: b) Invasão da Polônia pela Alemanha
+
+Qual a data da chegada da família real portuguesa ao Brasil?
+a) 22 de janeiro de 1808
+b) 22 de fevereiro de 1808
+c) 12 de janeiro de 1809
+d) 15 de fevereiro de 1809
+Nível médio: 20 pontos
+Resposta: a) 22 de janeiro de 1808
 
 Quem foi o primeiro presidente dos Estados Unidos?
 a) Abraham Lincoln
@@ -102,14 +102,6 @@ d) Bordeaux
 Nível médio: 20 pontos
 Resposta: c) Paris
 
-Qual era o nome da esposa de Dom Pedro I, conhecida como a primeira imperatriz do Brasil? 
-a) Leopoldina
-b) Maria Amélia
-c) Carlota Joaquina
-d) Isabel
-Nível médio: 20 pontos
-Resposta: a) Leopoldina
-
 Qual foi a principal consequência da Revolução Industrial na sociedade? 
 a) Expansão do comércio marítimo
 b) Migração em massa para áreas urbanas
@@ -117,6 +109,14 @@ c) Formação dos estados-nação
 d) Declínio da monarquia
 Nível médio: 20 pontos
 Resposta: b) Migração em massa para áreas urbanas
+
+Qual era o nome da esposa de Dom Pedro I, conhecida como a primeira imperatriz do Brasil? 
+a) Leopoldina
+b) Maria Amélia
+c) Carlota Joaquina
+d) Isabel
+Nível difícil: 30 pontos
+Resposta: a) Leopoldina
 
 Quem foi o líder revolucionário que lutou pela independência de várias colônias espanholas na América do Sul? 
 a) Simón Bolívar

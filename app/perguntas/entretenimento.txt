@@ -6,14 +6,6 @@ d) SeaWorld
 Nível fácil: 10 pontos
 Resposta: a) Magic Kingdom
 
-Quem interpretou o personagem Harry Potter nos filmes?
-a) Elijah Wood
-b) Daniel Radcliffe
-c) Tom Felton
-d) Rupert Grint
-Nível fácil: 10 pontos
-Resposta: b) Daniel Radcliffe
-
 Qual é o nome da série de televisão onde um grupo de amigos vive em Nova York?
 a) Seinfeld
 b) How I Met Your Mother
@@ -54,6 +46,14 @@ d) Stars Hollow
 Nível fácil: 10 pontos
 Resposta: b) Hawkins
 
+Quem interpretou o personagem Harry Potter nos filmes?
+a) Elijah Wood
+b) Daniel Radcliffe
+c) Tom Felton
+d) Rupert Grint
+Nível médio: 20 pontos
+Resposta: b) Daniel Radcliffe
+
 Qual é o nome do primeiro filme da franquia "Velozes e Furiosos"?
 a) Velozes e Furiosos
 b) Mais Velozes Mais Furiosos
@@ -61,14 +61,6 @@ c) Desafio em Tóquio
 d) Operação Rio
 Nível médio: 20 pontos
 Resposta: a) Velozes e Furiosos
-
-Qual é o nome do personagem amarelo em "Os Simpsons"?
-a) Bart
-b) Lisa
-c) Homer
-d) Marge
-Nível médio: 20 pontos
-Resposta: c) Homer
 
 Quem é o diretor do filme "Titanic"?
 a) Steven Spielberg
@@ -117,6 +109,14 @@ c) Ilvermorny
 d) Hogwarts
 Nível médio: 20 pontos
 Resposta: d) Hogwarts
+
+Qual é o nome do jogo em que é buscada a cura para um fungo?
+a) Uncharted
+b) The Walking Dead
+c) Detroid: Become Human
+d) The Last of Us
+Nível difícil: 30 pontos
+Resposta: d) The Last of Us
 
 Qual é o nome completo do personagem principal em "Breaking Bad"?
 a) Walter White

@@ -22,14 +22,6 @@ d) show
 Nível fácil: 10 pontos
 Resposta: b) print
 
-Qual é o símbolo usado para criar um comentário em uma linha no código C++?
-a) //
-b) #
-c) /*
-d) <!--
-Nível fácil: 10 pontos
-Resposta: a) //
-
 Qual linguagem de programação é amplamente usada para desenvolvimento de páginas web dinâmicas?
 a) JavaScript
 b) C
@@ -53,6 +45,14 @@ c) 10
 d) 0
 Nível fácil: 10 pontos
 Resposta: b) 1
+
+Qual é o símbolo usado para criar um comentário em uma linha no código C++?
+a) //
+b) #
+c) /*
+d) <!--
+Nível médio: 20 pontos
+Resposta: a) //
 
 Qual linguagem é famosa por ser utilizada em inteligência artificial e ciência de dados?
 a) PHP
@@ -86,7 +86,7 @@ d) Configurar métodos estáticos
 Nível médio: 20 pontos
 Resposta: b) Inicializar um objeto da classe
 
-Qual comando é usado para criar um novo branch no Git?
+Qual comando é usado apenas para criar uma nova branch no Git?
 a) git branch
 b) git create
 c) git checkout -b
@@ -102,6 +102,14 @@ d) Um operador matemático
 Nível médio: 20 pontos
 Resposta: a) Uma função anônima
 
+Qual é o comando SQL para excluir uma tabela de um banco de dados?
+a) DROP TABLE
+b) DELETE TABLE
+c) REMOVE TABLE
+d) ERASE TABLE
+Nível médio: 20 pontos
+Resposta: a) DROP TABLE
+
 Qual é a saída do código JavaScript console.log([2] == [2]);?
 a) true
 b) false
@@ -109,14 +117,6 @@ c) undefined
 d) null
 Nível difícil: 30 pontos
 Resposta: b) false
-
-Qual é o comando SQL para excluir uma tabela de um banco de dados?
-a) DROP TABLE
-b) DELETE TABLE
-c) REMOVE TABLE
-d) ERASE TABLE
-Nível difícil: 30 pontos
-Resposta: a) DROP TABLE
 
 Em C++, qual cabeçalho é necessário para usar as funções de entrada e saída padrão?
 a) <stdlib.h>

@@ -51,7 +51,7 @@ a) Bélgica
 b) Holanda
 c) Suécia
 d) Dinamarca
-Nível fácil: 10 pontos
+Nível médio: 20 pontos
 Resposta: b) Holanda
 
 Qual é a montanha mais alta do mundo?
@@ -77,14 +77,6 @@ c) Tailândia
 d) Japão
 Nível médio: 20 pontos
 Resposta: d) Japão
-
-Qual é o maior lago de água doce em volume do mundo? 
-a) Lago Superior
-b) Lago Vitória
-c) Lago Baikal
-d) Lago Tanganica
-Nível médio: 20 pontos
-Resposta: c) Lago Baikal
 
 Qual é o país mais populoso da África? 
 a) Egito
@@ -117,6 +109,14 @@ c) Ásia
 d) América do Sul
 Nível médio: 20 pontos
 Resposta: a) África
+
+Qual é o maior lago de água doce em volume do mundo? 
+a) Lago Superior
+b) Lago Vitória
+c) Lago Baikal
+d) Lago Tanganica
+Nível difícil: 30 pontos
+Resposta: c) Lago Baikal
 
 Qual país europeu tem o maior número de ilhas? 
 a) Noruega
