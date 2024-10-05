@@ -1,4 +1,4 @@
-:- use_module(perguntados).
+:- [forca].
 
 exibe_tela_inicial :-
     tela_inicial(Lines),
@@ -30,7 +30,7 @@ menu :-
     read(Opcao),
     processaOpcaoMenu(Opcao).
 
-% processaOpcaoMenu(1) :- forca.
+processaOpcaoMenu(1) :- forca.
 processaOpcaoMenu(2) :- perguntados.
 % processaOpcaoMenu(3) :- jogoDaVelha.
 processaOpcaoMenu(_) :- 
