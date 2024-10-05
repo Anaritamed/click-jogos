@@ -1,4 +1,4 @@
-:- use_module(perguntados).
+:- [perguntados].
 
 exibe_tela_inicial :-
     tela_inicial(Lines),
@@ -11,11 +11,11 @@ exibe_menu :-
 inicio :- 
     exibe_tela_inicial,
     write("Digite uma opcao: "),
-    read(Opcao),
+    read_line_to_string(user_input, Opcao),
     processaOpcaoInicio(Opcao).
 
-processaOpcaoInicio(1) :- menu.
-processaOpcaoInicio(2) :- sair.
+processaOpcaoInicio("1") :- menu.
+processaOpcaoInicio("2") :- sair.
 processaOpcaoInicio(_) :- 
     write("Opcao invalida. Tente novamente.\n"),
     inicio.
@@ -27,12 +27,12 @@ sair :-
 menu :- 
     exibe_menu,
     write("Digite uma opcao: "),
-    read(Opcao),
+    read_line_to_string(user_input, Opcao),
     processaOpcaoMenu(Opcao).
 
-% processaOpcaoMenu(1) :- forca.
-processaOpcaoMenu(2) :- perguntados.
-% processaOpcaoMenu(3) :- jogoDaVelha.
+% processaOpcaoMenu("1") :- forca.
+% processaOpcaoMenu("3") :- jogoDaVelha.
+processaOpcaoMenu("2") :- perguntados.
 processaOpcaoMenu(_) :- 
     write("Opcao invalida. Tente novamente.\n"),
     menu.
