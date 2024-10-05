@@ -28,7 +28,7 @@ temaJogo(Jogadores) :-
     read_line_to_string(user_input, Opcao),
     processaTemaJogo(Opcao, Jogadores).
 
-tema_disponivel(1, _, "entretenimento.txt").
+tema_disponivel("1", _, "entretenimento.txt").
 tema_disponivel("2", _, "programacao.txt").
 tema_disponivel("3", _, "geografia.txt").
 tema_disponivel("4", _, "historia.txt").
@@ -46,32 +46,31 @@ jogo(Jogadores, Tema) :-
     atom_concat(CWD, 'perguntas/', CaminhoBase),
     atom_concat(CaminhoBase, Tema, CaminhoArquivo), 
     open(CaminhoArquivo, read, Arquivo),
-    read_lines(Arquivo, Linhas),
-    close(Arquivo),
-    extrai_perguntas(Linhas, Perguntas),
-    quiz(Perguntas, Jogadores,[0, 0], 0, Resultado),
-    exibe_placar(Jogadores, Resultado),
-    mostra_vencedor(Jogadores, Resultado),
-    exibe_menu_jogar_novamente,
-    write("Digite uma opcao: "),
-    read_line_to_string(user_input, Opcao),
-    processaOpcaoJogarNovamente(Opcao).
+    read_lines(Arquivo, Linhas), 
+    
+    %O problema esta aqui - extrai_perguntas(Linhas, Perguntas) nao esta funcionando e entra em loop
 
-processaOpcaoJogarNovamente(1) :- inicioJogo.
-processaOpcaoJogarNovamente(2) :- sair.
+    %extrai_perguntas(Linhas, Perguntas).
+    %close(Arquivo),
+    %quiz(Perguntas, Jogadores,[0, 0], 0, Resultado),
+    %exibe_placar(Jogadores, Resultado),
+    %mostra_vencedor(Jogadores, Resultado),
+    %exibe_menu_jogar_novamente,
+    %write("Digite uma opcao: "),
+    %read_line_to_string(user_input, Opcao),
+    %processaOpcaoJogarNovamente(Opcao).
+
+processaOpcaoJogarNovamente("1") :- inicioJogo.
+processaOpcaoJogarNovamente("2") :- sair.
 processaOpcaoJogarNovamente(_) :- 
     write("Opcao invalida. Tente novamente.\n"),
     exibe_menu_jogar_novamente.
 
 extrai_perguntas([], []).
-extrai_perguntas([Pergunta|Linhas], [(Pergunta, Alternativas, Pontos, Resposta)|Perguntas]) :-
-    take(4, Linhas, Alternativas),
-    nth0(4, Linhas, LinhaPontos),
+extrai_perguntas([Pergunta, A1, A2, A3, A4, LinhaPontos, LinhaResposta | Linhas], [(Pergunta, [A1, A2, A3, A4], Pontos, Resposta)|Perguntas]) :-
     extrai_pontos(LinhaPontos, Pontos),
-    nth0(5, Linhas, LinhaResposta),
     extrai_resposta(LinhaResposta, Resposta),
-    drop(7, Linhas, Restantes),
-    extrai_perguntas(Restantes, Perguntas).
+    extrai_perguntas(Linhas, Perguntas).
 
 extrai_pontos(Linha, Pontos) :-
     split_string(Linha, " ", "", Palavras),
