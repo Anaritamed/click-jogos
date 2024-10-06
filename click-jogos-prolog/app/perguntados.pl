@@ -45,73 +45,68 @@ jogo(Jogadores, Tema) :-
     working_directory(CWD, CWD),  
     atom_concat(CWD, 'perguntas/', CaminhoBase),
     atom_concat(CaminhoBase, Tema, CaminhoArquivo), 
-    open(CaminhoArquivo, read, Arquivo),
+    open(CaminhoArquivo, read, Arquivo, [encoding(utf8)]),
     read_lines(Arquivo, Linhas), 
-    
-    %O problema esta aqui - extrai_perguntas(Linhas, Perguntas) nao esta funcionando e entra em loop
-
-    %extrai_perguntas(Linhas, Perguntas).
-    %close(Arquivo),
-    %quiz(Perguntas, Jogadores,[0, 0], 0, Resultado),
-    %exibe_placar(Jogadores, Resultado),
-    %mostra_vencedor(Jogadores, Resultado),
-    %exibe_menu_jogar_novamente,
-    %write("Digite uma opcao: "),
-    %read_line_to_string(user_input, Opcao),
-    %processaOpcaoJogarNovamente(Opcao).
+    pega_perguntas(Linhas, Perguntas),
+    quiz(Perguntas, Jogadores,[0, 0], 0, Resultado),
+    exibe_placar(Jogadores, Resultado),
+    close(Arquivo),
+    mostra_vencedor(Jogadores, Resultado),
+    exibe_menu_jogar_novamente,
+    write("Digite uma opcao: "),
+    read_line_to_string(user_input, Opcao),
+    processaOpcaoJogarNovamente(Opcao).
 
 processaOpcaoJogarNovamente("1") :- inicioJogo.
 processaOpcaoJogarNovamente("2") :- sair.
 processaOpcaoJogarNovamente(_) :- 
     write("Opcao invalida. Tente novamente.\n"),
-    exibe_menu_jogar_novamente.
+    exibe_menu_jogar_novamente,
+    write("Digite uma opcao: "),
+    read_line_to_string(user_input, Opcao),
+    processaOpcaoJogarNovamente(Opcao).
 
-extrai_perguntas([], []).
-extrai_perguntas([Pergunta, A1, A2, A3, A4, LinhaPontos, LinhaResposta | Linhas], [(Pergunta, [A1, A2, A3, A4], Pontos, Resposta)|Perguntas]) :-
-    extrai_pontos(LinhaPontos, Pontos),
-    extrai_resposta(LinhaResposta, Resposta),
-    extrai_perguntas(Linhas, Perguntas).
+pega_perguntas([], []).
+pega_perguntas([_, Pergunta, A1, A2, A3, A4, LinhaPontos, LinhaResposta | Linhas], [(Pergunta, [A1, A2, A3, A4], Pontos, Resposta) | Perguntas]) :-
+    pega_ponto(LinhaPontos, Pontos),
+    pega_resposta(LinhaResposta, Resposta),
+    pega_perguntas(Linhas, Perguntas).
+pega_perguntas([Pergunta, A1, A2, A3, A4, LinhaPontos, LinhaResposta | Linhas], [(Pergunta, [A1, A2, A3, A4], Pontos, Resposta) | Perguntas]) :-
+    pega_ponto(LinhaPontos, Pontos),
+    pega_resposta(LinhaResposta, Resposta),
+    pega_perguntas(Linhas, Perguntas). 
 
-extrai_pontos(Linha, Pontos) :-
-    split_string(Linha, " ", "", Palavras),
+pega_ponto(LinhaPontos, Pontos) :-
+    split_string(LinhaPontos, " ", "", Palavras),
     nth0(2, Palavras, StringPontos),
-    number_string(Pontos, StringPontos).
+    number_string(Pontos, StringPontos).  
 
-extrai_resposta(Linha, Resposta) :-
-    sub_string(Linha, 10, 1, _, Resposta).
+pega_resposta(LinhaResposta, Resposta) :-
+    split_string(LinhaResposta, " ", "", Palavras),
+    nth0(1, Palavras, RespostaAlternativa),
+    sub_string(RespostaAlternativa, 0, 1, _, Resposta).
+    split_string(RespostaAlternativa, ")". "", Resposta).
 
-take(0, _, []).
-take(N, [H|T], [H|R]) :-
-    N > 0,
-    N1 is N - 1,
-    take(N1, T, R).
-
-drop(0, L, L).
-drop(N, [_|T], R) :-
-    N > 0,
-    N1 is N - 1,
-    drop(N1, T, R).   
-
-quiz([], _, Pontuacoes, _) :- 
-    Pontuacoes = Pontuacoes.
-quiz([(Pergunta, Alternativas, Pontos, RespostaCorreta)|Linhas], Jogadores, Pontuacoes, Rodada) :-
+quiz([], _, Pontuacoes, _, Resultado) :- 
+    Resultado = Pontuacoes.
+quiz([(Pergunta, Alternativas, Pontos, RespostaCorreta)|Linhas], Jogadores, Pontuacoes, Rodada, Resultado) :-
     write('-----------------------------------------------------------------------------------------------------------'), nl,
     write(Pergunta), nl,
     maplist(write_alternativa, Alternativas),
     write('\nValendo '), write(Pontos), write(' pontos!'), nl,
-    write('-----------------------------------------------------------------------------------------------------------'), nl,
+    writeln('-----------------------------------------------------------------------------------------------------------'),
     jogador_da_vez(Jogadores, Rodada, Jogador),
-    write(Jogador), write(', sua resposta: '), nl,
+    write(Jogador), write(', sua resposta: '),
     read_line_to_string(user_input, RespostaInicial),
     valida_resposta_jogador(RespostaInicial, Resposta),
     (   string_lower(Resposta, RespostaCorreta)
     ->  write('\nResposta correta! Você ganhou '), write(Pontos), write(' pontos!'), nl,
         atualiza_pontuacoes(Pontuacoes, Pontos, Rodada, NovasPontuacoes),
         NovaRodada is Rodada + 1,
-        quiz(Linhas, Jogadores, NovasPontuacoes, NovaRodada)
+        quiz(Linhas, Jogadores, NovasPontuacoes, NovaRodada, Resultado)
     ;   write('\nResposta incorreta!'), nl,
         NovaRodada is Rodada + 1,
-        quiz(Linhas, Jogadores, Pontuacoes, NovaRodada)
+        quiz(Linhas, Jogadores, Pontuacoes, NovaRodada, Resultado)
     ).
 
 write_alternativa(Alternativa) :-
