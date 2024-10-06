@@ -5,7 +5,8 @@
     color/3,
     colore_amarelo/2,
     colore_vermelho/2,
-    colore_verde/2
+    colore_verde/2,
+    sair/0
 ]).
 
 :- use_module(library(system)).
@@ -43,3 +44,7 @@ colore_vermelho(Str, ColoredStr) :-
 % Função para alterar cor de string para verde
 colore_verde(Str, ColoredStr) :-
     color(46, Str, ColoredStr).
+
+sair :- 
+    write("Saindo...\n"), 
+    halt.
