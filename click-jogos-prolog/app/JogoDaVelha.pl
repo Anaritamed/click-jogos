@@ -1,7 +1,6 @@
 :- dynamic tabuleiro/1.
 :- use_module(library(system)).
 
-% Função principal do jogo
 jogo_da_velha :-
     limpa_terminal,
     writeln("============================================================================"),
