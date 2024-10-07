@@ -6,7 +6,10 @@
     colore_amarelo/2,
     colore_vermelho/2,
     colore_verde/2,
-    sair/0
+    sair/0,
+    trim/2,
+    trim_leading/2,
+    trim_trailing/2
 ]).
 
 :- use_module(library(system)).
@@ -48,3 +51,22 @@ colore_verde(Str, ColoredStr) :-
 sair :- 
     write("Saindo...\n"), 
     halt.
+
+% Remove leading and trailing whitespace from a string
+trim(Str, Trimmed) :-
+    string_codes(Str, Codes),
+    trim_leading(Codes, TrimmedCodes),
+    trim_trailing(TrimmedCodes, FinalCodes),
+    string_codes(Trimmed, FinalCodes).
+
+% Remove leading whitespace
+trim_leading([C|Cs], Trimmed) :-
+    char_type(C, space), !,
+    trim_leading(Cs, Trimmed).
+trim_leading(Codes, Codes).
+
+% Remove trailing whitespace
+trim_trailing(Codes, Trimmed) :-
+    reverse(Codes, RevCodes),
+    trim_leading(RevCodes, RevTrimmed),
+    reverse(RevTrimmed, Trimmed).

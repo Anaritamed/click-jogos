@@ -1,10 +1,7 @@
 :- module(enforcado, [
     forca/0,
-    get_campo_valido/3,
-    get_Entrada/2,
-    campo_valido/1,
-    apenas_espacos/1,
-    tem_digito/1
+    get_Entrada/3,
+    eh_valido/2
 ]).
 
 :- use_module(utils).
@@ -31,6 +28,7 @@ inicio :-
 
 processa_opcao("1") :- get_dados_partida.
 processa_opcao("2") :- sair.
+processa_opcao(_) :- inicio.
 
 get_dados_partida :-
     regras_do_jogo(_, Regras),
@@ -40,7 +38,11 @@ get_dados_partida :-
     write("Digite o seu nome, Jogador 2: \n"),
     read_line_to_string(user_input, _),
     format("\nCerto ~s, qual a palavra a ser adivinhada?\n", [Jogador1]),
-    get_campo_valido("palavra", "\nPalavra inválida!", _).
+    get_Entrada(_, Palavra, "Palavra inválida!"),
+    writeln(Palavra),
+    write("Qual o tema da palavra?\n"),
+    get_Entrada(_, Tema, "Tema inválido!"),
+    writeln(Tema).
 
 regras_do_jogo(Regras, RegrasEstilizadas) :-
     Regras = "\n📜 Regras do jogo: \n- O jogador 1 será o jogador que dirá a palavra para ser adivinhada, assim como qual tema ela se relaciona.
@@ -52,40 +54,21 @@ regras_do_jogo(Regras, RegrasEstilizadas) :-
     bold(RegrasAmarelas, RegrasBold),
     RegrasEstilizadas = RegrasBold.
 
-get_campo_valido(Campo, MsgErro, Entrada) :- 
-    get_Entrada(Campo, EntradaTemp),
-    (eh_valido(Campo, Entrada) -> 
-        Entrada = EntradaTemp ; 
-        colore_amarelo(MsgErro, MsgErroA),
-        bold(MsgErroA, MsgErroAB),
-        write(MsgErroAB),
-        get_campo_valido(Campo, MsgErro, Entrada)
-    ).
+get_Entrada(_, Entrada, MsgErro) :- 
+    read_line_to_string(user_input, EntradaTemp),
+    trim(EntradaTemp, EntradaTrimmed),
+    (eh_valido(_, EntradaTrimmed) -> 
+        Entrada = EntradaTrimmed
+        ; writeln(MsgErro), get_Entrada(_, Entrada, MsgErro)).
 
-get_Entrada("palavra", Entrada) :- read_line_to_string(user_input, Entrada).
+eh_valido(_, Texto) :- 
+    string(Texto),
+    string_length(Texto, Tamanho),
+    Tamanho > 0,
+    trim(Texto, TextoTrim),
+    TextoTrim \= "". 
 
-eh_valido("palavra", Entrada) :- 
-    string_chars(Entrada, Chars),
-    campo_valido(Chars),
-    length(Chars, Tam),
-    Tam > 1.
-
-% Predicado que verifica se um campo é válido
-campo_valido(Campo) :-
-    nonvar(Campo),           % Verifica se Campo não é uma variável não instanciada
-    \+ Campo = [],           % Verifica se Campo não é vazio
-    \+ apenas_espacos(Campo), % Verifica se Campo não contém apenas espaços em branco
-    \+ tem_digito(Campo).    % Verifica se Campo não contém dígitos
-
-% Predicado que verifica se uma string contém apenas espaços em branco
-apenas_espacos([]).
-apenas_espacos([C|R]) :-
-    char_type(C, space),     % Verifica se o caractere é um espaço
-    apenas_espacos(R).        % Chama recursivamente para o restante da lista
-
-% Predicado que verifica se uma string contém dígitos
-tem_digito([]).
-tem_digito([C|_]) :-
-    char_type(C, digit).      % Verifica se o caractere é um dígito
-tem_digito([_|R]) :- 
-    tem_digito(R).            % Chama recursivamente para o restante da lista
+eh_valido("letra", Tema) :- 
+    string(Tema),
+    string_length(Tema, Tamanho),
+    Tamanho > 0.
