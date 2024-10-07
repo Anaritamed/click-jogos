@@ -1,8 +1,9 @@
 :- dynamic tabuleiro/1.
 :- use_module(library(system)).
+:- use_module(library(lists)).
+:- use_module(library(readutil)).
 
 jogo_da_velha :-
-    limpa_terminal,
     writeln("============================================================================"),
     writeln("      _                         _        __     __   _ _                    "),
     writeln("     | | ___   __ _  ___     __| | __ _  \\ \\   / /__| | |__   __ _        "),
@@ -23,46 +24,34 @@ jogo_da_velha :-
         writeln("Saindo do jogo..."),
         sleep(0.5),
         halt
-    ; 
+    ;
         writeln("Opção inválida!"),
         sleep(0.5),
         jogo_da_velha
     ).
 
-limpa_terminal :-
-    writeln('\e[H\e[2J').
+vazio(["                 ",
+       "                 ",
+       "                 ",
+       "                 ",
+       "                 ",
+       "                 "]).
 
-:- use_module(library(lists)).
+bola(["     OOOOOOO     ",
+      "   O         O   ",
+      "  O           O  ",
+      "  O           O  ",
+      "   O         O   ",
+      "     OOOOOOO     "]).
 
-vazio([
-    "                 ",
-    "                 ",
-    "                 ",
-    "                 ",
-    "                 ",
-    "                 "
-]).
+xis(["    \\\\    //     ",
+     "     \\\\  //      ",
+     "      \\\\//       ",
+     "      //\\\\       ",
+     "     //  \\\\      ",
+     "    //    \\\\     "]).
 
-bola([
-    "     OOOOOOO     ",
-    "   O         O   ",
-    "  O           O  ",
-    "  O           O  ",
-    "   O         O   ",
-    "     OOOOOOO     "
-]).
-
-xis([
-    "    \\\\    //     ",
-    "     \\\\  //      ",
-    "      \\\\//       ",
-    "      //\\\\       ",
-    "     //  \\\\      ",
-    "    //    \\\\     "
-]).
-
-
-tabuleiro_inicial([V,V,V,V,V,V,V,V,V]) :- vazio(V).
+tabuleiro_inicial([V, V, V, V, V, V, V, V, V]) :- vazio(V).
 
 pega_partes_do_tabuleiro(_, [], []).
 pega_partes_do_tabuleiro(N, Lista, [Parte|Partes]) :-
@@ -101,11 +90,7 @@ checa_vitoria(Tabuleiro, Jogador) :-
 nth1_pos(Tabuleiro, Posicao, Bloco) :-
     nth1(Posicao, Tabuleiro, Bloco).
 
-padroes_vitoria([
-    [1, 2, 3], [4, 5, 6], [7, 8, 9],
-    [1, 4, 7], [2, 5, 8], [3, 6, 9],
-    [1, 5, 9], [3, 5, 7]
-]).
+padroes_vitoria([[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8], [3, 6, 9], [1, 5, 9], [3, 5, 7]]).
 
 reinicia_jogo :-
     writeln("Reiniciando o jogo em 3"),
@@ -122,9 +107,11 @@ checa_empate(Tabuleiro) :-
 pega_input(Tabuleiro, Jogador, Posicao) :-
     format("Vez do jogador ~w. Insira seu movimento (1-9): ", [Jogador]),
     read(Pos),
-    ( integer(Pos), between(1, 9, Pos), \+ posicao_ocupada(Tabuleiro, Pos) -> Posicao = Pos
-    ; writeln("Entrada inválida!"),
-      pega_input(Tabuleiro, Jogador, Posicao)
+    ( integer(Pos), between(1, 9, Pos), \+ posicao_ocupada(Tabuleiro, Pos) ->
+        Posicao = Pos
+    ;
+        writeln("Entrada inválida!"),
+        pega_input(Tabuleiro, Jogador, Posicao)
     ).
 
 posicao_ocupada(Tabuleiro, Posicao) :-
@@ -151,4 +138,4 @@ iniciar_jogo :-
     tabuleiro_inicial(Tabuleiro),
     game_loop(Tabuleiro, 'X').
 
-:-jogo_da_velha.
+:- jogo_da_velha.
