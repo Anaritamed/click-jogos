@@ -150,3 +150,5 @@ game_loop(Tabuleiro, Jogador) :-
 iniciar_jogo :-
     tabuleiro_inicial(Tabuleiro),
     game_loop(Tabuleiro, 'X').
+
+:-jogo_da_velha.
