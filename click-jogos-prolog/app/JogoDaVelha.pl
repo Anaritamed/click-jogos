@@ -1,5 +1,3 @@
-:- dynamic tabuleiro/1.
-
 limpar_tela :-
     write('\e[H\e[2J').
 
