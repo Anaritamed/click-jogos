@@ -1,7 +1,7 @@
 :- module(menu_inicial, [inicio/0]).
 :- [perguntados].
-    
-inicio :- 
+
+inicio :-
     exibe_tela_inicial,
     write("Digite uma opção: "),
     read_line_to_string(user_input, Opcao),
@@ -32,8 +32,8 @@ exibe_menu :-
     maplist(writeln, Lines).
 
 % processa_opcao_menu("1") :- forca.
-% processa_opcao_menu("3") :- jogoDaVelha.
 processa_opcao_menu("2") :- perguntados.
+% processa_opcao_menu("3") :- jogoDaVelha.
 processa_opcao_menu(_) :- 
     write("Opção inválida. Tente novamente.\n"),
     menu.

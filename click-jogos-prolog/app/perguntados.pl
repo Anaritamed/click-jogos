@@ -5,28 +5,28 @@ perguntados :-
     exibe_menu_perguntados,
     write("Digite uma opção: "),
     read_line_to_string(user_input, Opcao),
-    processaOpcaoMenu(Opcao).
+    processa_opcao_menu(Opcao).
 
-processaOpcaoMenu("1") :- inicioJogo.
-processaOpcaoMenu("2") :- sair.
-processaOpcaoMenu(_) :- 
+processa_opcao_menu("1") :- inicio_jogo.
+processa_opcao_menu("2") :- sair.
+processa_opcao_menu(_) :- 
     write("Opção inválida. Tente novamente.\n"),
     perguntados.
 
-inicioJogo :- 
+inicio_jogo :- 
     exibe_regras_do_jogo,
     writeln("Digite o nome do jogador 1: "),
     read_line_to_string(user_input, Jogador1),
     writeln("Digite o nome do jogador 2: "),
     read_line_to_string(user_input, Jogador2),
     exibe_placar([Jogador1, Jogador2], [0, 0]),
-    temaJogo([Jogador1, Jogador2]).
+    tema_jogo([Jogador1, Jogador2]).
 
-temaJogo(Jogadores) :-
+tema_jogo(Jogadores) :-
     exibe_escolha_tema,
     write("Digite uma opção: "),
     read_line_to_string(user_input, Opcao),
-    processaTemaJogo(Opcao, Jogadores).
+    processa_tema_jogo(Opcao, Jogadores).
 
 tema_disponivel("1", _, "entretenimento.txt").
 tema_disponivel("2", _, "programacao.txt").
@@ -35,9 +35,9 @@ tema_disponivel("4", _, "historia.txt").
 tema_disponivel("5", _, "ciencias.txt").
 tema_disponivel(_, Jogadores, _) :- 
     write("Opção inválida. Tente novamente.\n"),
-    temaJogo(Jogadores).
+    tema_jogo(Jogadores).
 
-processaTemaJogo(Opcao, Jogadores) :-
+processa_tema_jogo(Opcao, Jogadores) :-
     tema_disponivel(Opcao, Jogadores, Tema),
     jogo(Jogadores, Tema).
 
@@ -55,16 +55,16 @@ jogo(Jogadores, Tema) :-
     exibe_menu_jogar_novamente,
     write("Digite uma opção: "),
     read_line_to_string(user_input, Opcao),
-    processaOpcaoJogarNovamente(Opcao).
+    processa_opcao_jogar_novamente(Opcao).
 
-processaOpcaoJogarNovamente("1") :- inicioJogo.
-processaOpcaoJogarNovamente("2") :- sair.
-processaOpcaoJogarNovamente(_) :- 
+processa_opcao_jogar_novamente("1") :- inicio_jogo.
+processa_opcao_jogar_novamente("2") :- sair.
+processa_opcao_jogar_novamente(_) :- 
     write("Opção inválida. Tente novamente.\n"),
     exibe_menu_jogar_novamente,
     write("Digite uma opção: "),
     read_line_to_string(user_input, Opcao),
-    processaOpcaoJogarNovamente(Opcao).
+    processa_opcao_jogar_novamente(Opcao).
 
 pega_perguntas([], []).
 pega_perguntas([_, Pergunta, A1, A2, A3, A4, LinhaPontos, LinhaResposta | Linhas], [(Pergunta, [A1, A2, A3, A4], Pontos, Resposta) | Perguntas]) :-
@@ -148,22 +148,22 @@ mensagem_vencedor(Jogador) :-
     write('\nParabéns! O vencedor é '), write(Jogador), write('!'), nl.
 
 exibe_menu_perguntados :-
-    menuPerguntados(Lines),
+    menu_perguntados(Lines),
     maplist(writeln, Lines).
 
 exibe_regras_do_jogo :-
-    regrasDoJogo(Lines),
+    regras_do_jogo(Lines),
     maplist(writeln, Lines).
 
 exibe_placar([Jogador1, Jogador2], [Pontuacao1, Pontuacao2]) :-
     placar([Jogador1, Jogador2], [Pontuacao1, Pontuacao2]).
 
 exibe_escolha_tema :-
-    escolhaTema(Lines),
+    escolha_tema(Lines),
     maplist(writeln, Lines).
 
 exibe_menu_jogar_novamente :-
-    menuJogarNovamente(Lines),
+    menu_jogar_novamente(Lines),
     maplist(writeln, Lines).
 
 sair :- 
@@ -177,7 +177,7 @@ read_lines(Stream, Lines) :-
       read_lines(Stream, Rest)            % Continua lendo
     ).
 
-menuPerguntados([
+menu_perguntados([
      "  ____   U _____ u   ____      ____     _   _   _   _     _____      _      ____      U  ___ u  ____     "
     , "U|  _\"\\ u\\| ___\"|/U |  _\"\\ uU /\"___|uU |\"|u| | | \\ |\"|   |_ \" _| U  /\"\\  u |  _\"\\      \\\"/_ \\/ / __\"| u  "
     , "\\| |_) |/ |  _|\"   \\| |_) |/\\| |  _ / \\| |\\| |<|  \\| |>    | |    \\/ _ \\/ /| | | |     | | | |<\\___ \\/   "
@@ -192,7 +192,7 @@ menuPerguntados([
     , "-----------------------------------------------------------------------------------------------------------"
     ]).
 
-regrasDoJogo([
+regras_do_jogo([
      "-----------------------------------------------------------------------------------------------------------"
     , "                                        VAMOS INICIAR O JOGO!                                              "
     , "-----------------------------------------------------------------------------------------------------------"
@@ -227,7 +227,7 @@ placar([Jogador1, Jogador2], [Pontuacao1, Pontuacao2]) :-
 
     write(ResultadoFinal).
 
-escolhaTema([
+escolha_tema([
       "                                      ESCOLHA UM TEMA PARA O QUIZ                                          "
     , "-----------------------------------------------------------------------------------------------------------"
     , "                                           (1) ENTRETENIMENTO                                              "
@@ -238,7 +238,7 @@ escolhaTema([
     , "-----------------------------------------------------------------------------------------------------------"
     ]).
 
-menuJogarNovamente([
+menu_jogar_novamente([
       "-----------------------------------------------------------------------------------------------------------"
     , "                                           JOGAR NOVAMENTE?                                                "
     , "-----------------------------------------------------------------------------------------------------------"
