@@ -1,4 +1,5 @@
 :- module(menu_inicial, [inicio/0]).
+:- [forca].
 :- [perguntados].
 :- [jogo_da_velha].
 
@@ -18,10 +19,6 @@ processa_opcao_inicio(_) :-
     write("Opção inválida. Tente novamente.\n"),
     inicio.
 
-sair :- 
-    write("Saindo..."), 
-    !.
-
 menu :- 
     exibe_menu,
     write("Digite uma opção: "),
@@ -32,7 +29,7 @@ exibe_menu :-
     jogos(Lines),
     maplist(writeln, Lines).
 
-% processa_opcao_menu("1") :- forca.
+processa_opcao_menu("1") :- forca.
 processa_opcao_menu("2") :- perguntados.
 processa_opcao_menu("3") :- jogo_da_velha.
 processa_opcao_menu(_) :- 
