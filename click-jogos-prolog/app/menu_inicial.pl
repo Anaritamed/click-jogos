@@ -1,5 +1,6 @@
 :- module(menu_inicial, [inicio/0]).
 :- [utils].
+:- [forca].
 :- [perguntados].
 :- [jogo_da_velha].
 
@@ -29,7 +30,7 @@ exibe_menu :-
     jogos(Lines),
     maplist(writeln, Lines).
 
-% processa_opcao_menu("1") :- forca.
+processa_opcao_menu("1") :- forca.
 processa_opcao_menu("2") :- perguntados.
 processa_opcao_menu("3") :- jogo_da_velha.
 processa_opcao_menu(_) :- 
