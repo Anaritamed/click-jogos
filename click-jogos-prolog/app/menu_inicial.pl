@@ -1,5 +1,6 @@
 :- module(menu_inicial, [inicio/0]).
 :- [perguntados].
+:- [jogo_da_velha].
 
 inicio :-
     exibe_tela_inicial,
@@ -33,7 +34,7 @@ exibe_menu :-
 
 % processa_opcao_menu("1") :- forca.
 processa_opcao_menu("2") :- perguntados.
-% processa_opcao_menu("3") :- jogoDaVelha.
+processa_opcao_menu("3") :- jogo_da_velha.
 processa_opcao_menu(_) :- 
     write("Opção inválida. Tente novamente.\n"),
     menu.
