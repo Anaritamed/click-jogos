@@ -1,4 +1,5 @@
 :- module(menu_inicial, [inicio/0]).
+:- [utils].
 :- [perguntados].
 :- [jogo_da_velha].
 
@@ -17,10 +18,6 @@ processa_opcao_inicio("2") :- sair.
 processa_opcao_inicio(_) :- 
     write("Opção inválida. Tente novamente.\n"),
     inicio.
-
-sair :- 
-    write("Saindo..."), 
-    !.
 
 menu :- 
     exibe_menu,

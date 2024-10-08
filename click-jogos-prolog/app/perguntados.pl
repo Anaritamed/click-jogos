@@ -1,7 +1,9 @@
 :- module(perguntados, [perguntados/0]).
+:- use_module(utils).
 :- use_module(library(readutil)).
 
-perguntados :- 
+perguntados :-
+    limpa_terminal,
     exibe_menu_perguntados,
     write("Digite uma opção: "),
     read_line_to_string(user_input, Opcao),
@@ -10,7 +12,7 @@ perguntados :-
 processa_opcao_menu("1") :- inicio_jogo.
 processa_opcao_menu("2") :- sair.
 processa_opcao_menu(_) :- 
-    write("Opção inválida. Tente novamente.\n"),
+    write("Opção inválida! Tente novamente.\n"),
     perguntados.
 
 inicio_jogo :- 
@@ -34,7 +36,7 @@ tema_disponivel("3", _, "geografia.txt").
 tema_disponivel("4", _, "historia.txt").
 tema_disponivel("5", _, "ciencias.txt").
 tema_disponivel(_, Jogadores, _) :- 
-    write("Opção inválida. Tente novamente.\n"),
+    write("Opção inválida! Tente novamente.\n"),
     tema_jogo(Jogadores).
 
 processa_tema_jogo(Opcao, Jogadores) :-
@@ -60,7 +62,7 @@ jogo(Jogadores, Tema) :-
 processa_opcao_jogar_novamente("1") :- inicio_jogo.
 processa_opcao_jogar_novamente("2") :- sair.
 processa_opcao_jogar_novamente(_) :- 
-    write("Opção inválida. Tente novamente.\n"),
+    write("Opção inválida! Tente novamente.\n"),
     exibe_menu_jogar_novamente,
     write("Digite uma opção: "),
     read_line_to_string(user_input, Opcao),
@@ -90,7 +92,9 @@ quiz([], _, Pontuacoes, _, Resultado) :-
     Resultado = Pontuacoes.
 quiz([(Pergunta, Alternativas, Pontos, RespostaCorreta) | Linhas], Jogadores, Pontuacoes, Rodada, Resultado) :-
     write('-----------------------------------------------------------------------------------------------------------'), nl,
-    write(Pergunta), nl,
+    colore_amarelo(Pergunta, PerguntaAmarela),
+    bold(PerguntaAmarela, PerguntaBold),
+    write(PerguntaBold), nl,
     maplist(write_alternativa, Alternativas),
     write('\nValendo '), write(Pontos), write(' pontos!'), nl,
     writeln('-----------------------------------------------------------------------------------------------------------'),
@@ -99,11 +103,17 @@ quiz([(Pergunta, Alternativas, Pontos, RespostaCorreta) | Linhas], Jogadores, Po
     read_line_to_string(user_input, RespostaInicial),
     valida_resposta_jogador(RespostaInicial, Resposta),
     (   string_lower(Resposta, RespostaCorreta)
-    ->  write('\nResposta correta! Você ganhou '), write(Pontos), write(' pontos!'), nl,
+    ->  format(atom(Mensagem), '\nResposta correta! Você ganhou ~d pontos!', [Pontos]),
+        colore_verde(Mensagem, MensagemVerde),
+        bold(MensagemVerde, MensagemBold),
+        write(MensagemBold), nl,
         atualiza_pontuacoes(Pontuacoes, Pontos, Rodada, NovasPontuacoes),
         NovaRodada is Rodada + 1,
         quiz(Linhas, Jogadores, NovasPontuacoes, NovaRodada, Resultado)
-    ;   write('\nResposta incorreta!'), nl,
+    ;   Mensagem = '\nResposta incorreta!',
+        colore_vermelho(Mensagem, MensagemVermelho),
+        bold(MensagemVermelho, MensagemBold),
+        write(MensagemBold), nl,
         NovaRodada is Rodada + 1,
         quiz(Linhas, Jogadores, Pontuacoes, NovaRodada, Resultado)
     ).
@@ -114,7 +124,10 @@ write_alternativa(Alternativa) :-
 valida_resposta_jogador(Resposta, Resposta) :-
     member(Resposta, ["a", "b", "c", "d"]), !.
 valida_resposta_jogador(_, Resposta) :-
-    write('Entrada incorreta! Escolha uma alternativa válida.'), nl,
+    Mensagem = 'Entrada incorreta! Escolha uma alternativa válida.',
+    colore_vermelho(Mensagem, MensagemVermelho),
+    bold(MensagemVermelho, MensagemBold),
+    write(MensagemBold), nl,
     read_line_to_string(user_input, NovaResposta),
     valida_resposta_jogador(NovaResposta, Resposta).
 
@@ -140,11 +153,17 @@ mostra_vencedor([Jogador1, Jogador2], [Pontuacao1, Pontuacao2]) :-
     ->  mensagem_vencedor(Jogador1)
     ;   Pontuacao2 > Pontuacao1
     ->  mensagem_vencedor(Jogador2)
-    ;   write('\nO jogo empatou!'), nl
+    ;   Mensagem = '\nO jogo empatou!',
+        colore_amarelo(Mensagem, MensagemAmarela),
+        bold(MensagemAmarela, MensagemBold),
+        write(MensagemBold), nl
     ).
 
 mensagem_vencedor(Jogador) :-
-    write('\nParabéns! O vencedor é '), write(Jogador), write('!'), nl.
+    format(atom(Mensagem), '\nParabéns! O vencedor é ~w!', [Jogador]),
+    colore_verde(Mensagem, MensagemVerde),
+    bold(MensagemVerde, MensagemBold),
+    write(MensagemBold), nl.
 
 exibe_menu_perguntados :-
     menu_perguntados(Lines),
@@ -164,10 +183,6 @@ exibe_escolha_tema :-
 exibe_menu_jogar_novamente :-
     menu_jogar_novamente(Lines),
     maplist(writeln, Lines).
-
-sair :- 
-    write("Saindo..."), 
-    !.
 
 read_lines(Stream, Lines) :-
     read_line_to_string(Stream, Line),  % Lê uma linha do arquivo

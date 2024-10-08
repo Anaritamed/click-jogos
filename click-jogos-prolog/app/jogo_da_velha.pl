@@ -1,12 +1,10 @@
 :- module(jogo_da_velha, [jogo_da_velha/0]).
-
-limpar_tela :-
-    write('\e[H\e[2J').
+:- use_module(utils).
 
 jogo_da_velha :-
     retractall(tabuleiro(_)),
     assert(tabuleiro(['_', '_', '_', '_', '_', '_', '_', '_', '_'])),
-    limpar_tela,
+    limpa_terminal,
     exibir_boas_vindas,
     escolher_opcao.
 
@@ -16,7 +14,7 @@ escolher_opcao :-
     read_line_to_string(user_input, Escolha),
     (
         Escolha = "1" -> iniciar_jogada;
-        Escolha = "2" -> writeln('Saindo do jogo...'), halt;
+        Escolha = "2" -> sair;
         writeln('Opção inválida!'), escolher_opcao
     ).
 
@@ -91,12 +89,12 @@ loop_jogada(Tabuleiro, Jogador) :-
     writef('\nJogador %w, insira sua jogada (1-9): \n', [Jogador]),
     read_line_to_string(user_input, Pos_string),
     atom_number(Pos_string, Pos),
-    limpar_tela,
+    limpa_terminal,
     (jogada_valida(Tabuleiro, Pos) ->
         atualizar_tabuleiro(Tabuleiro, Jogador, Pos, TabuleiroAtualizado),
         (
-            verificar_vencedor(TabuleiroAtualizado, Jogador) -> limpar_tela, exibir_tabuleiro, writef('Jogador %w vence!\n', [Jogador]), reiniciar_jogo;
-            verificar_empate(TabuleiroAtualizado) -> limpar_tela, exibir_tabuleiro, writeln('Empate!'), reiniciar_jogo;
+            verificar_vencedor(TabuleiroAtualizado, Jogador) -> limpa_terminal, exibir_tabuleiro, writef('Jogador %w vence!\n', [Jogador]), reiniciar_jogo;
+            verificar_empate(TabuleiroAtualizado) -> limpa_terminal, exibir_tabuleiro, writeln('Empate!'), reiniciar_jogo;
             proximo_jogador(Jogador, ProximoJogador), loop_jogada(TabuleiroAtualizado, ProximoJogador)
         );
         writeln('Movimento inválido! Tente novamente.\n'), loop_jogada(Tabuleiro, Jogador)
@@ -143,7 +141,7 @@ reiniciar_jogo :-
     writeln('Reiniciando o jogo em 2...'), sleep(1),
     writeln('Reiniciando o jogo em 1...'), sleep(1),
     writeln(''),
-    limpar_tela,
+    limpa_terminal,
     jogo_da_velha.
 
 exibir_boas_vindas :-
