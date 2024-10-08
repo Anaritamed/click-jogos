@@ -84,7 +84,8 @@ jogo(Palavra, Tema) :-
 loop(Palavra, EstadoAtual, LetrasDigitadas, Erros) :-
     (Erros == 6 ->
         cena_perda(Palavra),
-        sair
+        sleep(3),
+        inicio
         ;
         true
     ),
@@ -105,7 +106,8 @@ loop(Palavra, EstadoAtual, LetrasDigitadas, Erros) :-
         atualiza_jogo(Palavra, LetraChar, EstadoAtual, NovoEstado, Erros, NovosErros),
         (NovoEstado == Palavra ->
             cena_vitoria(Palavra),
-            sair
+                sleep(3),
+                inicio
         ;
             limpa_terminal,
             loop(Palavra, NovoEstado, [LetraChar|LetrasDigitadas], NovosErros)
