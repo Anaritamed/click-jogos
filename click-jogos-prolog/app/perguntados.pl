@@ -88,7 +88,7 @@ pega_resposta(LinhaResposta, Resposta) :-
 
 quiz([], _, Pontuacoes, _, Resultado) :- 
     Resultado = Pontuacoes.
-quiz([(Pergunta, Alternativas, Pontos, RespostaCorreta)|Linhas], Jogadores, Pontuacoes, Rodada, Resultado) :-
+quiz([(Pergunta, Alternativas, Pontos, RespostaCorreta) | Linhas], Jogadores, Pontuacoes, Rodada, Resultado) :-
     write('-----------------------------------------------------------------------------------------------------------'), nl,
     write(Pergunta), nl,
     maplist(write_alternativa, Alternativas),
