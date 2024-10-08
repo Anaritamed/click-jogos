@@ -85,7 +85,6 @@ pega_resposta(LinhaResposta, Resposta) :-
     split_string(LinhaResposta, " ", "", Palavras),
     nth0(1, Palavras, RespostaAlternativa),
     sub_string(RespostaAlternativa, 0, 1, _, Resposta).
-    split_string(RespostaAlternativa, ")". "", Resposta).
 
 quiz([], _, Pontuacoes, _, Resultado) :- 
     Resultado = Pontuacoes.
