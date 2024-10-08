@@ -27,7 +27,7 @@ cabal init
 ```
 
 ### Prolog
-Linguagem de programação lógica, que é de mais alto nível que a programação imperativa ou funcional. Em Prolog, todo programa implementa uma relação, que pode ser avaliada como verdadeira ou falsa. A partir delas, podemos definir fatos, regras e consultas.
+Linguagem de programação lógica, que é de mais alto nível que a programação imperativa ou funcional. Em Prolog, todo programa implementa uma relação, que pode ser avaliada como verdadeira ou falsa. A partir delas, podemos definir fatos, regras e consultas. Comando para instalar o SWI-Prolog, implementação em código aberto de Prolog:
 ```
 sudo add-apt-repository ppa:swi-prolog/stable
 sudo apt-get update
