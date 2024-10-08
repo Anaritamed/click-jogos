@@ -16,7 +16,7 @@ forca :-
     inicio.
 
 inicio :-
-    %limpa_terminal,
+    limpa_terminal,
     writeln("                                               "),
     writeln("   ███████╗ ██████╗ ██████╗  ██████╗ █████╗    "),
     writeln("   ██╔════╝██╔═══██╗██╔══██╗██╔════╝██╔══██╗   "),
@@ -44,9 +44,9 @@ get_dados_partida :-
     write("Digite o seu nome, Jogador 2: \n"),
     read_line_to_string(user_input, _),
     format("\nCerto ~s, qual a palavra a ser adivinhada?\n", [Jogador1]),
-    get_Entrada(_, Palavra, "Palavra inválida!"),
+    get_Entrada("palavra", Palavra, "Palavra inválida!"),
     write("Qual o tema da palavra?\n"),
-    get_Entrada(_, Tema, "Tema inválido!"),
+    get_Entrada("tema", Tema, "Tema inválido!"),
     jogo(Palavra, Tema).
 
 regras_do_jogo(Regras, RegrasEstilizadas) :-
@@ -59,7 +59,14 @@ regras_do_jogo(Regras, RegrasEstilizadas) :-
     bold(RegrasAmarelas, RegrasBold),
     RegrasEstilizadas = RegrasBold.
 
-get_Entrada(_, Entrada, MsgErro) :- 
+get_Entrada("palavra", Entrada, MsgErro) :- 
+    read_line_to_string(user_input, EntradaTemp),
+    trim(EntradaTemp, EntradaTrimmed),
+    (eh_valido(_, EntradaTrimmed) -> 
+        Entrada = EntradaTrimmed
+        ; writeln(MsgErro), get_Entrada(_, Entrada, MsgErro)).
+
+get_Entrada("tema", Entrada, MsgErro) :- 
     read_line_to_string(user_input, EntradaTemp),
     trim(EntradaTemp, EntradaTrimmed),
     (eh_valido(_, EntradaTrimmed) -> 
@@ -85,12 +92,18 @@ jogo(Palavra, Tema) :-
     atom_chars(PalavraMin, ListaPalavra),
     length(ListaPalavra, N),
     cria_lista_sublinhados(N, EstadoAtual),
-    writeln("Tema: "),
-    writeln(Tema),
+    colore_amarelo(Tema, TemaAmarelo),
+    format("Tema: ~w~n", [TemaAmarelo]),
     loop(ListaPalavra, EstadoAtual, [], 0).
 
 % Função principal de loop
 loop(Palavra, EstadoAtual, LetrasDigitadas, Erros) :-
+    (Erros == 6 ->
+        cena_perda(Palavra),
+        sair
+        ;
+        true
+    ),
     Erros < 6,
     atualiza_forca(Erros),
     format("Palavra atual: ~w~n", [EstadoAtual]),
@@ -106,10 +119,10 @@ loop(Palavra, EstadoAtual, LetrasDigitadas, Erros) :-
     ;
         atualiza_jogo(Palavra, LetraChar, EstadoAtual, NovoEstado, Erros, NovosErros),
         (NovoEstado == Palavra ->
-            Resultado = cenaVitoria(Palavra),
-            write(Resultado),
+            cena_vitoria(Palavra),
             sair
         ;
+            limpa_terminal,
             loop(Palavra, NovoEstado, [LetraChar|LetrasDigitadas], NovosErros)
         )
     ).
@@ -142,6 +155,11 @@ cria_lista_sublinhados(N, ['_'|Resto]) :-
     N > 0,
     N1 is N - 1,
     cria_lista_sublinhados(N1, Resto).
+
+print_mensagem([]).
+print_mensagem([Linha|Resto]) :-
+    writeln(Linha),
+    print_mensagem(Resto).
 
 % Atualiza a forca de acordo com o número de erros
 atualiza_forca(0) :-
@@ -222,11 +240,21 @@ atualiza_forca(6) :-
     writeln("  ====             "),
     writeln("Você perdeu!").
 
-cenaVitoria(Palavra) :-[
-     "  ██████╗███████╗██████╗ ████████╗ █████╗     ██████╗ ███████╗███████╗██████╗  ██████╗ ███████╗████████╗ █████╗ ██╗"
-    ," ██╔════╝██╔════╝██╔══██╗╚══██╔══╝██╔══██╗    ██╔══██╗██╔════╝██╔════╝██╔══██╗██╔═══██╗██╔════╝╚══██╔══╝██╔══██╗██║"
-    ," ██║     █████╗  ██████╔╝   ██║   ███████║    ██████╔╝█████╗  ███████╗██████╔╝██║   ██║███████╗   ██║   ███████║██║"
-    ," ██║     ██╔══╝  ██╔══██╗   ██║   ██╔══██║    ██╔══██╗██╔══╝  ╚════██║██╔═══╝ ██║   ██║╚════██║   ██║   ██╔══██║╚═╝"
-    ," ╚██████╗███████╗██║  ██║   ██║   ██║  ██║    ██║  ██║███████╗███████║██║     ╚██████╔╝███████║   ██║   ██║  ██║██╗"
-    ,"  ╚═════╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝    ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝      ╚═════╝ ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝"
-    ,"                               PARABÉNS, VOCÊ VENCEU! A PALAVRA ERA: ", Palavra, "!"].
+cena_vitoria(Palavra) :-
+    limpa_terminal,
+    writeln("  ██████╗███████╗██████╗ ████████╗ █████╗     ██████╗ ███████╗███████╗██████╗  ██████╗ ███████╗████████╗ █████╗ ██╗"),
+    writeln(" ██╔════╝██╔════╝██╔══██╗╚══██╔══╝██╔══██╗    ██╔══██╗██╔════╝██╔════╝██╔══██╗██╔═══██╗██╔════╝╚══██╔══╝██╔══██╗██║"),
+    writeln(" ██║     █████╗  ██████╔╝   ██║   ███████║    ██████╔╝█████╗  ███████╗██████╔╝██║   ██║███████╗   ██║   ███████║██║"),
+    writeln(" ██║     ██╔══╝  ██╔══██╗   ██║   ██╔══██║    ██╔══██╗██╔══╝  ╚════██║██╔═══╝ ██║   ██║╚════██║   ██║   ██╔══██║╚═╝"),
+    writeln(" ╚██████╗███████╗██║  ██║   ██║   ██║  ██║    ██║  ██║███████╗███████║██║     ╚██████╔╝███████║   ██║   ██║  ██║██╗"),
+    writeln("  ╚═════╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝    ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝      ╚═════╝ ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝"),
+    write("                               PARABÉNS, VOCÊ VENCEU! A PALAVRA ERA: "), write(Palavra), write("!"), nl.
+
+cena_perda(Palavra) :-
+    writeln(" ██████╗  █████╗ ███╗   ███╗███████╗     ██████╗ ██╗   ██╗███████╗██████╗ "),
+    writeln("██╔════╝ ██╔══██╗████╗ ████║██╔════╝    ██╔═══██╗██║   ██║██╔════╝██╔══██╗"),
+    writeln("██║  ███╗███████║██╔████╔██║█████╗      ██║   ██║██║   ██║█████╗  ██████╔╝"),
+    writeln("██║   ██║██╔══██║██║╚██╔╝██║██╔══╝      ██║   ██║╚██╗ ██╔╝██╔══╝  ██╔══██╗"),
+    writeln("╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗    ╚██████╔╝ ╚████╔╝ ███████╗██║  ██║"),
+    writeln(" ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝     ╚═════╝   ╚═══╝  ╚══════╝╚═╝  ╚═╝"),
+    write("                           A PALAVRA ERA: "), writeln(Palavra).
