@@ -35,9 +35,9 @@ get_dados_partida :-
     write("Digite o seu nome, Jogador 2: \n"),
     read_line_to_string(user_input, _),
     format("\nCerto ~s, qual a palavra a ser adivinhada?\n", [Jogador1]),
-    get_Entrada("palavra", Palavra, "Palavra inválida!"),
+    get_Entrada(_, Palavra, "Palavra inválida!"),
     write("Qual o tema da palavra?\n"),
-    get_Entrada("tema", Tema, "Tema inválido!"),
+    get_Entrada(_, Tema, "Tema inválido!"),
     jogo(Palavra, Tema).
 
 regras_do_jogo(Regras, RegrasEstilizadas) :-
@@ -50,14 +50,7 @@ regras_do_jogo(Regras, RegrasEstilizadas) :-
     bold(RegrasAmarelas, RegrasBold),
     RegrasEstilizadas = RegrasBold.
 
-get_Entrada("palavra", Entrada, MsgErro) :- 
-    read_line_to_string(user_input, EntradaTemp),
-    trim(EntradaTemp, EntradaTrimmed),
-    (eh_valido(_, EntradaTrimmed) -> 
-        Entrada = EntradaTrimmed
-        ; writeln(MsgErro), get_Entrada(_, Entrada, MsgErro)).
-
-get_Entrada("tema", Entrada, MsgErro) :- 
+get_Entrada(_, Entrada, MsgErro) :- 
     read_line_to_string(user_input, EntradaTemp),
     trim(EntradaTemp, EntradaTrimmed),
     (eh_valido(_, EntradaTrimmed) -> 
@@ -71,9 +64,9 @@ eh_valido(_, Texto) :-
     trim(Texto, TextoTrim),
     TextoTrim \= "". 
 
-eh_valido("letra", Tema) :- 
-    string(Tema),
-    string_length(Tema, Tamanho),
+eh_valido("letra", Texto) :- 
+    string(Texto),
+    string_length(Texto, Tamanho),
     Tamanho > 0,
     Tamanho == 1.
 
@@ -105,7 +98,8 @@ loop(Palavra, EstadoAtual, LetrasDigitadas, Erros) :-
     atom_chars(LetraMin, [LetraChar]),
 
     (member(LetraChar, LetrasDigitadas) ->
-        writeln("Essa letra já foi digitada!"),
+        colore_amarelo("Essa letra já foi digitada!", Mensagem),
+        writeln(Mensagem),
         loop(Palavra, EstadoAtual, LetrasDigitadas, Erros)
     ;
         atualiza_jogo(Palavra, LetraChar, EstadoAtual, NovoEstado, Erros, NovosErros),
