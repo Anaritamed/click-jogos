@@ -4,8 +4,8 @@
     eh_valido/2,
     jogo/2,
     loop/4,
-    cria_string_sublinhados/2,
-    atualiza_string_sublinhados/4,
+    cria_lista_sublinhados/2,
+    atualiza_lista_sublinhados/4,
     atualiza_forca/1
 ]).
 
@@ -16,7 +16,7 @@ forca :-
     inicio.
 
 inicio :-
-    limpa_terminal,
+    %limpa_terminal,
     writeln("                                               "),
     writeln("   ███████╗ ██████╗ ██████╗  ██████╗ █████╗    "),
     writeln("   ██╔════╝██╔═══██╗██╔══██╗██╔════╝██╔══██╗   "),
@@ -84,7 +84,7 @@ jogo(Palavra, Tema) :-
     string_lower(Palavra, PalavraMin),
     atom_chars(PalavraMin, ListaPalavra),
     length(ListaPalavra, N),
-    cria_string_sublinhados(N, EstadoAtual),
+    cria_lista_sublinhados(N, EstadoAtual),
     writeln("Tema: "),
     writeln(Tema),
     loop(ListaPalavra, EstadoAtual, [], 0).
@@ -117,7 +117,7 @@ loop(Palavra, EstadoAtual, LetrasDigitadas, Erros) :-
 % Atualiza o estado do jogo com a letra correta ou aumenta o contador de erros
 atualiza_jogo(Palavra, Letra, EstadoAtual, NovoEstado, Erros, NovosErros) :-
     (ocorrencias(Palavra, Letra, Posicoes) ->
-        atualiza_string_sublinhados(Posicoes, Letra, EstadoAtual, NovoEstado),
+        atualiza_lista_sublinhados(Posicoes, Letra, EstadoAtual, NovoEstado),
         NovosErros is Erros
     ;
         NovoEstado = EstadoAtual,
@@ -130,17 +130,18 @@ ocorrencias(Palavra, Letra, Posicoes) :-
     Posicoes \= [].
 
 % Atualiza a string sublinhada com as letras corretas
-atualiza_string_sublinhados([], _, EstadoAtual, EstadoAtual).
-atualiza_string_sublinhados([Pos|Posicoes], Letra, EstadoAtual, NovoEstado) :-
-    nth1(Pos, NovoEstado, Letra, EstadoAtualIntermediario),
-    atualiza_string_sublinhados(Posicoes, Letra, EstadoAtualIntermediario, NovoEstado).
+atualiza_lista_sublinhados([], _, EstadoAtual, EstadoAtual).
+atualiza_lista_sublinhados([Pos|Posicoes], Letra, EstadoAtual, NovoEstado) :-
+    nth1(Pos, EstadoAtual, _, EstadoAtualIntermediario),
+    nth1(Pos, EstadoAtualFinal, Letra, EstadoAtualIntermediario),
+    atualiza_lista_sublinhados(Posicoes, Letra, EstadoAtualFinal, NovoEstado).
 
 % Cria a string de sublinhados
-cria_string_sublinhados(0, []).
-cria_string_sublinhados(N, ['_'|Resto]) :-
+cria_lista_sublinhados(0, []).
+cria_lista_sublinhados(N, ['_'|Resto]) :-
     N > 0,
     N1 is N - 1,
-    cria_string_sublinhados(N1, Resto).
+    cria_lista_sublinhados(N1, Resto).
 
 % Atualiza a forca de acordo com o número de erros
 atualiza_forca(0) :-

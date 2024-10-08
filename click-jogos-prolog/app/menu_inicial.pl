@@ -1,3 +1,4 @@
+:- module(menu_inicial, [inicio/0]).
 :- [enforcado].
 :- [utils].
 
