@@ -1,13 +1,4 @@
-:- module(enforcado, [
-    forca/0,
-    get_Entrada/3,
-    eh_valido/2,
-    jogo/2,
-    loop/4,
-    cria_lista_sublinhados/2,
-    atualiza_lista_sublinhados/4,
-    atualiza_forca/1
-]).
+:- module(forca, [forca/0]).
 
 :- use_module(utils).
 :- use_module(library(lists)).

@@ -1,41 +1,41 @@
 :- module(menu_inicial, [inicio/0]).
-:- [enforcado].
-:- [utils].
+:- [forca].
+:- [perguntados].
+:- [jogo_da_velha].
+
+inicio :-
+    exibe_tela_inicial,
+    write("Digite uma opção: "),
+    read_line_to_string(user_input, Opcao),
+    processa_opcao_inicio(Opcao).
 
 exibe_tela_inicial :-
     tela_inicial(Lines),
     maplist(writeln, Lines).
 
-exibe_menu :-
-    jogos(Lines),
-    maplist(writeln, Lines).
-    
-inicio :- 
-    exibe_tela_inicial,
-    write("Digite uma opcao: "),
-    read_line_to_string(user_input, Opcao),
-    processaOpcaoInicio(Opcao).
-
-processaOpcaoInicio("1") :- menu.
-processaOpcaoInicio("2") :- sair.
-processaOpcaoInicio(_) :- 
-    write("Opcao invalida. Tente novamente.\n"),
+processa_opcao_inicio("1") :- menu.
+processa_opcao_inicio("2") :- sair.
+processa_opcao_inicio(_) :- 
+    write("Opção inválida. Tente novamente.\n"),
     inicio.
 
 menu :- 
     exibe_menu,
-    write("Digite uma opcao: "),
+    write("Digite uma opção: "),
     read_line_to_string(user_input, Opcao),
-    processaOpcaoMenu(Opcao).
+    processa_opcao_menu(Opcao).
 
-processaOpcaoMenu("1") :- forca.
-% processaOpcaoMenu("2") :- perguntados.
-% processaOpcaoMenu("3") :- jogoDaVelha.
-processaOpcaoMenu(_) :- 
-    write("Opcao invalida. Tente novamente.\n"),
+exibe_menu :-
+    jogos(Lines),
+    maplist(writeln, Lines).
+
+processa_opcao_menu("1") :- forca.
+processa_opcao_menu("2") :- perguntados.
+processa_opcao_menu("3") :- jogo_da_velha.
+processa_opcao_menu(_) :- 
+    write("Opção inválida. Tente novamente.\n"),
     menu.
 
-% Definição da tela inicial como lista de strings
 tela_inicial([
     "===================================================",
     "   ___ _ _      _       __                         ",
@@ -50,7 +50,6 @@ tela_inicial([
     "                                                   "
 ]).
 
-% Definição da tela de escolha de jogos como lista de strings
 jogos([
     "                                                   ",
     "===================================================",
@@ -62,5 +61,3 @@ jogos([
     "===================================================",
     "                                                   "
 ]).
-
-:- inicio.
