@@ -54,5 +54,5 @@ Compila e roda o sistema Click Jogos, executando o arquivo Main.hs.
 
 ### Em Prolog
 ```
-swipl -p -f menuInicial.pl
+swipl -f -p menuInicial.pl
 ```
