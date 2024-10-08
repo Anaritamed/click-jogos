@@ -3,14 +3,14 @@
 
 perguntados :- 
     exibe_menu_perguntados,
-    write("Digite uma opcao: "),
+    write("Digite uma opção: "),
     read_line_to_string(user_input, Opcao),
     processaOpcaoMenu(Opcao).
 
 processaOpcaoMenu("1") :- inicioJogo.
 processaOpcaoMenu("2") :- sair.
 processaOpcaoMenu(_) :- 
-    write("Opcao invalida. Tente novamente.\n"),
+    write("Opção inválida. Tente novamente.\n"),
     perguntados.
 
 inicioJogo :- 
@@ -24,7 +24,7 @@ inicioJogo :-
 
 temaJogo(Jogadores) :-
     exibe_escolha_tema,
-    write("Digite uma opcao: "),
+    write("Digite uma opção: "),
     read_line_to_string(user_input, Opcao),
     processaTemaJogo(Opcao, Jogadores).
 
@@ -34,7 +34,7 @@ tema_disponivel("3", _, "geografia.txt").
 tema_disponivel("4", _, "historia.txt").
 tema_disponivel("5", _, "ciencias.txt").
 tema_disponivel(_, Jogadores, _) :- 
-    write("Opcao invalida. Tente novamente.\n"),
+    write("Opção inválida. Tente novamente.\n"),
     temaJogo(Jogadores).
 
 processaTemaJogo(Opcao, Jogadores) :-
@@ -53,16 +53,16 @@ jogo(Jogadores, Tema) :-
     close(Arquivo),
     mostra_vencedor(Jogadores, Resultado),
     exibe_menu_jogar_novamente,
-    write("Digite uma opcao: "),
+    write("Digite uma opção: "),
     read_line_to_string(user_input, Opcao),
     processaOpcaoJogarNovamente(Opcao).
 
 processaOpcaoJogarNovamente("1") :- inicioJogo.
 processaOpcaoJogarNovamente("2") :- sair.
 processaOpcaoJogarNovamente(_) :- 
-    write("Opcao invalida. Tente novamente.\n"),
+    write("Opção inválida. Tente novamente.\n"),
     exibe_menu_jogar_novamente,
-    write("Digite uma opcao: "),
+    write("Digite uma opção: "),
     read_line_to_string(user_input, Opcao),
     processaOpcaoJogarNovamente(Opcao).
 
@@ -209,7 +209,7 @@ regrasDoJogo([
 
 placar([Jogador1, Jogador2], [Pontuacao1, Pontuacao2]) :-
     atom_concat("-----------------------------------------------------------------------------------------------------------\n", 
-    "                                               PLACAR                                                      \n", Linha1),
+                "                                               PLACAR                                                      \n", Linha1),
     atom_concat(Linha1, "-----------------------------------------------------------------------------------------------------------\n", Linha2),
     atom_concat("JOGADOR 1: ", Jogador1, J1),
     atom_concat(J1, " - Pontuação: ", J1Pont),
@@ -223,12 +223,12 @@ placar([Jogador1, Jogador2], [Pontuacao1, Pontuacao2]) :-
     atom_concat(J2Pont, P2String, Linha4Parte1),
     atom_concat(Linha3, Linha4Parte1, Linha4),
 
-    atom_concat(Linha4, "\n-----------------------------------------------------------------------------------------------------------", ResultadoFinal),
+    atom_concat(Linha4, "\n-----------------------------------------------------------------------------------------------------------\n", ResultadoFinal),
 
     write(ResultadoFinal).
 
-escolhaTema([ 
-      "                                 ESCOLHA UM TEMA PARA O QUIZ                                               "
+escolhaTema([
+      "                                      ESCOLHA UM TEMA PARA O QUIZ                                          "
     , "-----------------------------------------------------------------------------------------------------------"
     , "                                           (1) ENTRETENIMENTO                                              "
     , "                                           (2) PROGRAMAÇÃO                                                 "
@@ -239,7 +239,7 @@ escolhaTema([
     ]).
 
 menuJogarNovamente([
-     "-----------------------------------------------------------------------------------------------------------"
+      "-----------------------------------------------------------------------------------------------------------"
     , "                                           JOGAR NOVAMENTE?                                                "
     , "-----------------------------------------------------------------------------------------------------------"
     , "                                           SIM (1) | NÃO (2)                                               "
