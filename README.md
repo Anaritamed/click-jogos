@@ -26,8 +26,17 @@ Sistema para construir e empacotar bibliotecas e programas Haskell. Ele define u
 cabal init
 ```
 
+### Prolog
+Linguagem de programação lógica, que é de mais alto nível que a programação imperativa ou funcional. Em Prolog, todo programa implementa uma relação, que pode ser avaliada como verdadeira ou falsa. A partir delas, podemos definir fatos, regras e consultas. Comando para instalar o SWI-Prolog, implementação em código aberto de Prolog:
+```
+sudo add-apt-repository ppa:swi-prolog/stable
+sudo apt-get update
+sudo apt-get install swi-prolog
+```
+
 # Configurações de Execução 👩🏿‍💻
 
+### Em Haskell
 ```
 cabal update
 ```
@@ -42,3 +51,8 @@ Compila o código e depêndencias do projeto.
 cabal run
 ```
 Compila e roda o sistema Click Jogos, executando o arquivo Main.hs.
+
+### Em Prolog
+```
+swipl -p -f menuInicial.pl
+```
