@@ -88,17 +88,23 @@ loop_jogada(Tabuleiro, Jogador) :-
     exibir_tabuleiro,
     writef('\nJogador %w, insira sua jogada (1-9): \n', [Jogador]),
     read_line_to_string(user_input, Pos_string),
-    atom_number(Pos_string, Pos),
-    limpa_terminal,
-    (jogada_valida(Tabuleiro, Pos) ->
-        atualizar_tabuleiro(Tabuleiro, Jogador, Pos, TabuleiroAtualizado),
-        (
-            verificar_vencedor(TabuleiroAtualizado, Jogador) -> limpa_terminal, exibir_tabuleiro, writef('Jogador %w vence!\n', [Jogador]), reiniciar_jogo;
-            verificar_empate(TabuleiroAtualizado) -> limpa_terminal, exibir_tabuleiro, writeln('Empate!'), reiniciar_jogo;
-            proximo_jogador(Jogador, ProximoJogador), loop_jogada(TabuleiroAtualizado, ProximoJogador)
+    (entrada_valida(Pos_string) ->
+        atom_number(Pos_string, Pos),
+        limpa_terminal,
+        (jogada_valida(Tabuleiro, Pos) ->
+            atualizar_tabuleiro(Tabuleiro, Jogador, Pos, TabuleiroAtualizado),
+            (
+                verificar_vencedor(TabuleiroAtualizado, Jogador) -> limpa_terminal, exibir_tabuleiro, writef('Jogador %w vence!\n', [Jogador]), reiniciar_jogo;
+                verificar_empate(TabuleiroAtualizado) -> limpa_terminal, exibir_tabuleiro, writeln('Empate!'), reiniciar_jogo;
+                proximo_jogador(Jogador, ProximoJogador), loop_jogada(TabuleiroAtualizado, ProximoJogador)
+            );
+            writeln('Movimento inválido! Tente novamente.\n'), loop_jogada(Tabuleiro, Jogador)
         );
-        writeln('Movimento inválido! Tente novamente.\n'), loop_jogada(Tabuleiro, Jogador)
+        writeln('Entrada inválida! Insira um número de 1 a 9.\n'), loop_jogada(Tabuleiro, Jogador)
     ).
+
+entrada_valida(Pos_string) :-
+    member(Pos_string, ["1", "2", "3", "4", "5", "6", "7", "8", "9"]).
 
 jogada_valida(Tabuleiro, Pos) :-
     Pos >= 1, Pos =< 9,
